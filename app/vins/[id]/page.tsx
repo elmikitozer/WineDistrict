@@ -3,8 +3,14 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function VinPage({ params }: { params: { id: string } }) {
-  const vin = await prisma.vin.findUnique({
+// export default async function VinPage({ params }: { params: { id: string } }) {
+type PageProps = {
+  params: { id: string };
+};
+
+export default async function Page({ params }: PageProps) {
+
+const vin = await prisma.vin.findUnique({
     where: { id: Number(params.id) },
     include: {
       stocks: {
