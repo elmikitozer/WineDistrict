@@ -43,7 +43,7 @@ export default async function Page({
             </p>
             <p className="text-gray-700 text-lg mt-2">
               Prix conseillé :{" "}
-              <span className="font-bold text-rose-600">{vin.prix} €</span>
+              <span className="font-bold text-rose-600">{vin.prix.toFixed(2).replace(".", ",")} €</span>
             </p>
             {vin.couleur && (
               <p className="text-gray-700 text-lg mt-2">
