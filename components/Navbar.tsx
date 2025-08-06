@@ -37,9 +37,9 @@ export default function Navbar() {
             <Link href="/vins" className="hover:text-black">
               Vins
             </Link>
-            <Link href="/cavistes" className="hover:text-black">
+            {/* <Link href="/cavistes" className="hover:text-black">
               Cavistes
-            </Link>
+            </Link> */}
           </div>
 
           <div className="md:hidden">

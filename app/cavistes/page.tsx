@@ -1,53 +1,53 @@
-'use client';
+// 'use client';
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
-type Vin = {
-  id: number;
-  nom: string;
-  domaine: string;
-  année: number;
-  prix: number;
-};
+// type Vin = {
+//   id: number;
+//   nom: string;
+//   domaine: string;
+//   année: number;
+//   prix: number;
+// };
 
-type Stock = {
-  id: number;
-  quantite: number;
-  vin: Vin;
-};
+// type Stock = {
+//   id: number;
+//   quantite: number;
+//   vin: Vin;
+// };
 
-type Caviste = {
-  id: number;
-  nom: string;
-  adresse: string;
-  stocks: Stock[];
-};
+// type Caviste = {
+//   id: number;
+//   nom: string;
+//   adresse: string;
+//   stocks: Stock[];
+// };
 
-export default function CavistesPage() {
-  const [cavistes, setCavistes] = useState<Caviste[]>([]);
+// export default function CavistesPage() {
+//   const [cavistes, setCavistes] = useState<Caviste[]>([]);
 
-  useEffect(() => {
-    fetch("/api/cavistes")
-      .then((res) => res.json())
-      .then((data) => setCavistes(data));
-  }, []);
+//   useEffect(() => {
+//     fetch("/api/cavistes")
+//       .then((res) => res.json())
+//       .then((data) => setCavistes(data));
+//   }, []);
 
-  return (
-    <main style={{ padding: "2rem" }}>
-      <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>Cavistes et leurs vins</h1>
-      {cavistes.map((stocks) => (
-        <div key={caviste.id} style={{ marginBottom: "2rem" }}>
-          <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{caviste.nom}</h2>
-          <p>{caviste.adresse}</p>
-          <ul>
-            {caviste.vins.map((stock) => (
-              <li key={stock.id} style={{ marginLeft: "1rem" }}>
-                {stock.vin.nom} ({stock.vin.année}) – {stock.quantite} bouteilles – {stock.vin.prix} €
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </main>
-  );
-}
+//   return (
+//     <main style={{ padding: "2rem" }}>
+//       <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>Cavistes et leurs vins</h1>
+//       {cavistes.map((stocks) => (
+//         <div key={caviste.id} style={{ marginBottom: "2rem" }}>
+//           <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{caviste.nom}</h2>
+//           <p>{caviste.adresse}</p>
+//           <ul>
+//             {caviste.vins.map((stock) => (
+//               <li key={stock.id} style={{ marginLeft: "1rem" }}>
+//                 {stock.vin.nom} ({stock.vin.année}) – {stock.quantite} bouteilles – {stock.vin.prix} €
+//               </li>
+//             ))}
+//           </ul>
+//         </div>
+//       ))}
+//     </main>
+//   );
+// }
