@@ -27,7 +27,7 @@ async function main() {
     data: {
       nom: "Cave Saint-Germain",
       adresse: "14 Rue de Seine, 75006 Paris",
-      vins: {
+      stocks: {
         create: [
           { vinId: allVins[0].id, quantite: 2 },
           { vinId: allVins[1].id, quantite: 12 },
@@ -41,7 +41,7 @@ async function main() {
     data: {
       nom: "Le Vin qui Parle",
       adresse: "42 Rue Faidherbe, 75011 Paris",
-      vins: {
+      stocks: {
         create: [
           { vinId: allVins[2].id, quantite: 20 },
           { vinId: allVins[1].id, quantite: 5 },

@@ -74,6 +74,7 @@ export default async function Page({
                       Quantité :{" "}
                       <span className="font-medium">{stock.quantite}</span>
                     </p>
+                    {/* <Button onClick={() => handleReserve(cavisteId)}>Réserver chez ce caviste</Button> */}
                   </li>
                 ))}
               </ul>

@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const cavistes = await prisma.caviste.findMany({
       include: {
-        vins: {
+        stocks: {
           include: {
             vin: true,
           },

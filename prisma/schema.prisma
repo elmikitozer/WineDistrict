@@ -14,27 +14,39 @@ datasource db {
 }
 
 model Caviste {
-  id        Int     @id @default(autoincrement())
-  nom       String
-  adresse   String
-  vins      Stock[]
+  id          Int           @id @default(autoincrement())
+  nom         String
+  adresse     String
+  stocks      Stock[]
+  reservation Reservation[]
 }
 
 model Vin {
-  id        Int     @id @default(autoincrement())
-  nom       String
-  domaine   String
-  année     Int
-  prix      Float
-  couleur   String @default("")
-  stocks    Stock[]
+  id          Int           @id @default(autoincrement())
+  nom         String
+  domaine     String
+  année      Int
+  prix        Float
+  couleur     String        @default("")
+  stocks      Stock[]
+  reservation Reservation[]
 }
 
 model Stock {
-  id         Int     @id @default(autoincrement())
-  caviste    Caviste @relation(fields: [cavisteId], references: [id])
-  cavisteId  Int
-  vin        Vin     @relation(fields: [vinId], references: [id])
-  vinId      Int
-  quantite   Int
+  id        Int     @id @default(autoincrement())
+  vin       Vin     @relation(fields: [vinId], references: [id])
+  vinId     Int
+  caviste   Caviste @relation(fields: [cavisteId], references: [id])
+  cavisteId Int
+  quantite  Int
+}
+
+model Reservation {
+  id        String   @id @default(cuid())
+  vin       Vin      @relation(fields: [vinId], references: [id])
+  vinId     Int
+  caviste   Caviste  @relation(fields: [cavisteId], references: [id])
+  cavisteId Int
+  date      DateTime @default(now())
+  status    String   @default("en_attente")
 }
