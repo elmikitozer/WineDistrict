@@ -14,17 +14,15 @@ interface Vin {
 export default async function PageVins({
   searchParams,
 }: {
-  searchParams?: {
+  searchParams?: Promise<{
     q?: string;
     couleur?: string;
-    prix?: string;
-    année?: string;
-  };
+  }>;
 }) {
-  const q = searchParams?.q?.toLowerCase() || "";
-  const couleur = searchParams?.couleur?.toLowerCase() || "tous";
-
-  const safeQ = q.replace(/[^a-zA-ZÀ-ÿ0-9 '-]/g, ""); // protection basique
+  const sp = (await searchParams) ?? {};
+  const q = sp.q?.toLowerCase() || "";
+  const couleur = sp.couleur?.toLowerCase() || "tous";
+  const safeQ = q.replace(/[^a-zA-ZÀ-ÿ0-9 '-]/g, "");
 
   let vins: Vin[] = [];
 
@@ -33,8 +31,8 @@ export default async function PageVins({
       SELECT id, nom, domaine, année, prix
       FROM "Vin"
       WHERE (unaccent(nom) ILIKE unaccent('%${safeQ}%')
-         OR unaccent(domaine) ILIKE unaccent('%${safeQ}%'))
-        ${couleur !== "tous" ? `AND LOWER(couleur) = '${couleur}'` : ""}
+        OR unaccent(domaine) ILIKE unaccent('%${safeQ}%'))
+      ${couleur !== "tous" ? `AND LOWER(couleur) = '${couleur}'` : ""}
       ORDER BY nom ASC
     `);
   } else {
@@ -45,28 +43,31 @@ export default async function PageVins({
   }
 
   return (
-    <main className="p-10">
-      <h1 className="text-3xl font-bold mb-6 text-rose-800">
-        {safeQ ? `Résultats pour « ${safeQ} »` : "Nos Vins"}
+    <main className="p-10 max-w-6xl mx-auto">
+      <h1 className="text-4xl font-extrabold text-rose-900 mb-6 tracking-tight text-center">
+        {safeQ ? `Résultats pour « ${safeQ} »` : "Notre sélection de vins"}
       </h1>
 
-      {/* Filtres par couleur */}
-      <div className="flex gap-2 mb-6">
+      {/* Filtres */}
+      <div className="flex justify-center gap-4 mb-12">
         {["Tous", "Rouge", "Blanc", "Rosé"].map((c) => {
           const cLower = c.toLowerCase();
-          const isActive =
-            searchParams?.couleur === cLower ||
-            (!searchParams?.couleur && cLower === "tous");
+          const isActive = couleur === cLower || (!sp.couleur && cLower === "tous");
 
           const href = new URLSearchParams();
-          if (searchParams?.q) href.set("q", searchParams.q);
+          if (q) href.set("q", q);
           if (cLower !== "tous") href.set("couleur", cLower);
 
           return (
             <Link
               key={c}
               href={`/vins?${href.toString()}`}
-              className={`btn-filter ${isActive ? "btn-filter-active" : ""}`}
+              className={`relative px-4 py-2 rounded-full text-sm transition 
+                ${
+                  isActive
+                    ? "bg-rose-100 text-rose-900 font-semibold"
+                    : "text-gray-600 hover:text-rose-800 hover:bg-rose-50"
+                }`}
             >
               {c}
             </Link>
@@ -74,34 +75,30 @@ export default async function PageVins({
         })}
       </div>
 
-      {/* Affichage des résultats ou message vide */}
+      {/* Résultats */}
       {vins.length === 0 ? (
         <div className="mt-10 text-center text-gray-500">
           <p>Aucun vin trouvé.</p>
           <Link href="/vins">
-            <button className="btn mt-4">
+            <button className="mt-4 px-6 py-2 rounded-md bg-rose-600 text-white hover:bg-rose-700 transition">
               Réinitialiser la recherche
             </button>
           </Link>
         </div>
       ) : (
-        <ul className="grid gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {vins.map((vin) => (
             <li
               key={vin.id}
-              className="border border-gray-200 p-4 rounded-lg shadow-sm bg-white"
+              className="rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition bg-white group"
             >
-              <h2 className="text-xl font-semibold">
-                <Link href={`/vins/${vin.id}`} className="hover:underline">
-                  {vin.nom}
-                </Link>
+              <h2 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-rose-700 transition">
+                <Link href={`/vins/${vin.id}`}>{vin.nom}</Link>
               </h2>
-              <p className="text-gray-600">
+              <p className="text-sm text-gray-500 mb-2 italic">
                 {vin.domaine} • {vin.année}
               </p>
-              <p className="text-rose-600 font-bold mt-2">
-                {vin.prix.toFixed(2)} €
-              </p>
+              <p className="text-rose-600 font-bold">{vin.prix.toFixed(2)} €</p>
             </li>
           ))}
         </ul>

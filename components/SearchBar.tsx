@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Search } from 'lucide-react'; // icône si tu as lucide installé
 
 type Vin = {
   id: number;
@@ -27,31 +28,41 @@ export default function SearchBar() {
         setResults([]);
         setShowDropdown(false);
       }
-    }, 300); // délai pour éviter trop de requêtes
-
+    }, 300);
     return () => clearTimeout(delayDebounce);
   }, [query]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(`/vins?q=${encodeURIComponent(query)}`);
+    const trimmed = query.trim();
+    if (!trimmed) {
+      router.push('/');
+    } else {
+      router.push(`/vins?q=${encodeURIComponent(trimmed)}`);
+    }
     setShowDropdown(false);
   };
 
   return (
-    <div className="relative w-full max-w-md">
-      <form onSubmit={handleSubmit}>
+    <div className="relative w-full max-w-md mx-auto">
+      <form onSubmit={handleSubmit} className="relative">
         <input
           type="text"
-          placeholder="Rechercher un vin..."
+          placeholder="Rechercher un vin (ex. Chinon, Margaux...)"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-rose-300"
+          className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-200 text-sm placeholder:text-gray-400"
         />
+        <button
+          type="submit"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-rose-600"
+        >
+          <Search size={18} />
+        </button>
       </form>
 
       {showDropdown && results.length > 0 && (
-        <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+        <ul className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-auto">
           {results.map((vin) => (
             <li
               key={vin.id}
@@ -59,9 +70,10 @@ export default function SearchBar() {
                 router.push(`/vins/${vin.id}`);
                 setShowDropdown(false);
               }}
-              className="px-4 py-2 hover:bg-rose-100 cursor-pointer"
+              className="px-4 py-2 text-sm hover:bg-rose-50 cursor-pointer transition-colors duration-150"
             >
-              {vin.nom} ({vin.domaine})
+              <span className="font-medium text-gray-800">{vin.nom}</span>{" "}
+              <span className="text-gray-500">({vin.domaine})</span>
             </li>
           ))}
         </ul>

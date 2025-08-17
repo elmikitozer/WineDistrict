@@ -19,3 +19,40 @@
   }
 }
 
+/* animations douces */
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeUp { animation: fadeUp .6s ease-out both; }
+
+@keyframes marquee {
+  0% { transform: translateX(0);}
+  100% { transform: translateX(-50%);}
+}
+.animate-marquee {
+  display: inline-flex;
+  min-width: 200%;
+  animation: marquee 20s linear infinite;
+}
+
+
+/* Bounces contrôlés pour l'emoji 🍷 */
+@keyframes wineBounce {
+  0%   { transform: translateY(0); }
+  35%  { transform: translateY(-10px); }
+  70%  { transform: translateY(0); }
+  100% { transform: translateY(0); }
+}
+
+/* 1 seul rebond */
+.animate-wine-bounce-once {
+  animation: wineBounce 700ms ease-out 1 both;
+}
+
+/* 2 rebonds */
+.animate-wine-bounce-twice {
+  animation: wineBounce 700ms ease-out 2 both;
+}
+
+

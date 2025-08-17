@@ -1,95 +1,105 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import CavistesModal from "@/components/CavistesModal";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Page({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function Page({ params }: { params: { id: string } }) {
+  const id = Number(params?.id);
+  if (isNaN(id)) return notFound();
+
   const vin = await prisma.vin.findUnique({
-    where: { id: Number(params.id) },
+    where: { id },
     include: {
-      stocks: {
-        include: {
-          caviste: true,
-        },
-      },
+      stocks: { include: { caviste: true } },
     },
   });
 
   if (!vin) return notFound();
 
+  const cavistes = vin.stocks;
+  const nbCavistes = cavistes.length;
+
   return (
-    <main className="max-w-4xl mx-auto py-12 px-6">
-      <div className="flex flex-col md:flex-row gap-10">
-        <div className="w-full md:w-1/2">
+    <main className="max-w-6xl mx-auto py-16 px-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        {/* Photo */}
+        <div className="relative group">
           <Image
             src={`/vins/${vin.id}.png`}
-            alt={`Photo de ${vin.nom}`}
+            alt={`Bouteille de vin ${vin.nom}`}
             width={600}
             height={800}
-            className="rounded-lg shadow-md object-cover"
+            className="rounded-2xl shadow-lg object-cover w-full h-auto border border-gray-100 transition-transform duration-300 group-hover:scale-105"
           />
+          <span className="absolute bottom-3 right-3 bg-white/90 text-xs px-3 py-1 rounded-full shadow-sm text-gray-700">
+            {vin.année}
+          </span>
         </div>
 
-        <div className="w-full md:w-1/2 flex flex-col justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-rose-800 mb-2">{vin.nom}</h1>
-            <h2 className="text-xl text-gray-600 mb-4 italic">{vin.domaine}</h2>
-            <p className="text-gray-700 text-lg">
-              <span className="font-semibold">{vin.année}</span>
-            </p>
-            <p className="text-gray-700 text-lg mt-2">
-              Prix conseillé :{" "}
-              <span className="font-bold text-rose-600">{vin.prix.toFixed(2).replace(".", ",")} €</span>
-            </p>
-            {vin.couleur && (
-              <p className="text-gray-700 text-lg mt-2">
-                Couleur :{" "}
-                <span className="font-semibold capitalize">{vin.couleur}</span>
-              </p>
-            )}
-          </div>
+        {/* Infos */}
+        <div className="flex flex-col gap-8">
+          <header>
+            <h1 className="text-4xl font-bold text-rose-800 tracking-tight mb-2">
+              {vin.nom}
+            </h1>
+            <p className="text-lg italic text-gray-600">{vin.domaine}</p>
+          </header>
 
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-2">Disponible chez :</h3>
-            {vin.stocks.length === 0 ? (
-              <p className="text-gray-500 italic">
-                Aucun caviste ne propose actuellement ce vin.
-              </p>
+          <section>
+            <ul className="space-y-2 text-gray-700 text-base">
+              <li>
+                <span className="font-medium text-gray-900">Millésime :</span>{" "}
+                {vin.année}
+              </li>
+              {vin.couleur && (
+                <li>
+                  <span className="font-medium text-gray-900">Couleur :</span>{" "}
+                  <span className="capitalize">{vin.couleur}</span>
+                </li>
+              )}
+              <li>
+                <span className="font-medium text-gray-900">
+                  Prix conseillé :
+                </span>{" "}
+                <span className="text-rose-700 font-semibold">
+                  {vin.prix.toFixed(2).replace(".", ",")} €
+                </span>
+              </li>
+            </ul>
+          </section>
+
+          <section className="mt-6">
+            {nbCavistes > 0 ? (
+              <>
+                <p className="text-sm text-gray-500 mb-1">
+                  Disponible chez {nbCavistes} caviste{nbCavistes > 1 && "s"} à
+                  Paris.
+                </p>
+                {vin.stocks.length > 0 && (
+                  <p className="text-sm text-rose-700 font-medium mb-3">
+                    Faites vite, il ne reste plus que {vin.stocks.length}{" "}
+                    caviste{vin.stocks.length >= 2 ? "s" : ""} !
+                  </p>
+                )}
+                <CavistesModal cavistes={cavistes} />
+              </>
             ) : (
-              <ul className="space-y-2">
-                {vin.stocks.map((stock) => (
-                  <li
-                    key={stock.id}
-                    className="bg-rose-50 border border-rose-200 rounded-md px-4 py-2"
-                  >
-                    <p className="font-semibold">{stock.caviste.nom}</p>
-                    <p className="text-sm text-gray-600">
-                      {stock.caviste.adresse}
-                    </p>
-                    <p className="text-sm text-gray-800 mt-1">
-                      Quantité :{" "}
-                      <span className="font-medium">{stock.quantite}</span>
-                    </p>
-                    {/* <Button onClick={() => handleReserve(cavisteId)}>Réserver chez ce caviste</Button> */}
-                  </li>
-                ))}
-              </ul>
+              <p className="text-gray-400 italic">
+                Ce vin n'est actuellement proposé par aucun caviste.
+              </p>
             )}
-          </div>
-        </div>
-      </div>
+          </section>
 
-      <div className="mt-12">
-        <Link
-          href="/vins"
-          className="text-sm text-rose-600 underline hover:text-rose-800 transition"
-        >
-          ← Retour à la liste des vins
-        </Link>
+          <footer className="pt-4 border-t border-gray-100">
+            <Link
+              href="/vins"
+              className="inline-flex items-center text-sm text-rose-600 hover:text-rose-800 transition"
+            >
+              <span className="mr-1">←</span> Retour à la sélection
+            </Link>
+          </footer>
+        </div>
       </div>
     </main>
   );
