@@ -1,6 +1,8 @@
+// app/vins/page.tsx
 export const dynamic = "force-dynamic";
 
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client"; // ⬅️ IMPORTANT
 import Link from "next/link";
 
 interface Vin {
@@ -14,49 +16,47 @@ interface Vin {
 export default async function PageVins({
   searchParams,
 }: {
-  searchParams?: Promise<{
-    q?: string;
-    couleur?: string;
-  }>;
+  searchParams?: Promise<{ q?: string; couleur?: string }>;
 }) {
   const sp = (await searchParams) ?? {};
-  const q = sp.q?.toLowerCase() || "";
-  const couleur = sp.couleur?.toLowerCase() || "tous";
-  const safeQ = q.replace(/[^a-zA-ZÀ-ÿ0-9 '-]/g, "");
+  const q = (sp.q ?? "").trim();
+  // on garde "rose" (sans accent) pour l’URL ; l’unaccent() tolère tout côté DB
+  const couleur = (sp.couleur ?? "tous").toLowerCase();
 
-  let vins: Vin[] = [];
+  // Construit les conditions WHERE de façon sûre
+  const whereParts: (Prisma.Sql | undefined)[] = [
+    q
+      ? Prisma.sql`(unaccent(nom) ILIKE unaccent(${`%${q}%`}) OR unaccent(domaine) ILIKE unaccent(${`%${q}%`}))`
+      : undefined,
+    couleur !== "tous"
+      ? Prisma.sql`unaccent(couleur) ILIKE unaccent(${couleur})`
+      : undefined,
+  ].filter(Boolean);
 
-  if (safeQ.length > 0) {
-    vins = await prisma.$queryRawUnsafe<Vin[]>(`
-      SELECT id, nom, domaine, année, prix
-      FROM "Vin"
-      WHERE (unaccent(nom) ILIKE unaccent('%${safeQ}%')
-        OR unaccent(domaine) ILIKE unaccent('%${safeQ}%'))
-      ${couleur !== "tous" ? `AND LOWER(couleur) = '${couleur}'` : ""}
-      ORDER BY nom ASC
-    `);
-  } else {
-    vins = await prisma.vin.findMany({
-      where: couleur !== "tous" ? { couleur } : undefined,
-      orderBy: { nom: "asc" },
-    });
-  }
+  const query = Prisma.sql`
+    SELECT id, nom, domaine, année, prix
+    FROM "Vin"
+    ${whereParts.length ? Prisma.sql`WHERE ${Prisma.join(whereParts, Prisma.sql` AND `)}` : Prisma.empty}
+    ORDER BY nom ASC
+  `;
+
+  const vins = await prisma.$queryRaw<Vin[]>(query);
 
   return (
     <main className="p-10 max-w-6xl mx-auto">
       <h1 className="text-4xl font-extrabold text-rose-900 mb-6 tracking-tight text-center">
-        {safeQ ? `Résultats pour « ${safeQ} »` : "Notre sélection de vins"}
+        {q ? `Résultats pour « ${q} »` : "Notre sélection de vins"}
       </h1>
 
       {/* Filtres */}
       <div className="flex justify-center gap-4 mb-12">
         {["Tous", "Rouge", "Blanc", "Rosé"].map((c) => {
-          const cLower = c.toLowerCase();
-          const isActive = couleur === cLower || (!sp.couleur && cLower === "tous");
+          const slug = c.toLowerCase().replace("é", "e"); // "rosé" -> "rose"
+          const isActive = (sp.couleur ?? "tous").toLowerCase() === slug;
 
           const href = new URLSearchParams();
           if (q) href.set("q", q);
-          if (cLower !== "tous") href.set("couleur", cLower);
+          if (slug !== "tous") href.set("couleur", slug);
 
           return (
             <Link

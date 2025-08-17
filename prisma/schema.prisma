@@ -27,26 +27,28 @@ model Vin {
   domaine     String
   année      Int
   prix        Float
-  couleur     String        @default("")
+  couleur     String        //"rouge" | "blanc" | "rose"
   stocks      Stock[]
   reservation Reservation[]
 }
 
 model Stock {
   id        Int     @id @default(autoincrement())
-  vin       Vin     @relation(fields: [vinId], references: [id])
   vinId     Int
-  caviste   Caviste @relation(fields: [cavisteId], references: [id])
   cavisteId Int
   quantite  Int
+
+  vin       Vin     @relation(fields: [vinId], references: [id], onDelete: Cascade)
+  caviste   Caviste @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
 }
 
 model Reservation {
-  id        String   @id @default(cuid())
-  vin       Vin      @relation(fields: [vinId], references: [id])
+  id        String  @id @default(cuid())
   vinId     Int
-  caviste   Caviste  @relation(fields: [cavisteId], references: [id])
   cavisteId Int
   date      DateTime @default(now())
   status    String   @default("en_attente")
+
+  vin       Vin     @relation(fields: [vinId], references: [id], onDelete: Cascade)
+  caviste   Caviste @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
 }

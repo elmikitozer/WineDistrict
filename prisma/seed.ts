@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Nettoyage avant de re-créer
+  await prisma.reservation.deleteMany({});
   await prisma.stock.deleteMany({});
   await prisma.caviste.deleteMany({});
   await prisma.vin.deleteMany({});
@@ -11,11 +12,12 @@ async function main() {
   // Création des vins
   const vins = await prisma.vin.createMany({
     data: [
-      { nom: "Château Margaux", domaine: "Margaux", année: 2018, prix: 320.0 },
-      { nom: "Bourgogne Aligoté", domaine: "Domaine de la Soufrandière", année: 2021, prix: 18.5 },
-      { nom: "Côtes du Rhône", domaine: "E. Guigal", année: 2020, prix: 12.0 },
-      { nom: "Chablis Grand Cru", domaine: "Domaine William Fèvre", année: 2022, prix: 58.0 },
-      { nom: "Crozes-Hermitage", domaine: "Alain Graillot", année: 2020, prix: 28.5 }
+      { nom: "Château Margaux", domaine: "Margaux", année: 2018, prix: 320.0, couleur: "rouge" },
+      { nom: "Bourgogne Aligoté", domaine: "Domaine de la Soufrandière", année: 2021, prix: 18.5, couleur:"blanc" },
+      { nom: "Côtes du Rhône", domaine: "E. Guigal", année: 2020, prix: 12.0, couleur: "rouge" },
+      { nom: "Chablis Grand Cru", domaine: "Domaine William Fèvre", année: 2022, prix: 58.0, couleur: "blanc" },
+      { nom: "Crozes-Hermitage", domaine: "Alain Graillot", année: 2020, prix: 28.5, couleur: "rouge" },
+      { nom: "Tavel Rosé", domaine: "Château d'Aqueria", année: 2023, prix: 16.0, couleur: "rose" }
     ],
   });
 

@@ -4,24 +4,34 @@ import CavistesModal from "@/components/CavistesModal";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const id = Number(params?.id);
-  if (isNaN(id)) return notFound();
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>; // ⬅️ important
+}) {
+  const { id } = await params;     // ⬅️ on attend params
+  const vinId = Number(id);
+  if (isNaN(vinId)) return notFound();
 
   const vin = await prisma.vin.findUnique({
-    where: { id },
+    where: { id: vinId },
     include: {
-      stocks: { include: { caviste: true } },
+      stocks: {
+        include: { caviste: true },
+        orderBy: { quantite: "desc" },
+      },
     },
   });
 
   if (!vin) return notFound();
+
 
   const cavistes = vin.stocks;
   const nbCavistes = cavistes.length;
 
   return (
     <main className="max-w-6xl mx-auto py-16 px-6">
+      {/* <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border"> */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         {/* Photo */}
         <div className="relative group">
