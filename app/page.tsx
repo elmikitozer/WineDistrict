@@ -172,7 +172,7 @@ export default function Home() {
     <main className="relative">
       {/* Bande hero */}
       <section className="relative h-[68vh] md:h-[78vh] grid place-items-center overflow-hidden">
-        <div className="absolute inset-0 -z-10 will-change-transform">
+        {/* <div className="absolute inset-0 -z-10 will-change-transform">
           <Image
             src="/hero.webp"
             alt=""
@@ -182,7 +182,7 @@ export default function Home() {
             className="object-cover scale-105"
           />
           <div className="absolute inset-0 bg-white/40 backdrop-blur-[1.5px]" />
-        </div>
+        </div> */}
 
         <div className="max-w-4xl mx-auto px-6 text-center animate-fadeUp">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-rose-800">
