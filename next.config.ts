@@ -2,11 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "raw.githubusercontent.com", pathname: "/:owner/:repo/:branch/**" },
-      { protocol: "https", hostname: "media.githubusercontent.com", pathname: "/media/**" },
-      { protocol: "https", hostname: "images.githubusercontent.com", pathname: "/**" },
-    ],
+    formats: ["image/avif", "image/webp"],   // ⬅️ Next servira AVIF/WebP si possible
+    // rien d'autre à config pour des images locales dans /public
   },
 };
 

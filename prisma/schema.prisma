@@ -19,16 +19,18 @@ model Caviste {
   adresse     String
   stocks      Stock[]
   reservation Reservation[]
+
+  @@unique([nom], name: "caviste_nom_unique") 
 }
 
 model Vin {
   id          Int           @id @default(autoincrement())
-  nom         String        @unique
+  nom         String        
   domaine     String
   année       Int
   prix        Float
   couleur     String        //"rouge" | "blanc" | "rose"
-  imageUrl    String?
+  imageFile   String?
   stocks      Stock[]
   reservation Reservation[]
 
@@ -44,6 +46,8 @@ model Stock {
 
   vin       Vin     @relation(fields: [vinId], references: [id], onDelete: Cascade)
   caviste   Caviste @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
+
+  @@unique([cavisteId, vinId], name: "stock_unique_caviste_vin")
 }
 
 model Reservation {

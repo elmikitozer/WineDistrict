@@ -21,7 +21,7 @@ export async function generateMetadata({
 
   const vin = await prisma.vin.findUnique({
     where: { id: vinId },
-    select: { nom: true, domaine: true, année: true, couleur: true },
+    select: { nom: true, domaine: true, année: true, couleur: true, imageFile: true },
   });
 
   if (!vin) {
@@ -73,20 +73,26 @@ export default async function Page({
 
   const cavistes = vin.stocks;
   const nbCavistes = cavistes.length;
+  // const srcImageVin = `/vins/${vin.imageFile}`;
+  const srcImageVin = vin.imageFile ? `/vins/${vin.imageFile}` : `/vins/${vin.id}.png`;
 
   return (
     <main className="max-w-6xl mx-auto py-16 px-6">
       {/* <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border"> */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         {/* Photo */}
-        <div className="relative group mx-auto w-full max-w-xl">
-          <Image
-            src={`/vins/${vin.id}.png`}
-            alt={`Bouteille de vin ${vin.nom}`}
-            width={600}
-            height={800}
-            className="rounded-2xl shadow-lg object-cover w-full h-auto border border-gray-100 transition-transform duration-300 group-hover:scale-105"
-          />
+        <div className="relative mx-auto w-full max-w-xl overflow-hidden rounded-2xl border">
+          <div className="relative aspect-[3/4] w-full">
+            <Image
+              src={srcImageVin} // tu peux garder .png
+              alt={`BIB de ${vin.nom}`}
+              fill
+              sizes="(max-width: 768px) 100vw, 520px" // ⬅️ critique pour ne pas sur-télécharger
+              className="object-cover"
+              priority={false} // passe à true si l'image est au-dessus de la ligne de flottaison
+              placeholder="empty" // (optionnel: on peut ajouter un blurDataURL plus tard)
+            />
+          </div>
           <span className="absolute bottom-3 right-3 bg-white/90 text-xs px-3 py-1 rounded-full shadow-sm text-gray-700">
             {vin.année}
           </span>

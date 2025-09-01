@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "cave-saint-germain",
+    "nom": "Cave Saint-Germain",
+    "adresse": "14 Rue de Seine, 75006 Paris",
+    "stocks": [
+      { "vinSlug": "chateau-margaux-margaux-2018", "quantite": 2 },
+      { "vinSlug": "bourgogne-aligote-domaine-de-la-soufrandiere-2021", "quantite": 12 },
+      { "vinSlug": "chablis-grand-cru-domaine-william-fevre-2022", "quantite": 6 }
+    ]
+  },
+  {
+    "slug": "le-vin-qui-parle",
+    "nom": "Le Vin qui Parle",
+    "adresse": "42 Rue Faidherbe, 75011 Paris",
+    "stocks": [
+      { "vinSlug": "cotes-du-rhone-e-guigal-2020", "quantite": 20 },
+      { "vinSlug": "bourgogne-aligote-domaine-de-la-soufrandiere-2021", "quantite": 5 },
+      { "vinSlug": "crozes-hermitage-alain-graillot-2020", "quantite": 8 }
+    ]
+  }
+]
