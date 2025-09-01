@@ -2,7 +2,7 @@
 export const dynamic = "force-dynamic";
 
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client"; // ⬅️ IMPORTANT
+import { Prisma } from "@prisma/client";
 import Link from "next/link";
 
 interface Vin {
@@ -20,23 +20,29 @@ export default async function PageVins({
 }) {
   const sp = (await searchParams) ?? {};
   const q = (sp.q ?? "").trim();
-  // on garde "rose" (sans accent) pour l’URL ; l’unaccent() tolère tout côté DB
-  const couleur = (sp.couleur ?? "tous").toLowerCase();
+  const couleur = (sp.couleur ?? "tous").toLowerCase(); // "rouge" | "blanc" | "rose" | "tous"
 
-  // Construit les conditions WHERE de façon sûre
-  const whereParts: (Prisma.Sql | undefined)[] = [
+  // WHERE parts (accent-insensitive via unaccent)
+  const whereParts = [
     q
-      ? Prisma.sql`(unaccent(nom) ILIKE unaccent(${`%${q}%`}) OR unaccent(domaine) ILIKE unaccent(${`%${q}%`}))`
+      ? Prisma.sql`(unaccent(nom) ILIKE unaccent(${`%${q}%`})
+                    OR unaccent(domaine) ILIKE unaccent(${`%${q}%`}))`
       : undefined,
     couleur !== "tous"
       ? Prisma.sql`unaccent(couleur) ILIKE unaccent(${couleur})`
       : undefined,
-  ].filter(Boolean);
+  ].filter(Boolean) as Prisma.Sql[];
+
+  // IMPORTANT: le séparateur de Prisma.join doit être une string dans Prisma v6
+  const whereClause =
+    whereParts.length > 0
+      ? Prisma.sql`WHERE ${Prisma.join(whereParts, " AND ")}`
+      : Prisma.empty;
 
   const query = Prisma.sql`
     SELECT id, nom, domaine, année, prix
     FROM "Vin"
-    ${whereParts.length ? Prisma.sql`WHERE ${Prisma.join(whereParts, Prisma.sql` AND `)}` : Prisma.empty}
+    ${whereClause}
     ORDER BY nom ASC
   `;
 
@@ -77,13 +83,22 @@ export default async function PageVins({
 
       {/* Résultats */}
       {vins.length === 0 ? (
-        <div className="mt-10 text-center text-gray-500">
-          <p>Aucun vin trouvé.</p>
-          <Link href="/vins">
-            <button className="mt-4 px-6 py-2 rounded-md bg-rose-600 text-white hover:bg-rose-700 transition">
-              Réinitialiser la recherche
-            </button>
-          </Link>
+        <div className="mt-10 text-center text-rose-900 mb-6">
+          <p className="font-semibold">Aucun vin trouvé.</p>
+          <div className="mt-4 flex items-center justify-center gap-3">
+            <Link
+              href="/vins"
+              className="rounded-md bg-rose-600 px-4 py-2 text-white hover:bg-rose-700 transition"
+            >
+              Réinitialiser
+            </Link>
+            <Link
+              href="/cavistes"
+              className="rounded-md border px-4 py-2 hover:bg-rose-50 transition"
+            >
+              Voir les cavistes
+            </Link>
+          </div>
         </div>
       ) : (
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

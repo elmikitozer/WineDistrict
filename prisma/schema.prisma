@@ -23,13 +23,17 @@ model Caviste {
 
 model Vin {
   id          Int           @id @default(autoincrement())
-  nom         String
+  nom         String        @unique
   domaine     String
-  année      Int
+  année       Int
   prix        Float
   couleur     String        //"rouge" | "blanc" | "rose"
+  imageUrl    String?
   stocks      Stock[]
   reservation Reservation[]
+
+
+  @@unique([nom, domaine, année], name: "vin_unique")
 }
 
 model Stock {

@@ -4,12 +4,58 @@ import CavistesModal from "@/components/CavistesModal";
 import Image from "next/image";
 import Link from "next/link";
 
+// 🧠 SEO dynamique par fiche vin
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const vinId = Number(id);
+
+  if (isNaN(vinId)) {
+    return { title: "Vin introuvable | Wine District" };
+  }
+
+  const vin = await prisma.vin.findUnique({
+    where: { id: vinId },
+    select: { nom: true, domaine: true, année: true, couleur: true },
+  });
+
+  if (!vin) {
+    return { title: "Vin introuvable | Wine District" };
+  }
+
+  const title = `${vin.nom} — ${vin.domaine} (${vin.année}) | Wine District`;
+  const description = `Découvrez ${vin.nom} (${vin.couleur}) du domaine ${vin.domaine}. Trouvez un caviste partenaire à Paris.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      // image OG optionnelle si tu as un placeholder fiable :
+      // images: ["/og/wine.png"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      // images: ["/og/wine.png"],
+    },
+  };
+}
+
 export default async function Page({
   params,
 }: {
   params: Promise<{ id: string }>; // ⬅️ important
 }) {
-  const { id } = await params;     // ⬅️ on attend params
+  const { id } = await params; // ⬅️ on attend params
   const vinId = Number(id);
   if (isNaN(vinId)) return notFound();
 
@@ -25,7 +71,6 @@ export default async function Page({
 
   if (!vin) return notFound();
 
-
   const cavistes = vin.stocks;
   const nbCavistes = cavistes.length;
 
@@ -34,7 +79,7 @@ export default async function Page({
       {/* <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border"> */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         {/* Photo */}
-        <div className="relative group">
+        <div className="relative group mx-auto w-full max-w-xl">
           <Image
             src={`/vins/${vin.id}.png`}
             alt={`Bouteille de vin ${vin.nom}`}
@@ -50,7 +95,7 @@ export default async function Page({
         {/* Infos */}
         <div className="flex flex-col gap-8">
           <header>
-            <h1 className="text-4xl font-bold text-rose-800 tracking-tight mb-2">
+            <h1 className="text-4xl font-bold tracking-tight mb-2 bg-gradient-to-r from-rose-700 to-rose-500 bg-clip-text text-transparent">
               {vin.nom}
             </h1>
             <p className="text-lg italic text-gray-600">{vin.domaine}</p>
@@ -95,9 +140,25 @@ export default async function Page({
                 <CavistesModal cavistes={cavistes} />
               </>
             ) : (
-              <p className="text-gray-400 italic">
-                Ce vin n'est actuellement proposé par aucun caviste.
-              </p>
+              <div className="rounded-xl border border-dashed border-gray-200 p-4 bg-gray-50">
+                <p className="text-gray-600">
+                  Ce vin n’est actuellement proposé par aucun caviste.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-3">
+                  <Link
+                    href="/cavistes"
+                    className="inline-flex items-center rounded-md border px-4 py-2 text-sm hover:bg-rose-50 transition"
+                  >
+                    Voir tous les cavistes
+                  </Link>
+                  <Link
+                    href="/vins"
+                    className="inline-flex items-center rounded-md bg-rose-600 px-4 py-2 text-sm text-white hover:bg-rose-700 transition"
+                  >
+                    Parcourir d’autres vins
+                  </Link>
+                </div>
+              </div>
             )}
           </section>
 
