@@ -18,11 +18,16 @@ export async function generateMetadata({
   if (isNaN(vinId)) {
     return { title: "Vin introuvable | Wine District" };
   }
-
-  const vin = await prisma.vin.findUnique({
-    where: { id: vinId },
-    select: { nom: true, domaine: true, année: true, couleur: true, imageFile: true },
-  });
+  let vin: { nom: string; domaine: string; année: number; couleur: string | null; imageFile: string | null } | null = null;
+  try {
+    vin = await prisma.vin.findUnique({
+      where: { id: vinId },
+      select: { nom: true, domaine: true, année: true, couleur: true, imageFile: true },
+    });
+  } catch {
+    // En cas d'erreur DB pendant le rendu des métadonnées, on renvoie un titre générique
+    return { title: "Wine District" };
+  }
 
   if (!vin) {
     return { title: "Vin introuvable | Wine District" };
@@ -76,7 +81,7 @@ export default async function Page({
   // Use the DB value directly if it's an absolute URL; otherwise treat it as a bare filename that may still be local
   const srcImageVin: string = vin.imageFile && (vin.imageFile.startsWith('http://') || vin.imageFile.startsWith('https://'))
     ? vin.imageFile
-    : '/placeholder-vin.jpg';
+    : '/window.svg';
 
   return (
     <main className="max-w-6xl mx-auto py-16 px-6">
