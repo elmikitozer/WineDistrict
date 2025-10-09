@@ -14,6 +14,7 @@
     "db:ping": "tsx scripts/dbPing.ts",
     "img:upload": "tsx scripts/uploadImagesToSupabase.ts",
     "img:link": "tsx scripts/linkSupabaseImages.ts",
+    "user:test": "tsx scripts/createTestUser.ts",
     "db:studio": "DIRECT_URL=\"$DATABASE_URL\" prisma studio --port 5561"
   },
   "prisma": {
@@ -21,15 +22,19 @@
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "bcryptjs": "^3.0.2",
+    "jose": "^6.1.0",
     "lucide-react": "^0.536.0",
+    "mime-types": "^2.1.35",
     "next": "15.4.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "@supabase/supabase-js": "^2.45.0",
-    "mime-types": "^2.1.35"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/mime-types": "^2.1.4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -39,7 +44,7 @@
     "postcss": "^8.5.6",
     "prisma": "^6.13.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5",
-    "tsx": "^4.19.0"
+    "tsx": "^4.19.0",
+    "typescript": "^5"
   }
 }

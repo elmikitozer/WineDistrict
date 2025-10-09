@@ -22,6 +22,7 @@ model Caviste {
   adresse     String
   stocks      Stock[]
   reservation Reservation[]
+  users       User[]
 
   @@unique([nom], name: "caviste_nom_unique") 
 }
@@ -62,4 +63,16 @@ model Reservation {
 
   vin       Vin     @relation(fields: [vinId], references: [id], onDelete: Cascade)
   caviste   Caviste @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
+}
+
+// Authentication user for dashboard access
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  passwordHash String
+  role         String    @default("caviste")
+  cavisteId    Int?
+  caviste      Caviste?  @relation(fields: [cavisteId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
