@@ -67,10 +67,10 @@ model Reservation {
 
 // Authentication user for dashboard access
 model User {
-  id           Int       @id @default(autoincrement())
+  id           String    @id
   email        String    @unique
   passwordHash String
-  role         String    @default("caviste")
+  role         String    @default("CAVISTE")
   cavisteId    Int?
   caviste      Caviste?  @relation(fields: [cavisteId], references: [id])
   createdAt    DateTime  @default(now())

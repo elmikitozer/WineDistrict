@@ -7,10 +7,16 @@ async function main() {
   const cavisteId = process.env.TEST_USER_CAVISTE_ID ? Number(process.env.TEST_USER_CAVISTE_ID) : undefined;
 
   const passwordHash = await bcrypt.hash(password, 10);
+  let cid = cavisteId;
+  if (!cid) {
+    const c = await prisma.caviste.findFirst({ select: { id: true } });
+    cid = c?.id;
+  }
+  const id = `usr_${Math.random().toString(36).slice(2, 10)}`;
   // @ts-ignore - User model may not have types if not generated yet
   const user = await (prisma as any).user?.upsert({
     where: { email },
-    create: { email, passwordHash, role: "caviste", cavisteId },
+    create: { id, email, passwordHash, role: "CAVISTE", cavisteId: cid },
     update: {},
     include: { caviste: true },
   });

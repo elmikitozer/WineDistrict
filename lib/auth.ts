@@ -27,7 +27,7 @@ export async function clearSession() {
 	c.set(SESSION_COOKIE, "", { httpOnly: true, path: "/", maxAge: 0 });
 }
 
-export type SessionPayload = JWTPayload & { userId?: number; role?: string };
+export type SessionPayload = JWTPayload & { userId?: string | number; role?: string };
 
 export async function getSession(): Promise<SessionPayload | null> {
 	const c = await cookies();
@@ -44,7 +44,8 @@ export async function getSession(): Promise<SessionPayload | null> {
 export async function getCurrentUser() {
 	// Guard if Prisma does not have User model
 	const payload = await getSession();
-	if (!payload?.userId) return null;
-	const user = await (prisma as any).user?.findUnique({ where: { id: payload.userId }, include: { caviste: true } });
+		if (!payload?.userId) return null;
+		const where: any = { id: payload.userId };
+		const user = await (prisma as any).user?.findUnique({ where, include: { caviste: true } });
 	return user ?? null;
 }

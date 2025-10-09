@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   }
 
   // 1) Fetch user by email
-  const user = await (prisma as any).user?.findUnique({ where: { email }, include: { caviste: true } });
+  const user = await (prisma as any).user?.findFirst({ where: { email }, include: { caviste: true } });
   // NOTE: if model User didn't exist we'd get undefined; we guard with (prisma as any).user above
   if (!user) return NextResponse.json({ error: "Identifiants invalides" }, { status: 401 });
 
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   // 4) Set HttpOnly cookie
   const c = await cookies();
   const oneWeek = 60 * 60 * 24 * 7;
-  c.set(SESSION_COOKIE, token, { httpOnly: true, sameSite: "lax", secure: true, path: "/", maxAge: oneWeek });
+  c.set(SESSION_COOKIE, token, { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge: oneWeek });
 
   return NextResponse.json({ ok: true });
 }

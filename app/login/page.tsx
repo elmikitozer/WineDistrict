@@ -23,7 +23,7 @@ export default function LoginPage() {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Impossible de se connecter");
       }
-      router.replace("/dashboard/caviste");
+  router.replace("/dashboard");
     } catch (err: any) {
       setError(err.message);
     } finally {

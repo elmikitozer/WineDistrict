@@ -31,6 +31,9 @@ export default async function CavisteDashboardPage() {
       <div>
         <h1 className="text-2xl font-semibold">Bonjour {user.email}</h1>
         {user.caviste?.nom && <p className="text-sm text-gray-500">Caviste: {user.caviste.nom}</p>}
+        <form action="/api/auth/logout" method="post" className="mt-3">
+          <button className="text-sm text-red-600 underline">Se déconnecter</button>
+        </form>
       </div>
 
       <section>
