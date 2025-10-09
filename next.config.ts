@@ -3,7 +3,14 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],   // ⬅️ Next servira AVIF/WebP si possible
-    // rien d'autre à config pour des images locales dans /public
+    // Autorise les images hébergées sur Supabase Storage (public bucket)
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+    ],
   },
 };
 

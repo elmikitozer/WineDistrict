@@ -6,7 +6,15 @@
     "build": "prisma generate && next build",
     "dev": "next dev",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:unaccent": "prisma db execute --file prisma/unaccent.sql --schema prisma/schema.prisma",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:ping": "tsx scripts/dbPing.ts",
+    "img:upload": "tsx scripts/uploadImagesToSupabase.ts",
+    "img:link": "tsx scripts/linkSupabaseImages.ts",
+    "db:studio": "DIRECT_URL=\"$DATABASE_URL\" prisma studio --port 5561"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -16,7 +24,9 @@
     "lucide-react": "^0.536.0",
     "next": "15.4.5",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "mime-types": "^2.1.35"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

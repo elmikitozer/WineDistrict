@@ -73,22 +73,24 @@ export default async function Page({
 
   const cavistes = vin.stocks;
   const nbCavistes = cavistes.length;
-  // const srcImageVin = `/vins/${vin.imageFile}`;
-  const srcImageVin = vin.imageFile ? `/vins/${vin.imageFile}` : `/vins/${vin.id}.png`;
+  // Use the DB value directly if it's an absolute URL; otherwise treat it as a bare filename that may still be local
+  const srcImageVin: string = vin.imageFile && (vin.imageFile.startsWith('http://') || vin.imageFile.startsWith('https://'))
+    ? vin.imageFile
+    : '/placeholder-vin.jpg';
 
   return (
     <main className="max-w-6xl mx-auto py-16 px-6">
       {/* <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border"> */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         {/* Photo */}
-        <div className="relative mx-auto w-full max-w-xl overflow-hidden rounded-2xl border">
+        <div className="relative mx-auto w-full max-w-xl overflow-hidden rounded-2xl border bg-gray-50 shadow-sm">
           <div className="relative aspect-[3/4] w-full">
             <Image
               src={srcImageVin} // tu peux garder .png
               alt={`BIB de ${vin.nom}`}
               fill
               sizes="(max-width: 768px) 100vw, 520px" // ⬅️ critique pour ne pas sur-télécharger
-              className="object-cover"
+              className="object-contain p-4"
               priority={false} // passe à true si l'image est au-dessus de la ligne de flottaison
               placeholder="empty" // (optionnel: on peut ajouter un blurDataURL plus tard)
             />

@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Vin {
   id: number;
@@ -11,6 +12,7 @@ interface Vin {
   domaine: string;
   année: number;
   prix: number;
+  imageFile: string | null;
 }
 
 export default async function PageVins({
@@ -40,7 +42,7 @@ export default async function PageVins({
       : Prisma.empty;
 
   const query = Prisma.sql`
-    SELECT id, nom, domaine, année, prix
+    SELECT id, nom, domaine, année, prix, "imageFile"
     FROM "Vin"
     ${whereClause}
     ORDER BY nom ASC
@@ -68,7 +70,7 @@ export default async function PageVins({
             <Link
               key={c}
               href={`/vins?${href.toString()}`}
-              className={`relative px-4 py-2 rounded-full text-sm transition 
+              className={`relative px-4 py-2 rounded-full text-sm transition
                 ${
                   isActive
                     ? "bg-rose-100 text-rose-900 font-semibold"
@@ -101,21 +103,43 @@ export default async function PageVins({
           </div>
         </div>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {vins.map((vin) => (
-            <li
-              key={vin.id}
-              className="rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition bg-white group"
-            >
-              <h2 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-rose-700 transition">
-                <Link href={`/vins/${vin.id}`}>{vin.nom}</Link>
-              </h2>
-              <p className="text-sm text-gray-500 mb-2 italic">
-                {vin.domaine} • {vin.année}
-              </p>
-              <p className="text-rose-600 font-bold">{vin.prix.toFixed(2)} €</p>
-            </li>
-          ))}
+        <ul className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          {vins.map((vin) => {
+            const img = vin.imageFile && (vin.imageFile.startsWith("http://") || vin.imageFile.startsWith("https://"))
+              ? vin.imageFile
+              : "/placeholder-vin.jpg";
+            return (
+              <li key={vin.id}>
+                <Link
+                  href={`/vins/${vin.id}`}
+                  className="block rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition bg-white group focus:outline-none focus:ring-2 focus:ring-rose-500"
+                >
+                  {/* Image en tête */}
+                  <div className="relative w-full aspect-square overflow-hidden rounded-t-2xl ">
+                    <Image
+                      src={img}
+                      alt={`BIB de ${vin.nom}`}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      className="object-contain p-3"
+                      priority={false}
+                    />
+                  </div>
+
+                  {/* Infos */}
+                  <div className="p-4">
+                    <h2 className="text-sm font-semibold text-gray-900 mb-0.5 group-hover:text-rose-700 transition">
+                      {vin.nom}
+                    </h2>
+                    <p className="text-xs text-gray-500 mb-2 italic">
+                      {vin.domaine} • {vin.année}
+                    </p>
+                    <p className="text-rose-700 font-semibold text-sm">{vin.prix.toFixed(2)} €</p>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
     </main>
