@@ -14,12 +14,21 @@ function Brand() {
   );
 }
 
-function DesktopLinks() {
+function DesktopLinks({ isAuthenticated }: { isAuthenticated?: boolean }) {
   return (
     <div className="hidden md:flex space-x-6 font-medium">
       <Link href="/vins" className="hover:text-black">Vins</Link>
       <Link href="/cavistes" className="hover:text-black">Cavistes</Link>
-      <Link href="/dashboard" className="hover:text-black">Dashboard</Link>
+      {isAuthenticated ? (
+        <>
+          <Link href="/dashboard" className="hover:text-black">Dashboard</Link>
+          <form action="/api/auth/logout" method="post">
+            <button className="hover:text-black">Déconnexion</button>
+          </form>
+        </>
+      ) : (
+        <Link href="/login" className="hover:text-black">Connexion</Link>
+      )}
     </div>
   );
 }
@@ -32,7 +41,7 @@ function SearchCenter() {
   );
 }
 
-function MobileMenu({ onClose }: { onClose: () => void }) {
+function MobileMenu({ onClose, isAuthenticated }: { onClose: () => void; isAuthenticated?: boolean }) {
   return (
     <div id="mobile-menu" className="md:hidden px-4 pb-4 pt-2 space-y-3 font-medium relative z-50">
       <div className="pt-1">
@@ -40,12 +49,23 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
       </div>
       <Link href="/vins" className="block hover:text-black" onClick={onClose}>Vins</Link>
       <Link href="/cavistes" className="block hover:text-black" onClick={onClose}>Cavistes</Link>
-      <Link href="/dashboard" className="block hover:text-black" onClick={onClose}>Dashboard</Link>
+      {isAuthenticated ? (
+        <>
+          <Link href="/dashboard" className="block hover:text-black" onClick={onClose}>Dashboard</Link>
+          <form action="/api/auth/logout" method="post" onSubmit={onClose as any}>
+            <button className="block hover:text-black">Déconnexion</button>
+          </form>
+        </>
+      ) : (
+        <Link href="/login" className="block hover:text-black" onClick={onClose}>Connexion</Link>
+      )}
     </div>
   );
 }
 
-export default function Navbar() {
+type NavbarProps = { isAuthenticated?: boolean };
+
+export default function Navbar({ isAuthenticated }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -61,7 +81,7 @@ export default function Navbar() {
         <div className="flex justify-between h-16 items-center">
           <Brand />
           <SearchCenter />
-          <DesktopLinks />
+          <DesktopLinks isAuthenticated={isAuthenticated} />
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -75,7 +95,7 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      {isOpen && <MobileMenu onClose={() => setIsOpen(false)} />}
+      {isOpen && <MobileMenu onClose={() => setIsOpen(false)} isAuthenticated={isAuthenticated} />}
     </nav>
   );
 }

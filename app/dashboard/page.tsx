@@ -1,8 +1,11 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import ReservationStatusControl from "./ReservationStatusControl";
+import StatsCards from "./StatsCards";
+import Toolbar from "./Toolbar";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
@@ -24,9 +27,12 @@ export default async function DashboardPage() {
         <p>Votre compte n'est pas lié à un caviste. Contactez un administrateur.</p>
       ) : (
         <>
-          <section>
-            <h2 className="text-xl font-semibold mb-2">Réservations</h2>
-            <DashboardReservations cavisteId={cavisteId} />
+          <section className="space-y-4">
+            <StatsCards cavisteId={cavisteId} />
+            <Toolbar />
+            <div className="border rounded-xl overflow-hidden">
+              <ReservationsTable cavisteId={cavisteId} q={(searchParams?.q as string) || ""} status={(searchParams?.status as string) || ""} />
+            </div>
           </section>
         </>
       )}
@@ -34,24 +40,68 @@ export default async function DashboardPage() {
   );
 }
 
-async function DashboardReservations({ cavisteId }: { cavisteId: number }) {
+function statusBadgeClass(s: string) {
+  switch (s) {
+    case "confirmee":
+      return "bg-green-100 text-green-800";
+    case "annulee":
+      return "bg-gray-100 text-gray-800";
+    default:
+      return "bg-amber-100 text-amber-800";
+  }
+}
+
+async function ReservationsTable({ cavisteId, q, status }: { cavisteId: number; q?: string; status?: string }) {
+  const where: any = { cavisteId };
+  const filters: any[] = [];
+  if (q && q.trim()) {
+    filters.push({ vin: { nom: { contains: q, mode: "insensitive" } } });
+    filters.push({ vin: { domaine: { contains: q, mode: "insensitive" } } });
+  }
+  if (filters.length) {
+    // match vin.nom OR vin.domaine
+    where.OR = filters;
+  }
+  if (status && ["en_attente", "confirmee", "annulee"].includes(status)) {
+    where.status = status;
+  }
+
   const reservations = await prisma.reservation.findMany({
-    where: { cavisteId },
+    where,
     orderBy: { date: "desc" },
     include: { vin: true },
   });
-  if (reservations.length === 0) return <p>Aucune réservation.</p>;
+
+  if (reservations.length === 0) return <p className="p-4">Aucune réservation.</p>;
+
   return (
-    <div className="space-y-2">
-      {reservations.map((r) => (
-        <div key={r.id} className="border rounded p-2 flex items-center justify-between">
-          <div>
-            <div className="font-medium">{r.vin.nom} — {r.vin.domaine} ({r.vin.année})</div>
-            <div className="text-sm text-gray-600">{new Date(r.date).toLocaleString()}</div>
-          </div>
-          <span className="text-xs uppercase tracking-wide bg-gray-100 px-2 py-1 rounded">{r.status}</span>
-        </div>
-      ))}
-    </div>
+    <table className="w-full text-sm">
+      <thead className="bg-rose-50 text-rose-800">
+        <tr>
+          <th className="text-left px-4 py-3">Vin</th>
+          <th className="text-left px-4 py-3">Domaine</th>
+          <th className="text-left px-4 py-3">Année</th>
+          <th className="text-left px-4 py-3">Date</th>
+          <th className="text-left px-4 py-3">Statut</th>
+          <th className="text-left px-4 py-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {reservations.map((r) => (
+          <tr key={r.id} className="border-t">
+            <td className="px-4 py-3 font-medium">{r.vin.nom}</td>
+            <td className="px-4 py-3">{r.vin.domaine}</td>
+            <td className="px-4 py-3">{r.vin.année}</td>
+            <td className="px-4 py-3">{new Date(r.date).toLocaleString()}</td>
+            <td className="px-4 py-3">
+              <span className={`px-2 py-1 rounded text-xs ${statusBadgeClass(r.status)}`}>{r.status}</span>
+            </td>
+            <td className="px-4 py-3">
+              <ReservationStatusControl id={r.id} initialStatus={r.status as any} />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
