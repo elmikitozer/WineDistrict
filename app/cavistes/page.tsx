@@ -25,32 +25,11 @@ type Caviste = {
 
 export default function CavistesPage() {
   const [cavistes, setCavistes] = useState<Caviste[]>([]);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let cancelled = false;
-    async function load() {
-      try {
-        const res = await fetch("/api/cavistes", { cache: "no-store" });
-        if (!res.ok) {
-          const body = await res.json().catch(() => ({}));
-          if (!cancelled) setError(body?.error || "Impossible de charger les cavistes.");
-          return;
-        }
-        const data = await res.json();
-        if (!Array.isArray(data)) {
-          if (!cancelled) setError("Données inattendues renvoyées par le serveur.");
-          return;
-        }
-        if (!cancelled) setCavistes(data);
-      } catch (e) {
-        if (!cancelled) setError("Impossible de charger les cavistes.");
-      }
-    }
-    load();
-    return () => {
-      cancelled = true;
-    };
+    fetch("/api/cavistes")
+      .then((res) => res.json())
+      .then((data) => setCavistes(data));
   }, []);
 
   return (
@@ -58,12 +37,6 @@ export default function CavistesPage() {
       <h1 className="text-4xl font-bold text-rose-900 mb-12 text-center tracking-tight">
         Nos cavistes partenaires
       </h1>
-
-      {error && (
-        <div className="mb-8 rounded-lg border border-rose-100 bg-rose-50 px-4 py-3 text-sm text-rose-800">
-          {error} <span className="ml-2 text-gray-500">Réessayez plus tard.</span>
-        </div>
-      )}
 
       <div className="space-y-10">
         {cavistes.map((caviste) => (

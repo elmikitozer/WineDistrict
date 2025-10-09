@@ -15,6 +15,18 @@ interface Vin {
   imageFile: string | null;
 }
 
+function toImageSrc(name: string | null): string {
+  if (!name) return "/window.svg";
+  if (name.startsWith("http://") || name.startsWith("https://")) return name;
+  if (name.startsWith("/")) return name; // already a public path
+  const base = process.env.SUPABASE_URL;
+  const bucket = process.env.SUPABASE_BUCKET || "images";
+  // Try Supabase public bucket path first
+  if (base) return `${base}/storage/v1/object/public/${bucket}/vins/${name}`;
+  // Fallback to /public/vins when no Supabase URL is configured
+  return `/vins/${name}`;
+}
+
 export default async function PageVins({
   searchParams,
 }: {
@@ -105,9 +117,7 @@ export default async function PageVins({
       ) : (
         <ul className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
           {vins.map((vin) => {
-            const img = vin.imageFile && (vin.imageFile.startsWith("http://") || vin.imageFile.startsWith("https://"))
-              ? vin.imageFile
-              : "/placeholder-vin.jpg";
+            const img = toImageSrc(vin.imageFile);
             return (
               <li key={vin.id}>
                 <Link
@@ -123,6 +133,7 @@ export default async function PageVins({
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       className="object-contain p-3"
                       priority={false}
+                      unoptimized
                     />
                   </div>
 

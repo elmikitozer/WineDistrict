@@ -27,8 +27,8 @@ async function parseBody(req: Request) {
 }
 
 async function validateCsrfToken(providedToken?: string | null) {
-  const store = await cookies();
-  const csrfCookie = store.get("wd_csrf")?.value;
+  const c = await cookies();
+  const csrfCookie = c.get("wd_csrf")?.value;
   return !!providedToken && !!csrfCookie && providedToken === csrfCookie;
 }
 
@@ -37,8 +37,8 @@ export async function POST(req: Request) {
 
   // 2) récup inputs + token
   const { data, isForm } = await parseBody(req);
-  const hdrs = await headers();
-  const tokenFromHeader = hdrs.get("x-csrf-token");
+  const h = await headers();
+  const tokenFromHeader = h.get("x-csrf-token");
   const tokenFromBody =
     typeof data._csrf === "string" ? (data._csrf as string) : undefined;
 
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
 
   // 5) UX : si form => redirect 303 vers la page précédente (avec un flag)
   if (isForm) {
-  const ref = (await headers()).get("referer") || "/";
+  const ref = h.get("referer") || "/";
     const url = new URL(ref);
     url.searchParams.set("reserved", "1");
     url.searchParams.set("rid", String(reservation.id));

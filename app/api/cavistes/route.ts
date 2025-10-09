@@ -4,23 +4,10 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const cavistes = await prisma.caviste.findMany({
-      select: {
-        id: true,
-        nom: true,
-        adresse: true,
+      include: {
         stocks: {
-          select: {
-            id: true,
-            quantite: true,
-            vin: {
-              select: {
-                id: true,
-                nom: true,
-                domaine: true,
-                année: true,
-                prix: true,
-              },
-            },
+          include: {
+            vin: true,
           },
         },
       },

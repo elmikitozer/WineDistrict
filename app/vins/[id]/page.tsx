@@ -3,6 +3,15 @@ import { notFound } from "next/navigation";
 import CavistesModal from "@/components/CavistesModal";
 import Image from "next/image";
 import Link from "next/link";
+function toImageSrc(name: string | null): string {
+  if (!name) return "/window.svg";
+  if (name.startsWith('http://') || name.startsWith('https://')) return name;
+  if (name.startsWith('/')) return name; // already a public path
+  const base = process.env.SUPABASE_URL;
+  const bucket = process.env.SUPABASE_BUCKET || 'images';
+  if (base) return `${base}/storage/v1/object/public/${bucket}/vins/${name}`;
+  return `/vins/${name}`;
+}
 
 // 🧠 SEO dynamique par fiche vin
 import type { Metadata } from "next";
@@ -12,22 +21,17 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const { id } = await params; 
+  const { id } = await params;
   const vinId = Number(id);
 
   if (isNaN(vinId)) {
     return { title: "Vin introuvable | Wine District" };
   }
-  let vin: { nom: string; domaine: string; année: number; couleur: string | null; imageFile: string | null } | null = null;
-  try {
-    vin = await prisma.vin.findUnique({
-      where: { id: vinId },
-      select: { nom: true, domaine: true, année: true, couleur: true, imageFile: true },
-    });
-  } catch {
-    // En cas d'erreur DB pendant le rendu des métadonnées, on renvoie un titre générique
-    return { title: "Wine District" };
-  }
+
+  const vin = await prisma.vin.findUnique({
+    where: { id: vinId },
+    select: { nom: true, domaine: true, année: true, couleur: true, imageFile: true },
+  });
 
   if (!vin) {
     return { title: "Vin introuvable | Wine District" };
@@ -79,9 +83,7 @@ export default async function Page({
   const cavistes = vin.stocks;
   const nbCavistes = cavistes.length;
   // Use the DB value directly if it's an absolute URL; otherwise treat it as a bare filename that may still be local
-  const srcImageVin: string = vin.imageFile && (vin.imageFile.startsWith('http://') || vin.imageFile.startsWith('https://'))
-    ? vin.imageFile
-    : '/window.svg';
+  const srcImageVin: string = toImageSrc(vin.imageFile);
 
   return (
     <main className="max-w-6xl mx-auto py-16 px-6">
