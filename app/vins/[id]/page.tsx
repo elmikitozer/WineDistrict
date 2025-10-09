@@ -12,7 +12,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
+  const { id } = await params; 
   const vinId = Number(id);
 
   if (isNaN(vinId)) {

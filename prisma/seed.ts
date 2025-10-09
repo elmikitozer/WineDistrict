@@ -1,5 +1,6 @@
 // prisma/seed.ts
 import { PrismaClient } from '@prisma/client'
+import { slugify } from '../src/utils/slug'
 const prisma = new PrismaClient()
 
 const VINS = [
@@ -37,7 +38,7 @@ async function upsertVins() {
     await prisma.vin.upsert({
       where: { vin_unique: { nom: v.nom, domaine: v.domaine, année: v.année } },
       update: { prix: v.prix, couleur: v.couleur, imageFile: v.imageFile },
-      create: { nom: v.nom, domaine: v.domaine, année: v.année, prix: v.prix, couleur: v.couleur, imageFile: v.imageFile },
+      create: { nom: v.nom, domaine: v.domaine, année: v.année, prix: v.prix, couleur: v.couleur, imageFile: v.imageFile, slug: slugify(`${v.nom}-${v.domaine}-${v.année}`) },
     })
   }
 }
@@ -52,7 +53,7 @@ async function upsertCavistesEtStocks() {
     // 2) Créer s'il n'existe pas, sinon mettre à jour (upsert manuel)
     if (!cav) {
       cav = await prisma.caviste.create({
-        data: { nom: c.nom, adresse: c.adresse },
+        data: { nom: c.nom, adresse: c.adresse, slug: slugify(c.nom) },
       })
     } else {
       cav = await prisma.caviste.update({

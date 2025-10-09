@@ -18,16 +18,21 @@ datasource db {
 
 model Caviste {
   id          Int           @id @default(autoincrement())
+  publicId    String?       @unique
+  slug        String?       @unique
   nom         String
   adresse     String
   stocks      Stock[]
   reservation Reservation[]
+  users       User[]
 
   @@unique([nom], name: "caviste_nom_unique") 
 }
 
 model Vin {
   id          Int           @id @default(autoincrement())
+  publicId    String?       @unique
+  slug        String?       @unique
   nom         String        
   domaine     String
   année       Int
@@ -62,4 +67,15 @@ model Reservation {
 
   vin       Vin     @relation(fields: [vinId], references: [id], onDelete: Cascade)
   caviste   Caviste @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("CAVISTE") // "ADMIN" | "CAVISTE"
+  cavisteId    Int?
+  caviste      Caviste? @relation(fields: [cavisteId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
