@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import StatsCardLinkClient from './StatsCardLinkClient';
 
 export default async function StatsCards({
   cavisteId,
@@ -22,89 +23,61 @@ export default async function StatsCards({
     key: '' | 'en_attente' | 'confirmee' | 'annulee' | 'total';
     title: string;
     value: number;
-    bg: string;
-    border: string;
-    text: string;
   }> = [
-    {
-      key: 'total',
-      title: 'Total',
-      value: total,
-      bg: 'bg-rose-50',
-      border: 'border-gray-200',
-      text: 'text-gray-800',
-    },
-    {
-      key: 'en_attente',
-      title: 'En attente',
-      value: enAttente,
-      bg: 'bg-amber-50',
-      border: 'border-amber-200',
-      text: 'text-amber-800',
-    },
-    {
-      key: 'confirmee',
-      title: 'Confirmées',
-      value: confirmee,
-      bg: 'bg-green-50',
-      border: 'border-green-200',
-      text: 'text-green-800',
-    },
-    {
-      key: 'annulee',
-      title: 'Annulées',
-      value: annulee,
-      bg: 'bg-gray-50',
-      border: 'border-gray-200',
-      text: 'text-gray-800',
-    },
+    { key: 'total', title: 'Total', value: total },
+    { key: 'en_attente', title: 'En attente', value: enAttente },
+    { key: 'confirmee', title: 'Confirmées', value: confirmee },
+    { key: 'annulee', title: 'Annulées', value: annulee },
   ];
+
+  function cardClasses(k: 'total' | 'en_attente' | 'confirmee' | 'annulee' | '', active: boolean) {
+    // Base container (group enables group-hover on children)
+    const base = 'group rounded-xl p-4 transition shadow-sm hover:shadow-md hover:-translate-y-0.5';
+    if (active) {
+      switch (k) {
+        case 'en_attente':
+          return `${base} bg-amber-50 border-2 border-amber-500 ring-2 ring-amber-500 text-amber-900`;
+        case 'confirmee':
+          return `${base} bg-green-50 border-2 border-green-500 ring-2 ring-green-500 text-green-900`;
+        case 'annulee':
+          return `${base} bg-gray-50 border-2 border-gray-500 ring-2 ring-gray-500 text-gray-900`;
+        default: // total
+          return `${base} bg-rose-50 border-2 border-rose-500 ring-2 ring-rose-500 text-rose-900`;
+      }
+    }
+    // Inactive
+    switch (k) {
+      case 'en_attente':
+        return `${base} bg-amber-50 border border-amber-200 text-amber-800`;
+      case 'confirmee':
+        return `${base} bg-green-50 border border-green-200 text-green-800`;
+      case 'annulee':
+        return `${base} bg-gray-50 border border-gray-200 text-gray-800`;
+      default: // total inactive stays neutral
+        return `${base} bg-white border border-gray-200 text-gray-800`;
+    }
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {cards.map((c) => {
         const isActive =
           (c.key === 'total' && !activeStatus) || (c.key !== 'total' && activeStatus === c.key);
-        // Color-matched active styles per card
-        const activeRing =
-          c.key === 'en_attente'
-            ? 'ring-amber-500'
-            : c.key === 'confirmee'
-            ? 'ring-green-500'
-            : c.key === 'annulee'
-            ? 'ring-gray-500'
-            : 'ring-rose-500'; // total
-        const activeBorder =
-          c.key === 'en_attente'
-            ? 'border-2 border-amber-400'
-            : c.key === 'confirmee'
-            ? 'border-2 border-green-400'
-            : c.key === 'annulee'
-            ? 'border-2 border-gray-400'
-            : 'border-2 border-rose-400';
-        const activeCls = isActive ? `ring-2 ${activeRing} ${activeBorder} shadow-md` : '';
+        const classes = cardClasses(c.key, isActive);
         // Build URL with explicit status handling and q preservation
         const sp = new URLSearchParams();
         if (c.key !== 'total') sp.set('status', String(c.key));
         if (q && q.trim()) sp.set('q', q.trim());
         const href = sp.toString() ? `/dashboard?${sp.toString()}` : '/dashboard';
         return (
-          <Link
+          <StatsCardLinkClient
             key={c.title}
+            k={c.key as any}
+            title={c.title}
+            value={c.value}
             href={href}
-            prefetch={false}
-            aria-current={isActive ? 'page' : undefined}
-            className={`${c.bg} ${c.border} ${c.text} border rounded-xl p-4 shadow-sm transition
-              hover:shadow-md hover:-translate-y-0.5 hover:ring-2 hover:ring-rose-200
-              ${activeCls}
-            `}
-          >
-            <div className="text-sm opacity-80 flex items-center justify-between">
-              <span>{c.title}</span>
-              <span className="text-rose-400 group-hover:text-rose-500"></span>
-            </div>
-            <div className="text-2xl font-semibold mt-1">{c.value}</div>
-          </Link>
+            ssrActive={isActive}
+          />
         );
       })}
     </div>
