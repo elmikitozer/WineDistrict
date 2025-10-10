@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import ReservationStatusControl from "./ReservationStatusControl";
 
 type ReservationItem = {
@@ -24,10 +25,13 @@ function statusBadgeClass(s: string) {
   }
 }
 
-export default function ReservationsTableClient({ q, status }: { q?: string; status?: string }) {
+export default function ReservationsTableClient() {
   const [items, setItems] = useState<ReservationItem[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const params = useSearchParams();
+  const q = params.get("q") ?? "";
+  const status = params.get("status") ?? "";
 
   const query = useMemo(() => {
     const sp = new URLSearchParams();

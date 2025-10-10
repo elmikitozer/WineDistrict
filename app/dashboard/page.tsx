@@ -20,7 +20,9 @@ export default async function DashboardPage({ searchParams }: { searchParams?: {
   const rawStatus = searchParams?.status;
   const rawQ = searchParams?.q;
   const activeStatusRaw = Array.isArray(rawStatus) ? (rawStatus[0] || "") : (rawStatus || "");
-  const activeStatus = activeStatusRaw.trim();
+  const activeStatusLower = activeStatusRaw.trim().toLowerCase();
+  const allowed: Array<"en_attente" | "confirmee" | "annulee"> = ["en_attente", "confirmee", "annulee"];
+  const activeStatus = (allowed as string[]).includes(activeStatusLower) ? (activeStatusLower as any) : "";
   const qParam = Array.isArray(rawQ) ? (rawQ[0] || "") : (rawQ || "");
   return (
     <div className="p-6 space-y-6">
@@ -43,7 +45,8 @@ export default async function DashboardPage({ searchParams }: { searchParams?: {
             <StatsCards cavisteId={cavisteId} activeStatus={activeStatus as any} q={qParam} />
             <Toolbar />
             <div className="border rounded-xl overflow-hidden">
-              <ReservationsTableClient key={`${activeStatus}|${qParam}`} q={qParam} status={activeStatus} />
+              {/* Key on search params so it remounts when filters change */}
+              <ReservationsTableClient key={`${activeStatus}|${qParam}`} />
             </div>
           </section>
         </>
