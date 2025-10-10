@@ -24,12 +24,12 @@ model Caviste {
   reservation Reservation[]
   users       User[]
 
-  @@unique([nom], name: "caviste_nom_unique") 
+  @@unique([nom], name: "caviste_nom_unique")
 }
 
 model Vin {
   id          Int           @id @default(autoincrement())
-  nom         String        
+  nom         String
   domaine     String
   année       Int
   prix        Float
@@ -67,12 +67,21 @@ model Reservation {
 
 // Authentication user for dashboard access
 model User {
-  id           String    @id
+  id           String    @id @default(cuid())
   email        String    @unique
   passwordHash String
   role         String    @default("CAVISTE")
   cavisteId    Int?
   caviste      Caviste?  @relation(fields: [cavisteId], references: [id])
+  client       Client?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+}
+
+// Client profile for non-caviste users
+model Client {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }

@@ -1,4 +1,11 @@
-import 'dotenv/config';
+import fs from 'node:fs';
+import dotenv from 'dotenv';
+// Prefer .env.local for dev parity with prisma.config.ts
+if (fs.existsSync('.env.local')) {
+  dotenv.config({ path: '.env.local', override: true });
+} else {
+  dotenv.config({ override: true });
+}
 import { PrismaClient } from '@prisma/client';
 
 async function main() {

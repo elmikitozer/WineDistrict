@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   id: string;
@@ -13,6 +14,7 @@ const statuses = [
 ] as const;
 
 export default function ReservationStatusControl({ id, initialStatus }: Props) {
+  const router = useRouter();
   const [status, setStatus] = useState(initialStatus);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,6 +34,9 @@ export default function ReservationStatusControl({ id, initialStatus }: Props) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Échec de la mise à jour");
       }
+  // Refresh server-rendered data (stats) and notify client table to re-fetch immediately
+  router.refresh();
+  try { window.dispatchEvent(new Event("dashboard:refresh")); } catch {}
     } catch (err: any) {
       setError(err.message);
     } finally {

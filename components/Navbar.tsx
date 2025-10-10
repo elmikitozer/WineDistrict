@@ -27,7 +27,18 @@ function DesktopLinks({ isAuthenticated }: { isAuthenticated?: boolean }) {
           </form>
         </>
       ) : (
-        <Link href="/login" className="hover:text-black">Connexion</Link>
+        <div className="flex items-center gap-4">
+          <Link href="/login" className="hover:text-black">Connexion</Link>
+          <div className="inline-flex items-center gap-2">
+            <Link href="/signup" className="hover:text-black">S'inscrire</Link>
+            {process.env.NODE_ENV !== "production" && (
+              <>
+                <span className="text-rose-400">·</span>
+                <Link href="/signup-caviste" className="hover:text-black">Caviste (dev)</Link>
+              </>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );
@@ -57,7 +68,13 @@ function MobileMenu({ onClose, isAuthenticated }: { onClose: () => void; isAuthe
           </form>
         </>
       ) : (
-        <Link href="/login" className="block hover:text-black" onClick={onClose}>Connexion</Link>
+        <div className="space-y-2">
+          <Link href="/login" className="block hover:text-black" onClick={onClose}>Connexion</Link>
+          <Link href="/signup" className="block hover:text-black" onClick={onClose}>S'inscrire</Link>
+          {process.env.NODE_ENV !== "production" && (
+            <Link href="/signup-caviste" className="block hover:text-black" onClick={onClose}>S'inscrire (Caviste - dev)</Link>
+          )}
+        </div>
       )}
     </div>
   );

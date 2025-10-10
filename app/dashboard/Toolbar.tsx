@@ -19,23 +19,30 @@ export default function Toolbar() {
 
   const update = useDebouncedCallback((key: string, value: string) => {
     const sp = new URLSearchParams(params.toString());
-    if (value) sp.set(key, value); else sp.delete(key);
-    router.replace(`${pathname}?${sp.toString()}`);
+    if (value) {
+      sp.set(key, value);
+    } else {
+      sp.delete(key);
+    }
+    const url = sp.toString() ? `${pathname}?${sp.toString()}` : pathname;
+    router.replace(url);
+    // Force a server refresh to ensure RSC data updates immediately
+    router.refresh();
   }, 250);
 
   return (
     <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
       <div className="flex items-center gap-2">
         <input
-          defaultValue={q}
+          value={q}
           onChange={(e) => update("q", e.target.value)}
           placeholder="Rechercher une réservation (vin, domaine)…"
-          className="border rounded-lg px-3 py-2 w-72"
+          className="border rounded-lg px-3 py-2 w-72 focus:outline-none focus:ring-2 focus:ring-rose-300"
         />
         <select
-          defaultValue={status}
+          value={status}
           onChange={(e) => update("status", e.target.value)}
-          className="border rounded-lg px-3 py-2"
+          className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-rose-300"
         >
           {statusOptions.map((o) => (
             <option key={o.value} value={o.value}>{o.label}</option>

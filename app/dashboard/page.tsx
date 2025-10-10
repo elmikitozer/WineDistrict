@@ -1,15 +1,27 @@
 import { redirect } from "next/navigation";
+import { unstable_noStore as noStore } from "next/cache";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import ReservationStatusControl from "./ReservationStatusControl";
+import ReservationsTableClient from "./ReservationsTableClient";
 import StatsCards from "./StatsCards";
 import Toolbar from "./Toolbar";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function DashboardPage({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
+  // Ensure no caching at all for this page render
+  noStore();
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
   const cavisteId = user.cavisteId ?? user.caviste?.id;
+  const rawStatus = searchParams?.status;
+  const rawQ = searchParams?.q;
+  const activeStatusRaw = Array.isArray(rawStatus) ? (rawStatus[0] || "") : (rawStatus || "");
+  const activeStatus = activeStatusRaw.trim();
+  const qParam = Array.isArray(rawQ) ? (rawQ[0] || "") : (rawQ || "");
   return (
     <div className="p-6 space-y-6">
       <header className="flex items-center justify-between">
@@ -28,10 +40,10 @@ export default async function DashboardPage({ searchParams }: { searchParams?: {
       ) : (
         <>
           <section className="space-y-4">
-            <StatsCards cavisteId={cavisteId} />
+            <StatsCards cavisteId={cavisteId} activeStatus={activeStatus as any} q={qParam} />
             <Toolbar />
             <div className="border rounded-xl overflow-hidden">
-              <ReservationsTable cavisteId={cavisteId} q={(searchParams?.q as string) || ""} status={(searchParams?.status as string) || ""} />
+              <ReservationsTableClient key={`${activeStatus}|${qParam}`} q={qParam} status={activeStatus} />
             </div>
           </section>
         </>
@@ -51,57 +63,4 @@ function statusBadgeClass(s: string) {
   }
 }
 
-async function ReservationsTable({ cavisteId, q, status }: { cavisteId: number; q?: string; status?: string }) {
-  const where: any = { cavisteId };
-  const filters: any[] = [];
-  if (q && q.trim()) {
-    filters.push({ vin: { nom: { contains: q, mode: "insensitive" } } });
-    filters.push({ vin: { domaine: { contains: q, mode: "insensitive" } } });
-  }
-  if (filters.length) {
-    // match vin.nom OR vin.domaine
-    where.OR = filters;
-  }
-  if (status && ["en_attente", "confirmee", "annulee"].includes(status)) {
-    where.status = status;
-  }
-
-  const reservations = await prisma.reservation.findMany({
-    where,
-    orderBy: { date: "desc" },
-    include: { vin: true },
-  });
-
-  if (reservations.length === 0) return <p className="p-4">Aucune réservation.</p>;
-
-  return (
-    <table className="w-full text-sm">
-      <thead className="bg-rose-50 text-rose-800">
-        <tr>
-          <th className="text-left px-4 py-3">Vin</th>
-          <th className="text-left px-4 py-3">Domaine</th>
-          <th className="text-left px-4 py-3">Année</th>
-          <th className="text-left px-4 py-3">Date</th>
-          <th className="text-left px-4 py-3">Statut</th>
-          <th className="text-left px-4 py-3">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {reservations.map((r) => (
-          <tr key={r.id} className="border-t">
-            <td className="px-4 py-3 font-medium">{r.vin.nom}</td>
-            <td className="px-4 py-3">{r.vin.domaine}</td>
-            <td className="px-4 py-3">{r.vin.année}</td>
-            <td className="px-4 py-3">{new Date(r.date).toLocaleString()}</td>
-            <td className="px-4 py-3">
-              <span className={`px-2 py-1 rounded text-xs ${statusBadgeClass(r.status)}`}>{r.status}</span>
-            </td>
-            <td className="px-4 py-3">
-              <ReservationStatusControl id={r.id} initialStatus={r.status as any} />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
+// Server-only helpers below remain for status badge reuse
