@@ -1,16 +1,16 @@
-"use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   id: string;
-  initialStatus: "en_attente" | "confirmee" | "annulee";
+  initialStatus: 'en_attente' | 'confirmee' | 'annulee';
 };
 
 const statuses = [
-  { value: "en_attente", label: "En attente" },
-  { value: "confirmee", label: "Confirmée" },
-  { value: "annulee", label: "Annulée" },
+  { value: 'en_attente', label: 'En attente' },
+  { value: 'confirmee', label: 'Confirmée' },
+  { value: 'annulee', label: 'Annulée' },
 ] as const;
 
 export default function ReservationStatusControl({ id, initialStatus }: Props) {
@@ -20,25 +20,27 @@ export default function ReservationStatusControl({ id, initialStatus }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   async function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const next = e.target.value as Props["initialStatus"];
+    const next = e.target.value as Props['initialStatus'];
     setStatus(next);
     setSaving(true);
     setError(null);
     try {
       const res = await fetch(`/api/reservations/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: next }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Échec de la mise à jour");
+        throw new Error(data.error || 'Échec de la mise à jour');
       }
-  // Refresh server-rendered data (stats) and notify client table to re-fetch immediately
-  router.refresh();
-  try { window.dispatchEvent(new Event("dashboard:refresh")); } catch {}
-    } catch (err: any) {
-      setError(err.message);
+      // Refresh server-rendered data (stats) and notify client table to re-fetch immediately
+      router.refresh();
+      try {
+        window.dispatchEvent(new Event('dashboard:refresh'));
+      } catch {}
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Erreur inattendue');
     } finally {
       setSaving(false);
     }
@@ -53,7 +55,9 @@ export default function ReservationStatusControl({ id, initialStatus }: Props) {
         disabled={saving}
       >
         {statuses.map((s) => (
-          <option key={s.value} value={s.value}>{s.label}</option>
+          <option key={s.value} value={s.value}>
+            {s.label}
+          </option>
         ))}
       </select>
       {saving && <span className="text-xs text-gray-500">Enregistrement…</span>}

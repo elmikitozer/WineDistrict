@@ -1,10 +1,10 @@
 // app/components/Navbar.tsx
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
-import SearchBar from "./SearchBar";
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { Menu, X } from 'lucide-react';
+import SearchBar from './SearchBar';
 
 function Brand() {
   return (
@@ -17,24 +17,36 @@ function Brand() {
 function DesktopLinks({ isAuthenticated }: { isAuthenticated?: boolean }) {
   return (
     <div className="hidden md:flex space-x-6 font-medium">
-      <Link href="/vins" className="hover:text-black">Vins</Link>
-      <Link href="/cavistes" className="hover:text-black">Cavistes</Link>
+      <Link href="/vins" className="hover:text-black">
+        Vins
+      </Link>
+      <Link href="/cavistes" className="hover:text-black">
+        Cavistes
+      </Link>
       {isAuthenticated ? (
         <>
-          <Link href="/dashboard" className="hover:text-black">Dashboard</Link>
+          <Link href="/dashboard" className="hover:text-black">
+            Dashboard
+          </Link>
           <form action="/api/auth/logout" method="post">
             <button className="hover:text-black">Déconnexion</button>
           </form>
         </>
       ) : (
         <div className="flex items-center gap-4">
-          <Link href="/login" className="hover:text-black">Connexion</Link>
+          <Link href="/login" className="hover:text-black">
+            Connexion
+          </Link>
           <div className="inline-flex items-center gap-2">
-            <Link href="/signup" className="hover:text-black">S'inscrire</Link>
-            {process.env.NODE_ENV !== "production" && (
+            <Link href="/signup" className="hover:text-black">
+              S&apos;inscrire
+            </Link>
+            {process.env.NODE_ENV !== 'production' && (
               <>
                 <span className="text-rose-400">·</span>
-                <Link href="/signup-caviste" className="hover:text-black">Caviste (dev)</Link>
+                <Link href="/signup-caviste" className="hover:text-black">
+                  Caviste (dev)
+                </Link>
               </>
             )}
           </div>
@@ -52,27 +64,53 @@ function SearchCenter() {
   );
 }
 
-function MobileMenu({ onClose, isAuthenticated }: { onClose: () => void; isAuthenticated?: boolean }) {
+function MobileMenu({
+  onClose,
+  isAuthenticated,
+}: {
+  onClose: () => void;
+  isAuthenticated?: boolean;
+}) {
   return (
     <div id="mobile-menu" className="md:hidden px-4 pb-4 pt-2 space-y-3 font-medium relative z-50">
       <div className="pt-1">
         <SearchBar />
       </div>
-      <Link href="/vins" className="block hover:text-black" onClick={onClose}>Vins</Link>
-      <Link href="/cavistes" className="block hover:text-black" onClick={onClose}>Cavistes</Link>
+      <Link href="/vins" className="block hover:text-black" onClick={onClose}>
+        Vins
+      </Link>
+      <Link href="/cavistes" className="block hover:text-black" onClick={onClose}>
+        Cavistes
+      </Link>
       {isAuthenticated ? (
         <>
-          <Link href="/dashboard" className="block hover:text-black" onClick={onClose}>Dashboard</Link>
-          <form action="/api/auth/logout" method="post" onSubmit={onClose as any}>
+          <Link href="/dashboard" className="block hover:text-black" onClick={onClose}>
+            Dashboard
+          </Link>
+          <form
+            action="/api/auth/logout"
+            method="post"
+            onSubmit={(e) => {
+              e.preventDefault();
+              onClose();
+              (e.currentTarget as HTMLFormElement).submit();
+            }}
+          >
             <button className="block hover:text-black">Déconnexion</button>
           </form>
         </>
       ) : (
         <div className="space-y-2">
-          <Link href="/login" className="block hover:text-black" onClick={onClose}>Connexion</Link>
-          <Link href="/signup" className="block hover:text-black" onClick={onClose}>S'inscrire</Link>
-          {process.env.NODE_ENV !== "production" && (
-            <Link href="/signup-caviste" className="block hover:text-black" onClick={onClose}>S'inscrire (Caviste - dev)</Link>
+          <Link href="/login" className="block hover:text-black" onClick={onClose}>
+            Connexion
+          </Link>
+          <Link href="/signup" className="block hover:text-black" onClick={onClose}>
+            S&apos;inscrire
+          </Link>
+          {process.env.NODE_ENV !== 'production' && (
+            <Link href="/signup-caviste" className="block hover:text-black" onClick={onClose}>
+              S&apos;inscrire (Caviste - dev)
+            </Link>
           )}
         </div>
       )}
@@ -86,9 +124,9 @@ export default function Navbar({ isAuthenticated }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
+    document.body.style.overflow = isOpen ? 'hidden' : '';
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     };
   }, [isOpen]);
 

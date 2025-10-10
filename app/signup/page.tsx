@@ -1,18 +1,20 @@
-"use client";
-import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+'use client';
+import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function SignupPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
   const disabled = useMemo(() => {
-    return !email || !email.includes("@") || !password || password.length < 8 || password !== confirm;
+    return (
+      !email || !email.includes('@') || !password || password.length < 8 || password !== confirm
+    );
   }, [email, password, confirm]);
 
   async function onSubmit(e: React.FormEvent) {
@@ -22,16 +24,16 @@ export default function SignupPage() {
     setError(null);
     try {
       const res = await fetch(`/api/auth/register-client`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || "Inscription impossible");
+      if (!res.ok) throw new Error(data.error || 'Inscription impossible');
       setSuccess(true);
-      setTimeout(() => router.replace("/dashboard"), 800);
-    } catch (err: any) {
-      setError(err.message || "Erreur inattendue");
+      setTimeout(() => router.replace('/dashboard'), 800);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Erreur inattendue');
     } finally {
       setSubmitting(false);
     }
@@ -40,10 +42,16 @@ export default function SignupPage() {
   return (
     <div className="max-w-md mx-auto p-6 space-y-4">
       <h1 className="text-2xl font-semibold">Créer un compte</h1>
-      <p className="text-sm text-gray-600">Inscription ouverte aux clients. Les cavistes doivent utiliser un lien d'invitation.</p>
+      <p className="text-sm text-gray-600">
+        Inscription ouverte aux clients. Les cavistes doivent utiliser un lien d&apos;invitation.
+      </p>
 
       {error && <div className="p-3 rounded bg-red-50 text-red-700 text-sm">{error}</div>}
-      {success && <div className="p-3 rounded bg-green-50 text-green-700 text-sm">Compte créé. Redirection…</div>}
+      {success && (
+        <div className="p-3 rounded bg-green-50 text-green-700 text-sm">
+          Compte créé. Redirection…
+        </div>
+      )}
 
       <form onSubmit={onSubmit} className="space-y-3">
         <div className="space-y-1">
@@ -83,7 +91,7 @@ export default function SignupPage() {
           disabled={disabled || submitting}
           className="bg-rose-600 text-white rounded-lg px-4 py-2 disabled:opacity-50"
         >
-          {submitting ? "Création…" : "Créer mon compte"}
+          {submitting ? 'Création…' : 'Créer mon compte'}
         </button>
       </form>
     </div>

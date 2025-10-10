@@ -1,10 +1,10 @@
 // app/vins/page.tsx
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
-import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
-import Link from "next/link";
-import Image from "next/image";
+import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface Vin {
   id: number;
@@ -16,11 +16,11 @@ interface Vin {
 }
 
 function toImageSrc(name: string | null): string {
-  if (!name) return "/window.svg";
-  if (name.startsWith("http://") || name.startsWith("https://")) return name;
-  if (name.startsWith("/")) return name; // already a public path
+  if (!name) return '/window.svg';
+  if (name.startsWith('http://') || name.startsWith('https://')) return name;
+  if (name.startsWith('/')) return name; // already a public path
   const base = process.env.SUPABASE_URL;
-  const bucket = process.env.SUPABASE_BUCKET || "images";
+  const bucket = process.env.SUPABASE_BUCKET || 'images';
   // Try Supabase public bucket path first
   if (base) return `${base}/storage/v1/object/public/${bucket}/vins/${name}`;
   // Fallback to /public/vins when no Supabase URL is configured
@@ -33,8 +33,8 @@ export default async function PageVins({
   searchParams?: Promise<{ q?: string; couleur?: string }>;
 }) {
   const sp = (await searchParams) ?? {};
-  const q = (sp.q ?? "").trim();
-  const couleur = (sp.couleur ?? "tous").toLowerCase(); // "rouge" | "blanc" | "rose" | "tous"
+  const q = (sp.q ?? '').trim();
+  const couleur = (sp.couleur ?? 'tous').toLowerCase(); // "rouge" | "blanc" | "rose" | "tous"
 
   // WHERE parts (accent-insensitive via unaccent)
   const whereParts = [
@@ -42,16 +42,12 @@ export default async function PageVins({
       ? Prisma.sql`(unaccent(nom) ILIKE unaccent(${`%${q}%`})
                     OR unaccent(domaine) ILIKE unaccent(${`%${q}%`}))`
       : undefined,
-    couleur !== "tous"
-      ? Prisma.sql`unaccent(couleur) ILIKE unaccent(${couleur})`
-      : undefined,
+    couleur !== 'tous' ? Prisma.sql`unaccent(couleur) ILIKE unaccent(${couleur})` : undefined,
   ].filter(Boolean) as Prisma.Sql[];
 
   // IMPORTANT: le séparateur de Prisma.join doit être une string dans Prisma v6
   const whereClause =
-    whereParts.length > 0
-      ? Prisma.sql`WHERE ${Prisma.join(whereParts, " AND ")}`
-      : Prisma.empty;
+    whereParts.length > 0 ? Prisma.sql`WHERE ${Prisma.join(whereParts, ' AND ')}` : Prisma.empty;
 
   const query = Prisma.sql`
     SELECT id, nom, domaine, année, prix, "imageFile"
@@ -65,18 +61,18 @@ export default async function PageVins({
   return (
     <main className="p-10 max-w-6xl mx-auto">
       <h1 className="text-4xl font-extrabold text-rose-900 mb-6 tracking-tight text-center">
-        {q ? `Résultats pour « ${q} »` : "Notre sélection de vins"}
+        {q ? `Résultats pour « ${q} »` : 'Notre sélection de vins'}
       </h1>
 
       {/* Filtres */}
       <div className="flex justify-center gap-4 mb-12">
-        {["Tous", "Rouge", "Blanc", "Rosé"].map((c) => {
-          const slug = c.toLowerCase().replace("é", "e"); // "rosé" -> "rose"
-          const isActive = (sp.couleur ?? "tous").toLowerCase() === slug;
+        {['Tous', 'Rouge', 'Blanc', 'Rosé'].map((c) => {
+          const slug = c.toLowerCase().replace('é', 'e'); // "rosé" -> "rose"
+          const isActive = (sp.couleur ?? 'tous').toLowerCase() === slug;
 
           const href = new URLSearchParams();
-          if (q) href.set("q", q);
-          if (slug !== "tous") href.set("couleur", slug);
+          if (q) href.set('q', q);
+          if (slug !== 'tous') href.set('couleur', slug);
 
           return (
             <Link
@@ -85,8 +81,8 @@ export default async function PageVins({
               className={`relative px-4 py-2 rounded-full text-sm transition
                 ${
                   isActive
-                    ? "bg-rose-100 text-rose-900 font-semibold"
-                    : "text-gray-600 hover:text-rose-800 hover:bg-rose-50"
+                    ? 'bg-rose-100 text-rose-900 font-semibold'
+                    : 'text-gray-600 hover:text-rose-800 hover:bg-rose-50'
                 }`}
             >
               {c}

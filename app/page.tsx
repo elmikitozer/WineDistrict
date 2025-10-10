@@ -164,8 +164,7 @@
 // }
 
 //Hero “Parallaxe douce” + bloc features
-import Image from "next/image";
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -192,10 +191,7 @@ export default function Home() {
             Explorez, comparez, et réservez chez un caviste près de chez vous.
           </p>
           <div className="mt-8 flex items-center justify-center gap-3">
-            <Link
-              href="/vins"
-              className="btn bg-rose-600 text-white hover:bg-rose-700"
-            >
+            <Link href="/vins" className="btn bg-rose-600 text-white hover:bg-rose-700">
               Découvrir les vins
             </Link>
             <Link href="/cavistes" className="btn">
@@ -249,25 +245,23 @@ export default function Home() {
 
       {/* Section Étapes */}
       <section className="max-w-6xl mx-auto px-6 py-14">
-        <h2 className="text-2xl font-bold text-gray-900 mb-10 text-center">
-          Comment ça marche ?
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-10 text-center">Comment ça marche ?</h2>
         <div className="grid gap-8 md:grid-cols-3 text-center">
           {[
             {
-              step: "1",
-              title: "Recherchez",
-              desc: "Trouvez votre vin préféré grâce à notre moteur.",
+              step: '1',
+              title: 'Recherchez',
+              desc: 'Trouvez votre vin préféré grâce à notre moteur.',
             },
             {
-              step: "2",
-              title: "Choisissez",
-              desc: "Comparez les cavistes près de chez vous.",
+              step: '2',
+              title: 'Choisissez',
+              desc: 'Comparez les cavistes près de chez vous.',
             },
             {
-              step: "3",
-              title: "Réservez",
-              desc: "En quelques clics, votre bouteille vous attend.",
+              step: '3',
+              title: 'Réservez',
+              desc: 'En quelques clics, votre bouteille vous attend.',
             },
           ].map((e) => (
             <div key={e.step} className="flex flex-col items-center">

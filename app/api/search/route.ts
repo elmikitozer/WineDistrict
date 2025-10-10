@@ -1,19 +1,19 @@
 // app/api/search/route.ts
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 
-export const dynamic = "force-dynamic"; // pas de cache côté route
+export const dynamic = 'force-dynamic'; // pas de cache côté route
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const qRaw = url.searchParams.get("q") ?? "";
+  const qRaw = url.searchParams.get('q') ?? '';
   const q = qRaw.trim();
 
   // borne de longueur pour éviter l'abus, mais on garde la recherche vide
   if (q.length > 64) return NextResponse.json([]);
 
-  let rows: any[];
+  let rows: unknown[];
 
   if (q.length === 0) {
     // 🔎 Fallback pour la live search quand q est vide
@@ -39,6 +39,6 @@ export async function GET(req: Request) {
 
   // Désactive le cache côté client/CDN pour la live search
   return NextResponse.json(rows, {
-    headers: { "Cache-Control": "no-store" },
+    headers: { 'Cache-Control': 'no-store' },
   });
 }

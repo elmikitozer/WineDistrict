@@ -1,8 +1,8 @@
 // app/components/VinImage.tsx
-import Image from "next/image";
+import Image from 'next/image';
 
 export default function VinImage({ src, alt }: { src?: string | null; alt: string }) {
-  const safe = src ?? "/window.svg"; // placeholder existant dans /public
+  const safe = src ?? '/window.svg'; // placeholder existant dans /public
   return (
     <div className="relative mx-auto w-full max-w-xl overflow-hidden rounded-2xl border">
       <div className="relative aspect-[3/4] w-full">

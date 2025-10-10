@@ -1,10 +1,10 @@
-import { prisma } from "@/lib/prisma";
-import { notFound } from "next/navigation";
-import CavistesModal from "@/components/CavistesModal";
-import Image from "next/image";
-import Link from "next/link";
+import { prisma } from '@/lib/prisma';
+import { notFound } from 'next/navigation';
+import CavistesModal from '@/components/CavistesModal';
+import Image from 'next/image';
+import Link from 'next/link';
 function toImageSrc(name: string | null): string {
-  if (!name) return "/window.svg";
+  if (!name) return '/window.svg';
   if (name.startsWith('http://') || name.startsWith('https://')) return name;
   if (name.startsWith('/')) return name; // already a public path
   const base = process.env.SUPABASE_URL;
@@ -14,7 +14,7 @@ function toImageSrc(name: string | null): string {
 }
 
 // 🧠 SEO dynamique par fiche vin
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 export async function generateMetadata({
   params,
@@ -25,7 +25,7 @@ export async function generateMetadata({
   const vinId = Number(id);
 
   if (isNaN(vinId)) {
-    return { title: "Vin introuvable | Wine District" };
+    return { title: 'Vin introuvable | Wine District' };
   }
 
   const vin = await prisma.vin.findUnique({
@@ -34,7 +34,7 @@ export async function generateMetadata({
   });
 
   if (!vin) {
-    return { title: "Vin introuvable | Wine District" };
+    return { title: 'Vin introuvable | Wine District' };
   }
 
   const title = `${vin.nom} — ${vin.domaine} (${vin.année}) | Wine District`;
@@ -46,12 +46,12 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      type: "article",
+      type: 'article',
       // image OG optionnelle si tu as un placeholder fiable :
       // images: ["/og/wine.png"],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title,
       description,
       // images: ["/og/wine.png"],
@@ -73,7 +73,7 @@ export default async function Page({
     include: {
       stocks: {
         include: { caviste: true },
-        orderBy: { quantite: "desc" },
+        orderBy: { quantite: 'desc' },
       },
     },
   });
@@ -119,21 +119,18 @@ export default async function Page({
           <section>
             <ul className="space-y-2 text-gray-700 text-base">
               <li>
-                <span className="font-medium text-gray-900">Millésime :</span>{" "}
-                {vin.année}
+                <span className="font-medium text-gray-900">Millésime :</span> {vin.année}
               </li>
               {vin.couleur && (
                 <li>
-                  <span className="font-medium text-gray-900">Couleur :</span>{" "}
+                  <span className="font-medium text-gray-900">Couleur :</span>{' '}
                   <span className="capitalize">{vin.couleur}</span>
                 </li>
               )}
               <li>
-                <span className="font-medium text-gray-900">
-                  Prix conseillé :
-                </span>{" "}
+                <span className="font-medium text-gray-900">Prix conseillé :</span>{' '}
                 <span className="text-rose-700 font-semibold">
-                  {vin.prix.toFixed(2).replace(".", ",")} €
+                  {vin.prix.toFixed(2).replace('.', ',')} €
                 </span>
               </li>
             </ul>
@@ -143,13 +140,12 @@ export default async function Page({
             {nbCavistes > 0 ? (
               <>
                 <p className="text-sm text-gray-500 mb-1">
-                  Disponible chez {nbCavistes} caviste{nbCavistes > 1 && "s"} à
-                  Paris.
+                  Disponible chez {nbCavistes} caviste{nbCavistes > 1 && 's'} à Paris.
                 </p>
                 {vin.stocks.length > 0 && (
                   <p className="text-sm text-rose-700 font-medium mb-3">
-                    Faites vite, il ne reste plus que {vin.stocks.length}{" "}
-                    caviste{vin.stocks.length >= 2 ? "s" : ""} !
+                    Faites vite, il ne reste plus que {vin.stocks.length} caviste
+                    {vin.stocks.length >= 2 ? 's' : ''} !
                   </p>
                 )}
                 <CavistesModal cavistes={cavistes} />
