@@ -23,6 +23,8 @@ model Caviste {
   stocks      Stock[]
   reservation Reservation[]
   users       User[]
+  integrations IntegrationConnection[]
+  externalProductMappings ExternalProductMapping[]
 
   @@unique([nom], name: "caviste_nom_unique")
 }
@@ -37,6 +39,7 @@ model Vin {
   imageFile   String?
   stocks      Stock[]
   reservation Reservation[]
+  externalProductMappings ExternalProductMapping[]
 
 
   @@unique([nom, domaine, année], name: "vin_unique")
@@ -84,4 +87,41 @@ model Client {
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+}
+
+/// Optional integration tables for external POS/stock providers (e.g., SumUp)
+/// NOTE: Create a migration before using these models in code.
+model IntegrationConnection {
+  id          String   @id @default(cuid())
+  cavisteId   Int
+  provider    String   // e.g. "sumup"
+  accessToken String
+  refreshToken String?
+  scope       String?
+  merchantId  String?  // external merchant/account identifier
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  caviste     Caviste  @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
+
+  @@index([provider, cavisteId])
+}
+
+model ExternalProductMapping {
+  id               String   @id @default(cuid())
+  cavisteId        Int
+  vinId            Int
+  provider         String   // e.g. "sumup"
+  externalProductId String  // provider product id
+  externalSku      String?
+  lastSeenAt       DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  caviste Caviste @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
+  vin     Vin     @relation(fields: [vinId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, cavisteId, externalProductId], name: "external_product_unique")
+  @@index([cavisteId, vinId])
 }

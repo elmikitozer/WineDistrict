@@ -34,3 +34,22 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## SumUp Integration (OAuth scaffold)
+
+We added minimal routes to kick off a SumUp OAuth flow without persisting tokens yet:
+
+- GET `/api/integrations/sumup/connect?cavisteId=123` → redirects to SumUp authorization URL.
+- GET `/api/integrations/sumup/callback?code=...&state=...` → exchanges code for tokens and returns JSON.
+
+Required env vars in `.env.local`:
+
+```bash
+SUMUP_CLIENT_ID=...
+SUMUP_CLIENT_SECRET=...
+SUMUP_REDIRECT_URI=http://localhost:3000/api/integrations/sumup/callback
+```
+
+Notes:
+- Inventory/catalog endpoints are not publicly documented; an API partner program may be required. This scaffold focuses on OAuth/token exchange first.
+- Next steps: persist tokens into `IntegrationConnection`, implement a `SumUpProvider` to call inventory/catalog endpoints if available, or fall back to a manual import.
