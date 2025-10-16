@@ -105,6 +105,7 @@ model IntegrationConnection {
 
   caviste     Caviste  @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
 
+  @@unique([provider, cavisteId])
   @@index([provider, cavisteId])
 }
 
