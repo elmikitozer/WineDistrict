@@ -51,5 +51,6 @@ SUMUP_REDIRECT_URI=http://localhost:3000/api/integrations/sumup/callback
 ```
 
 Notes:
+
 - Inventory/catalog endpoints are not publicly documented; an API partner program may be required. This scaffold focuses on OAuth/token exchange first.
 - Next steps: persist tokens into `IntegrationConnection`, implement a `SumUpProvider` to call inventory/catalog endpoints if available, or fall back to a manual import.
