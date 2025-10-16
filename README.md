@@ -35,22 +35,59 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-## SumUp Integration (OAuth scaffold)
+## SumUp Integration (OAuth)
 
-We added minimal routes to kick off a SumUp OAuth flow without persisting tokens yet:
+The WineDistrict application now supports OAuth integration with SumUp to synchronize wine stock data.
 
-- GET `/api/integrations/sumup/connect?cavisteId=123` → redirects to SumUp authorization URL.
-- GET `/api/integrations/sumup/callback?code=...&state=...` → exchanges code for tokens and returns JSON.
+### Setup
 
-Required env vars in `.env.local`:
+1. **Register your application with SumUp**:
+   - Visit [SumUp Developer Portal](https://developer.sumup.com/)
+   - Create a new application
+   - Note your Client ID and Client Secret
+   - Set the OAuth redirect URI to: `http://localhost:3000/api/integrations/sumup/callback`
 
-```bash
-SUMUP_CLIENT_ID=...
-SUMUP_CLIENT_SECRET=...
-SUMUP_REDIRECT_URI=http://localhost:3000/api/integrations/sumup/callback
-```
+2. **Configure environment variables**:
+   - Copy `.env.example` to `.env.local`
+   - Fill in your SumUp credentials:
+     ```bash
+     SUMUP_CLIENT_ID=your-sumup-client-id
+     SUMUP_CLIENT_SECRET=your-sumup-client-secret
+     SUMUP_REDIRECT_URI=http://localhost:3000/api/integrations/sumup/callback
+     ```
 
-Notes:
+3. **Run database migrations**:
+   ```bash
+   npm run db:migrate:dev
+   ```
 
-- Inventory/catalog endpoints are not publicly documented; an API partner program may be required. This scaffold focuses on OAuth/token exchange first.
-- Next steps: persist tokens into `IntegrationConnection`, implement a `SumUpProvider` to call inventory/catalog endpoints if available, or fall back to a manual import.
+### Using the Integration
+
+1. Log in as a caviste user
+2. Navigate to the dashboard at `/dashboard/caviste`
+3. Click "Connecter SumUp" in the SumUp Integration section
+4. Authorize the application with your SumUp account
+5. You'll be redirected back to the dashboard with a success message
+
+The OAuth tokens are securely stored in the database and will be automatically refreshed when needed.
+
+### API Endpoints
+
+We added the following routes for SumUp integration:
+
+- `GET /api/integrations/sumup/connect` → Initiates OAuth flow (requires authentication)
+- `GET /api/integrations/sumup/callback?code=...&state=...` → Handles OAuth callback and stores tokens
+
+### Database Schema
+
+The integration uses two new tables:
+
+- `IntegrationConnection`: Stores OAuth tokens and connection metadata
+- `ExternalProductMapping`: Maps wine products to external provider IDs (for future use)
+
+### Notes
+
+- Inventory/catalog endpoints are not publicly documented; an API partner program may be required
+- This implementation focuses on OAuth/token exchange first
+- Future enhancements will include stock import functionality once SumUp API access is confirmed
+
