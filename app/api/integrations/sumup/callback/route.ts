@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { exchangeCodeForTokens } from '@/lib/sumup';
+import { prisma } from '@/lib/prisma';
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
@@ -19,8 +20,51 @@ export async function GET(req: NextRequest) {
     // state format: random:cavisteId
     const parts = returnedState.split(':');
     const cavisteId = parts[1] ? parseInt(parts[1], 10) : undefined;
-    return NextResponse.json({ ok: true, cavisteId, tokens });
-  } catch (e: unknown) {
-    return NextResponse.json({ error: (e as Error).message }, { status: 500 });
+    
+    if (!cavisteId) {
+      return NextResponse.json({ error: 'Invalid cavisteId' }, { status: 400 });
+    }
+
+    // Calculate expiration time if provided
+    const expiresAt = tokens.expires_in 
+      ? new Date(Date.now() + tokens.expires_in * 1000)
+      : undefined;
+
+    // Store or update the integration connection
+    await prisma.integrationConnection.upsert({
+      where: {
+        provider_cavisteId: {
+          provider: 'sumup',
+          cavisteId,
+        },
+      },
+      create: {
+        cavisteId,
+        provider: 'sumup',
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+        scope: tokens.scope,
+        expiresAt,
+      },
+      update: {
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+        scope: tokens.scope,
+        expiresAt,
+        updatedAt: new Date(),
+      },
+    });
+
+    // Clear the OAuth state cookie
+    const res = NextResponse.redirect(new URL('/dashboard/caviste?sumup=connected', url.origin));
+    res.cookies.set('sumup_oauth_state', '', {
+      httpOnly: true,
+      path: '/',
+      maxAge: 0,
+    });
+    return res;
+  } catch {
+    const errorUrl = new URL('/dashboard/caviste?sumup=error', url.origin);
+    return NextResponse.redirect(errorUrl);
   }
 }
