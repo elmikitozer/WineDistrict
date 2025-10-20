@@ -104,7 +104,7 @@ export default async function Page({
   // Redirection 301 si ancien format (ID seul) vers le nouveau format (slug complet)
   if (shouldRedirect) {
     const { redirect } = await import('next/navigation');
-    redirect(`/vins/${vin.slug}`, 'replace');
+    redirect(`/vins/${vin.slug}`);
   }
 
   const cavistes = vin.stocks;
