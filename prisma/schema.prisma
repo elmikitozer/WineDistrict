@@ -18,6 +18,7 @@ datasource db {
 
 model Caviste {
   id          Int           @id @default(autoincrement())
+  slug        String?       @unique
   nom         String
   adresse     String
   stocks      Stock[]
@@ -31,6 +32,7 @@ model Caviste {
 
 model Vin {
   id          Int           @id @default(autoincrement())
+  slug        String?       @unique
   nom         String
   domaine     String
   année       Int

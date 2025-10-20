@@ -1,5 +1,7 @@
 // prisma/seed.ts
 import { PrismaClient } from '@prisma/client';
+import { slugify } from '../src/utils/slug';
+
 const prisma = new PrismaClient();
 
 const VINS = [
@@ -85,18 +87,42 @@ const CAVISTES = [
 
 async function upsertVins() {
   for (const v of VINS) {
-    await prisma.vin.upsert({
+    // Trouver le vin existant pour obtenir son ID
+    const existing = await prisma.vin.findUnique({
       where: { vin_unique: { nom: v.nom, domaine: v.domaine, année: v.année } },
-      update: { prix: v.prix, couleur: v.couleur, imageFile: v.imageFile },
-      create: {
-        nom: v.nom,
-        domaine: v.domaine,
-        année: v.année,
-        prix: v.prix,
-        couleur: v.couleur,
-        imageFile: v.imageFile,
-      },
+      select: { id: true },
     });
+
+    // Générer le slug avec l'ID (si c'est un update) ou temporairement sans ID (si c'est un create)
+    const baseSlug = slugify(`${v.nom}-${v.domaine}-${v.année}-${v.couleur}`);
+
+    if (existing) {
+      // Update : on garde l'ID existant
+      const slug = `${baseSlug}-${existing.id}`;
+      await prisma.vin.update({
+        where: { id: existing.id },
+        data: { prix: v.prix, couleur: v.couleur, imageFile: v.imageFile, slug },
+      });
+    } else {
+      // Create : on crée d'abord sans slug, puis on met à jour avec l'ID
+      const created = await prisma.vin.create({
+        data: {
+          nom: v.nom,
+          domaine: v.domaine,
+          année: v.année,
+          prix: v.prix,
+          couleur: v.couleur,
+          imageFile: v.imageFile,
+          slug: 'temp', // Temporaire
+        },
+      });
+      // Mettre à jour avec le vrai slug incluant l'ID
+      const slug = `${baseSlug}-${created.id}`;
+      await prisma.vin.update({
+        where: { id: created.id },
+        data: { slug },
+      });
+    }
   }
 }
 
@@ -109,13 +135,22 @@ async function upsertCavistesEtStocks() {
 
     // 2) Créer s'il n'existe pas, sinon mettre à jour (upsert manuel)
     if (!cav) {
+      // Create : on crée d'abord sans slug, puis on met à jour avec l'ID
       cav = await prisma.caviste.create({
-        data: { nom: c.nom, adresse: c.adresse },
+        data: { nom: c.nom, adresse: c.adresse, slug: 'temp' },
       });
-    } else {
+      // Mettre à jour avec le vrai slug incluant l'ID
+      const slug = `${slugify(c.nom)}-${cav.id}`;
       cav = await prisma.caviste.update({
         where: { id: cav.id },
-        data: { adresse: c.adresse },
+        data: { slug },
+      });
+    } else {
+      // Update : on garde l'ID existant et on met à jour le slug
+      const slug = `${slugify(c.nom)}-${cav.id}`;
+      cav = await prisma.caviste.update({
+        where: { id: cav.id },
+        data: { adresse: c.adresse, slug },
       });
     }
 
@@ -149,8 +184,16 @@ async function upsertCavistesEtStocks() {
             prix: 0,
             couleur: 'rouge',
             imageFile: null,
+            slug: 'temp', // Temporaire
           },
           select: { id: true },
+        });
+        // Mettre à jour avec le vrai slug incluant l'ID
+        const baseSlug = slugify(`${s.vin.nom}-${s.vin.domaine}-${s.vin.année}-rouge`);
+        const slug = `${baseSlug}-${created.id}`;
+        await prisma.vin.update({
+          where: { id: created.id },
+          data: { slug },
         });
         vin = created;
       }

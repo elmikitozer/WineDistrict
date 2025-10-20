@@ -13,16 +13,29 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
-  const vinId = Number(id);
+  const { id: idOrSlug } = await params;
 
-  if (isNaN(vinId)) {
-    return { title: 'Vin introuvable | Wine District' };
+  // Extraire l'ID du paramètre
+  let vinId: number;
+
+  if (/^\d+$/.test(idOrSlug)) {
+    // Ancien format : ID numérique uniquement (ex: "5")
+    vinId = Number(idOrSlug);
+  } else {
+    // Nouveau format : slug-id (ex: "chateau-margaux-margaux-2018-rouge-5")
+    // L'ID est le dernier segment après le dernier "-"
+    const segments = idOrSlug.split('-');
+    const lastSegment = segments[segments.length - 1];
+    vinId = Number(lastSegment);
+
+    if (isNaN(vinId)) {
+      return { title: 'Vin introuvable | Wine District' };
+    }
   }
 
   const vin = await prisma.vin.findUnique({
     where: { id: vinId },
-    select: { nom: true, domaine: true, année: true, couleur: true, imageFile: true },
+    select: { nom: true, domaine: true, année: true, couleur: true, imageFile: true, slug: true },
   });
 
   if (!vin) {
@@ -39,14 +52,12 @@ export async function generateMetadata({
       title,
       description,
       type: 'article',
-      // image OG optionnelle si tu as un placeholder fiable :
-      // images: ["/og/wine.png"],
+      url: `/vins/${vin.slug}`, // ← URL canonique avec slug complet
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      // images: ["/og/wine.png"],
     },
   };
 }
@@ -54,11 +65,29 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ id: string }>; // ⬅️ important
+  params: Promise<{ id: string }>; // Peut être un ID ou un slug complet (slug-id)
 }) {
-  const { id } = await params; // ⬅️ on attend params
-  const vinId = Number(id);
-  if (isNaN(vinId)) return notFound();
+  const { id: idOrSlug } = await params;
+
+  // Extraire l'ID du paramètre
+  let vinId: number;
+  let shouldRedirect = false;
+
+  if (/^\d+$/.test(idOrSlug)) {
+    // Ancien format : ID numérique uniquement (ex: "5")
+    vinId = Number(idOrSlug);
+    shouldRedirect = true; // On redirigera vers le slug complet
+  } else {
+    // Nouveau format : slug-id (ex: "chateau-margaux-margaux-2018-rouge-5")
+    // L'ID est le dernier segment après le dernier "-"
+    const segments = idOrSlug.split('-');
+    const lastSegment = segments[segments.length - 1];
+    vinId = Number(lastSegment);
+
+    if (isNaN(vinId)) {
+      return notFound();
+    }
+  }
 
   const vin = await prisma.vin.findUnique({
     where: { id: vinId },
@@ -71,6 +100,12 @@ export default async function Page({
   });
 
   if (!vin) return notFound();
+
+  // Redirection 301 si ancien format (ID seul) vers le nouveau format (slug complet)
+  if (shouldRedirect) {
+    const { redirect } = await import('next/navigation');
+    redirect(`/vins/${vin.slug}`, 'replace');
+  }
 
   const cavistes = vin.stocks;
   const nbCavistes = cavistes.length;

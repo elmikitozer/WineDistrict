@@ -9,6 +9,7 @@ import { getVinImageUrl } from '@/lib/vinImage';
 
 interface Vin {
   id: number;
+  slug: string;
   nom: string;
   domaine: string;
   année: number;
@@ -40,7 +41,7 @@ export default async function PageVins({
     whereParts.length > 0 ? Prisma.sql`WHERE ${Prisma.join(whereParts, ' AND ')}` : Prisma.empty;
 
   const query = Prisma.sql`
-    SELECT id, nom, domaine, année, prix, couleur, "imageFile"
+    SELECT id, slug, nom, domaine, année, prix, couleur, "imageFile"
     FROM "Vin"
     ${whereClause}
     ORDER BY nom ASC
@@ -107,7 +108,7 @@ export default async function PageVins({
             return (
               <li key={vin.id}>
                 <Link
-                  href={`/vins/${vin.id}`}
+                  href={`/vins/${vin.slug}`}
                   className="block rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition bg-white group focus:outline-none focus:ring-2 focus:ring-rose-500"
                 >
                   {/* Image en tête */}
