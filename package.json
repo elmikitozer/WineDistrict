@@ -12,11 +12,17 @@
     "db:unaccent": "prisma db execute --file prisma/unaccent.sql --schema prisma/schema.prisma",
     "db:seed": "tsx prisma/seed.ts",
     "db:ping": "tsx scripts/dbPing.ts",
+    "db:studio": "DATABASE_URL=\"$DIRECT_URL\" prisma studio --port 5561",
+    "db:check": "tsx scripts/checkDatabaseStructure.ts",
+    "wine:generate": "tsx scripts/generateWineData.ts",
+    "wine:seed": "tsx scripts/seedGeneratedData.ts",
     "img:upload": "tsx scripts/uploadImagesToSupabase.ts",
     "img:link": "tsx scripts/linkSupabaseImages.ts",
+    "img:wine": "tsx scripts/uploadWineImage.ts",
+    "img:wine-batch": "tsx scripts/uploadWineImagesBatch.ts",
+    "img:migrate": "tsx scripts/migrateLocalImagesToSupabase.ts",
     "user:test": "tsx scripts/createTestUser.ts",
-    "invite:create": "tsx scripts/createInviteToken.ts",
-    "db:studio": "DATABASE_URL=\"$DIRECT_URL\" prisma studio --port 5561"
+    "invite:create": "tsx scripts/createInviteToken.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
