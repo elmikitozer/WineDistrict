@@ -61,24 +61,27 @@ model Reservation {
   id        String  @id @default(cuid())
   vinId     Int
   cavisteId Int
+  userId    String?
   date      DateTime @default(now())
   status    String   @default("en_attente")
 
   vin       Vin     @relation(fields: [vinId], references: [id], onDelete: Cascade)
   caviste   Caviste @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
+  user      User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 // Authentication user for dashboard access
 model User {
-  id           String    @id @default(cuid())
-  email        String    @unique
+  id           String        @id @default(cuid())
+  email        String        @unique
   passwordHash String
-  role         String    @default("CAVISTE")
+  role         String        @default("CAVISTE")
   cavisteId    Int?
-  caviste      Caviste?  @relation(fields: [cavisteId], references: [id])
+  caviste      Caviste?      @relation(fields: [cavisteId], references: [id])
   client       Client?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  reservations Reservation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 // Client profile for non-caviste users

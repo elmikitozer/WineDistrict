@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { cookies, headers } from 'next/headers';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
+import { getSession } from '@/lib/auth';
 
 const ReservationSchema = z.object({
   vinId: z.coerce.number().int().positive(),
@@ -57,9 +58,18 @@ export async function POST(req: Request) {
 
   const { vinId, cavisteId } = parsed.data;
 
+  // Récupérer l'userId de l'utilisateur connecté (optionnel)
+  const session = await getSession();
+  const userId = session?.userId ? String(session.userId) : null;
+
   // 4) TODO: transaction stock → reservation (quand prêt)
   const reservation = await prisma.reservation.create({
-    data: { vinId, cavisteId, status: 'en_attente' },
+    data: {
+      vinId,
+      cavisteId,
+      status: 'en_attente',
+      userId,
+    },
     select: { id: true },
   });
 
