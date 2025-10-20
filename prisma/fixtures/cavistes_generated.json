@@ -1,0 +1,127 @@
+[
+  {
+    "slug": "domaine-des-vignerons",
+    "nom": "Domaine des Vignerons",
+    "adresse": "12 Rue de la Paix, Carmes, Toulouse"
+  },
+  {
+    "slug": "vinotheque-de-la-vigne",
+    "nom": "Vinothèque de la Vigne",
+    "adresse": "58 Rue de la Paix, Part-Dieu, Lyon"
+  },
+  {
+    "slug": "cuvee-saint-germain",
+    "nom": "Cuvée Saint-Germain",
+    "adresse": "30 Rue de la Paix, 17e arrondissement, Paris"
+  },
+  {
+    "slug": "cellier-exquis",
+    "nom": "Cellier Exquis",
+    "adresse": "20 Rue de la Paix, Cours Julien, Marseille"
+  },
+  {
+    "slug": "domaine-des-vignerons",
+    "nom": "Domaine des Vignerons",
+    "adresse": "140 Rue de la Paix, Chartrons, Bordeaux"
+  },
+  {
+    "slug": "cellier-authentique",
+    "nom": "Cellier Authentique",
+    "adresse": "109 Place de la République, Jean-Jaurès, Toulouse"
+  },
+  {
+    "slug": "maison-de-bacchus",
+    "nom": "Maison de Bacchus",
+    "adresse": "95 Rue du Commerce, Prado, Marseille"
+  },
+  {
+    "slug": "vinotheque-des-saveurs",
+    "nom": "Vinothèque des Saveurs",
+    "adresse": "72 Rue de la Paix, Jean-Jaurès, Toulouse"
+  },
+  {
+    "slug": "caveau-du-terroir",
+    "nom": "Caveau du Terroir",
+    "adresse": "77 Boulevard Haussmann, Endoume, Marseille"
+  },
+  {
+    "slug": "vinotheque-des-saveurs",
+    "nom": "Vinothèque des Saveurs",
+    "adresse": "39 Rue du Commerce, 9e arrondissement, Paris"
+  },
+  {
+    "slug": "tonneau-de-la-vigne",
+    "nom": "Tonneau de la Vigne",
+    "adresse": "94 Rue du Commerce, Vieux-Port, Marseille"
+  },
+  {
+    "slug": "cuvee-saint-germain",
+    "nom": "Cuvée Saint-Germain",
+    "adresse": "145 Avenue Victor Hugo, Cours Julien, Marseille"
+  },
+  {
+    "slug": "tonneau-des-amis",
+    "nom": "Tonneau des Amis",
+    "adresse": "109 Place de la République, Part-Dieu, Lyon"
+  },
+  {
+    "slug": "maison-du-coin",
+    "nom": "Maison du Coin",
+    "adresse": "81 Boulevard Haussmann, Endoume, Marseille"
+  },
+  {
+    "slug": "vinotheque-authentique",
+    "nom": "Vinothèque Authentique",
+    "adresse": "78 Place de la République, Jean-Jaurès, Toulouse"
+  },
+  {
+    "slug": "comptoir-noble",
+    "nom": "Comptoir Noble",
+    "adresse": "54 Boulevard Haussmann, Vieux Lyon, Lyon"
+  },
+  {
+    "slug": "tonneau-du-sommelier",
+    "nom": "Tonneau du Sommelier",
+    "adresse": "83 Place de la République, Carmes, Toulouse"
+  },
+  {
+    "slug": "chai-de-la-vigne",
+    "nom": "Chai de la Vigne",
+    "adresse": "35 Rue de la Paix, 11e arrondissement, Paris"
+  },
+  {
+    "slug": "domaine-authentique",
+    "nom": "Domaine Authentique",
+    "adresse": "78 Rue de la Paix, Capitole, Toulouse"
+  },
+  {
+    "slug": "maison-exquis",
+    "nom": "Maison Exquis",
+    "adresse": "61 Rue du Commerce, Vieux-Port, Marseille"
+  },
+  {
+    "slug": "domaine-noble",
+    "nom": "Domaine Noble",
+    "adresse": "55 Boulevard Haussmann, Carmes, Toulouse"
+  },
+  {
+    "slug": "chai-du-sommelier",
+    "nom": "Chai du Sommelier",
+    "adresse": "68 Rue du Commerce, 17e arrondissement, Paris"
+  },
+  {
+    "slug": "vin-saint-germain",
+    "nom": "Vin Saint-Germain",
+    "adresse": "149 Place de la République, Saint-Cyprien, Toulouse"
+  },
+  {
+    "slug": "cave-authentique",
+    "nom": "Cave Authentique",
+    "adresse": "92 Rue de la Paix, Endoume, Marseille"
+  },
+  {
+    "slug": "chai-exquis",
+    "nom": "Chai Exquis",
+    "adresse": "53 Place de la République, Part-Dieu, Lyon"
+  }
+]

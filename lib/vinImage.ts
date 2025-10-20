@@ -1,0 +1,57 @@
+// Utilitaires pour gérer les images de vin
+
+type VinImageData = {
+  imageFile?: string | null;
+  nom: string;
+  domaine: string;
+  année: number;
+  couleur: string;
+};
+
+/**
+ * Génère l'URL de l'image pour un vin
+ * - Si le vin a un imageFile (Supabase ou local), retourne le chemin
+ * - Sinon, retourne une URL vers le placeholder dynamique
+ */
+export function getVinImageUrl(vin: VinImageData): string {
+  const { imageFile, nom, domaine, année, couleur } = vin;
+
+  // Si on a un fichier image
+  if (imageFile) {
+    // URL absolue (Supabase ou autre)
+    if (imageFile.startsWith('http://') || imageFile.startsWith('https://')) {
+      return imageFile;
+    }
+    // Chemin absolu
+    if (imageFile.startsWith('/')) {
+      return imageFile;
+    }
+    // Fichier local dans /public/vins/
+    if (imageFile.includes('.')) {
+      return `/vins/${imageFile}`;
+    }
+    // Fichier Supabase
+    const base = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+    const bucket = process.env.SUPABASE_BUCKET || 'images';
+    if (base) {
+      return `${base}/storage/v1/object/public/${bucket}/${imageFile}`;
+    }
+  }
+
+  // Générer un placeholder dynamique
+  const params = new URLSearchParams({
+    nom,
+    domaine,
+    annee: String(année),
+    couleur,
+  });
+
+  return `/api/wine-placeholder?${params.toString()}`;
+}
+
+/**
+ * Vérifie si un vin a une vraie image ou utilise un placeholder
+ */
+export function hasRealImage(vin: VinImageData): boolean {
+  return !!vin.imageFile;
+}

@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getVinImageUrl } from '@/lib/vinImage';
 
 interface Vin {
   id: number;
@@ -12,19 +13,8 @@ interface Vin {
   domaine: string;
   année: number;
   prix: number;
+  couleur: string;
   imageFile: string | null;
-}
-
-function toImageSrc(name: string | null): string {
-  if (!name) return '/window.svg';
-  if (name.startsWith('http://') || name.startsWith('https://')) return name;
-  if (name.startsWith('/')) return name; // already a public path
-  const base = process.env.SUPABASE_URL;
-  const bucket = process.env.SUPABASE_BUCKET || 'images';
-  // Try Supabase public bucket path first
-  if (base) return `${base}/storage/v1/object/public/${bucket}/vins/${name}`;
-  // Fallback to /public/vins when no Supabase URL is configured
-  return `/vins/${name}`;
 }
 
 export default async function PageVins({
@@ -50,7 +40,7 @@ export default async function PageVins({
     whereParts.length > 0 ? Prisma.sql`WHERE ${Prisma.join(whereParts, ' AND ')}` : Prisma.empty;
 
   const query = Prisma.sql`
-    SELECT id, nom, domaine, année, prix, "imageFile"
+    SELECT id, nom, domaine, année, prix, couleur, "imageFile"
     FROM "Vin"
     ${whereClause}
     ORDER BY nom ASC
@@ -113,7 +103,7 @@ export default async function PageVins({
       ) : (
         <ul className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
           {vins.map((vin) => {
-            const img = toImageSrc(vin.imageFile);
+            const img = getVinImageUrl(vin);
             return (
               <li key={vin.id}>
                 <Link

@@ -1,9 +1,9 @@
 // app/components/SearchBar.tsx
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Search } from 'lucide-react';
 
 type Vin = {
   id: number;
@@ -14,7 +14,7 @@ type Vin = {
 };
 
 export default function SearchBar() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState<Vin[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
@@ -38,13 +38,18 @@ export default function SearchBar() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = query.trim();
-    router.push(trimmed ? `/vins?q=${encodeURIComponent(trimmed)}` : "/");
+    router.push(trimmed ? `/vins?q=${encodeURIComponent(trimmed)}` : '/');
     setShowDropdown(false);
   };
 
   return (
     <div className="relative w-full max-w-md mx-auto">
-      <form onSubmit={handleSubmit} className="relative" role="search" aria-label="Recherche de vins">
+      <form
+        onSubmit={handleSubmit}
+        className="relative"
+        role="search"
+        aria-label="Recherche de vins"
+      >
         <input
           type="text"
           placeholder="Rechercher un vin (ex. Chinon, Margaux...)"
@@ -74,7 +79,7 @@ export default function SearchBar() {
               }}
               className="px-4 py-2 text-sm hover:bg-rose-50 cursor-pointer transition-colors duration-150"
             >
-              <span className="font-medium text-gray-800">{vin.nom}</span>{" "}
+              <span className="font-medium text-gray-800">{vin.nom}</span>{' '}
               <span className="text-gray-500">({vin.domaine})</span>
             </li>
           ))}

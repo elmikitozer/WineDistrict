@@ -1,0 +1,1352 @@
+[
+  {
+    "slug": "gevrey-chambertin-joseph-drouhin-2020",
+    "nom": "Gevrey-Chambertin",
+    "domaine": "Joseph Drouhin",
+    "année": 2020,
+    "prix": 33.5,
+    "couleur": "rose",
+    "imageUrl": "/vins/gevrey-chambertin-joseph-drouhin-2020.jpg"
+  },
+  {
+    "slug": "crozes-hermitage-chapoutier-2020",
+    "nom": "Crozes-Hermitage",
+    "domaine": "Chapoutier",
+    "année": 2020,
+    "prix": 11.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/crozes-hermitage-chapoutier-2020.jpg"
+  },
+  {
+    "slug": "champagne-ruinart-2021",
+    "nom": "Champagne",
+    "domaine": "Ruinart",
+    "année": 2021,
+    "prix": 64,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-ruinart-2021.jpg"
+  },
+  {
+    "slug": "champagne-bollinger-2021",
+    "nom": "Champagne",
+    "domaine": "Bollinger",
+    "année": 2021,
+    "prix": 57.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-bollinger-2021.jpg"
+  },
+  {
+    "slug": "pomerol-cuvee-tradition-chateau-haut-brion-2020",
+    "nom": "Pomerol Cuvée Tradition",
+    "domaine": "Château Haut-Brion",
+    "année": 2020,
+    "prix": 65.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pomerol-cuvee-tradition-chateau-haut-brion-2020.jpg"
+  },
+  {
+    "slug": "gevrey-chambertin-joseph-drouhin-2019",
+    "nom": "Gevrey-Chambertin",
+    "domaine": "Joseph Drouhin",
+    "année": 2019,
+    "prix": 19.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/gevrey-chambertin-joseph-drouhin-2019.jpg"
+  },
+  {
+    "slug": "champagne-krug-2018",
+    "nom": "Champagne",
+    "domaine": "Krug",
+    "année": 2018,
+    "prix": 163,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-krug-2018.jpg"
+  },
+  {
+    "slug": "sauternes-chateau-lynch-bages-2018",
+    "nom": "Sauternes",
+    "domaine": "Château Lynch-Bages",
+    "année": 2018,
+    "prix": 56,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sauternes-chateau-lynch-bages-2018.jpg"
+  },
+  {
+    "slug": "sylvaner-les-pierres-trimbach-2018",
+    "nom": "Sylvaner Les Pierres",
+    "domaine": "Trimbach",
+    "année": 2018,
+    "prix": 70.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sylvaner-les-pierres-trimbach-2018.jpg"
+  },
+  {
+    "slug": "pouilly-fume-didier-dagueneau-2021",
+    "nom": "Pouilly-Fumé",
+    "domaine": "Didier Dagueneau",
+    "année": 2021,
+    "prix": 23,
+    "couleur": "rose",
+    "imageUrl": "/vins/pouilly-fume-didier-dagueneau-2021.jpg"
+  },
+  {
+    "slug": "sylvaner-marcel-deiss-2022",
+    "nom": "Sylvaner",
+    "domaine": "Marcel Deiss",
+    "année": 2022,
+    "prix": 23,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sylvaner-marcel-deiss-2022.jpg"
+  },
+  {
+    "slug": "margaux-les-terrasses-chateau-haut-brion-2018",
+    "nom": "Margaux Les Terrasses",
+    "domaine": "Château Haut-Brion",
+    "année": 2018,
+    "prix": 48.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/margaux-les-terrasses-chateau-haut-brion-2018.jpg"
+  },
+  {
+    "slug": "chinon-domaine-huet-2018",
+    "nom": "Chinon",
+    "domaine": "Domaine Huet",
+    "année": 2018,
+    "prix": 52.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/chinon-domaine-huet-2018.jpg"
+  },
+  {
+    "slug": "pouilly-fume-rose-de-saignee-francois-cotat-2022",
+    "nom": "Pouilly-Fumé Rosé de Saignée",
+    "domaine": "François Cotat",
+    "année": 2022,
+    "prix": 49,
+    "couleur": "rose",
+    "imageUrl": "/vins/pouilly-fume-rose-de-saignee-francois-cotat-2022.jpg"
+  },
+  {
+    "slug": "margaux-cuvee-or-chateau-mouton-2022",
+    "nom": "Margaux Cuvée Or",
+    "domaine": "Château Mouton",
+    "année": 2022,
+    "prix": 38.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/margaux-cuvee-or-chateau-mouton-2022.jpg"
+  },
+  {
+    "slug": "cote-rotie-paul-jaboulet-2018",
+    "nom": "Côte-Rôtie",
+    "domaine": "Paul Jaboulet",
+    "année": 2018,
+    "prix": 43,
+    "couleur": "rouge",
+    "imageUrl": "/vins/cote-rotie-paul-jaboulet-2018.jpg"
+  },
+  {
+    "slug": "crozes-hermitage-cuvee-or-guigal-2022",
+    "nom": "Crozes-Hermitage Cuvée Or",
+    "domaine": "Guigal",
+    "année": 2022,
+    "prix": 25.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/crozes-hermitage-cuvee-or-guigal-2022.jpg"
+  },
+  {
+    "slug": "chablis-domaine-roumier-2019",
+    "nom": "Chablis",
+    "domaine": "Domaine Roumier",
+    "année": 2019,
+    "prix": 61,
+    "couleur": "blanc",
+    "imageUrl": "/vins/chablis-domaine-roumier-2019.jpg"
+  },
+  {
+    "slug": "hermitage-le-classique-paul-jaboulet-2018",
+    "nom": "Hermitage Le Classique",
+    "domaine": "Paul Jaboulet",
+    "année": 2018,
+    "prix": 82.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/hermitage-le-classique-paul-jaboulet-2018.jpg"
+  },
+  {
+    "slug": "gewurztraminer-terroir-calcaire-zind-humbrecht-2019",
+    "nom": "Gewurztraminer Terroir Calcaire",
+    "domaine": "Zind-Humbrecht",
+    "année": 2019,
+    "prix": 74,
+    "couleur": "blanc",
+    "imageUrl": "/vins/gewurztraminer-terroir-calcaire-zind-humbrecht-2019.jpg"
+  },
+  {
+    "slug": "beaune-louis-jadot-2023",
+    "nom": "Beaune",
+    "domaine": "Louis Jadot",
+    "année": 2023,
+    "prix": 41.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/beaune-louis-jadot-2023.jpg"
+  },
+  {
+    "slug": "gevrey-chambertin-domaine-leflaive-2021",
+    "nom": "Gevrey-Chambertin",
+    "domaine": "Domaine Leflaive",
+    "année": 2021,
+    "prix": 65,
+    "couleur": "rouge",
+    "imageUrl": "/vins/gevrey-chambertin-domaine-leflaive-2021.jpg"
+  },
+  {
+    "slug": "pauillac-chateau-ausone-2022",
+    "nom": "Pauillac",
+    "domaine": "Château Ausone",
+    "année": 2022,
+    "prix": 16.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pauillac-chateau-ausone-2022.jpg"
+  },
+  {
+    "slug": "meursault-domaine-roumier-2022",
+    "nom": "Meursault",
+    "domaine": "Domaine Roumier",
+    "année": 2022,
+    "prix": 35.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/meursault-domaine-roumier-2022.jpg"
+  },
+  {
+    "slug": "gevrey-chambertin-domaine-dujac-2018",
+    "nom": "Gevrey-Chambertin",
+    "domaine": "Domaine Dujac",
+    "année": 2018,
+    "prix": 66.5,
+    "couleur": "rose",
+    "imageUrl": "/vins/gevrey-chambertin-domaine-dujac-2018.jpg"
+  },
+  {
+    "slug": "sauternes-chateau-lynch-bages-2022",
+    "nom": "Sauternes",
+    "domaine": "Château Lynch-Bages",
+    "année": 2022,
+    "prix": 55,
+    "couleur": "rouge",
+    "imageUrl": "/vins/sauternes-chateau-lynch-bages-2022.jpg"
+  },
+  {
+    "slug": "sylvaner-trimbach-2022",
+    "nom": "Sylvaner",
+    "domaine": "Trimbach",
+    "année": 2022,
+    "prix": 67.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sylvaner-trimbach-2022.jpg"
+  },
+  {
+    "slug": "champagne-cuvee-or-krug-2023",
+    "nom": "Champagne Cuvée Or",
+    "domaine": "Krug",
+    "année": 2023,
+    "prix": 68,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-cuvee-or-krug-2023.jpg"
+  },
+  {
+    "slug": "champagne-moet-chandon-2021",
+    "nom": "Champagne",
+    "domaine": "Moët & Chandon",
+    "année": 2021,
+    "prix": 57,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-moet-chandon-2021.jpg"
+  },
+  {
+    "slug": "crozes-hermitage-terroir-calcaire-guigal-2021",
+    "nom": "Crozes-Hermitage Terroir Calcaire",
+    "domaine": "Guigal",
+    "année": 2021,
+    "prix": 40,
+    "couleur": "blanc",
+    "imageUrl": "/vins/crozes-hermitage-terroir-calcaire-guigal-2021.jpg"
+  },
+  {
+    "slug": "cote-rotie-les-pierres-beaucastel-2018",
+    "nom": "Côte-Rôtie Les Pierres",
+    "domaine": "Beaucastel",
+    "année": 2018,
+    "prix": 24,
+    "couleur": "blanc",
+    "imageUrl": "/vins/cote-rotie-les-pierres-beaucastel-2018.jpg"
+  },
+  {
+    "slug": "gewurztraminer-cuvee-or-zind-humbrecht-2023",
+    "nom": "Gewurztraminer Cuvée Or",
+    "domaine": "Zind-Humbrecht",
+    "année": 2023,
+    "prix": 23.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/gewurztraminer-cuvee-or-zind-humbrecht-2023.jpg"
+  },
+  {
+    "slug": "gewurztraminer-elegance-trimbach-2019",
+    "nom": "Gewurztraminer Élégance",
+    "domaine": "Trimbach",
+    "année": 2019,
+    "prix": 50,
+    "couleur": "blanc",
+    "imageUrl": "/vins/gewurztraminer-elegance-trimbach-2019.jpg"
+  },
+  {
+    "slug": "chinon-didier-dagueneau-2018",
+    "nom": "Chinon",
+    "domaine": "Didier Dagueneau",
+    "année": 2018,
+    "prix": 25.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/chinon-didier-dagueneau-2018.jpg"
+  },
+  {
+    "slug": "saint-emilion-ete-chateau-petrus-2019",
+    "nom": "Saint-Émilion Été",
+    "domaine": "Château Pétrus",
+    "année": 2019,
+    "prix": 496,
+    "couleur": "rose",
+    "imageUrl": "/vins/saint-emilion-ete-chateau-petrus-2019.jpg"
+  },
+  {
+    "slug": "pomerol-cuvee-tradition-chateau-lynch-bages-2023",
+    "nom": "Pomerol Cuvée Tradition",
+    "domaine": "Château Lynch-Bages",
+    "année": 2023,
+    "prix": 21.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pomerol-cuvee-tradition-chateau-lynch-bages-2023.jpg"
+  },
+  {
+    "slug": "champagne-dom-perignon-2023",
+    "nom": "Champagne",
+    "domaine": "Dom Pérignon",
+    "année": 2023,
+    "prix": 103.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-dom-perignon-2023.jpg"
+  },
+  {
+    "slug": "meursault-domaine-coche-dury-2020",
+    "nom": "Meursault",
+    "domaine": "Domaine Coche-Dury",
+    "année": 2020,
+    "prix": 441,
+    "couleur": "rouge",
+    "imageUrl": "/vins/meursault-domaine-coche-dury-2020.jpg"
+  },
+  {
+    "slug": "gigondas-grande-reserve-paul-jaboulet-2023",
+    "nom": "Gigondas Grande Réserve",
+    "domaine": "Paul Jaboulet",
+    "année": 2023,
+    "prix": 89,
+    "couleur": "rouge",
+    "imageUrl": "/vins/gigondas-grande-reserve-paul-jaboulet-2023.jpg"
+  },
+  {
+    "slug": "sylvaner-hugel-2019",
+    "nom": "Sylvaner",
+    "domaine": "Hugel",
+    "année": 2019,
+    "prix": 20,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sylvaner-hugel-2019.jpg"
+  },
+  {
+    "slug": "pomerol-chateau-petrus-2018",
+    "nom": "Pomerol",
+    "domaine": "Château Pétrus",
+    "année": 2018,
+    "prix": 329.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/pomerol-chateau-petrus-2018.jpg"
+  },
+  {
+    "slug": "muscadet-francois-cotat-2018",
+    "nom": "Muscadet",
+    "domaine": "François Cotat",
+    "année": 2018,
+    "prix": 72,
+    "couleur": "rouge",
+    "imageUrl": "/vins/muscadet-francois-cotat-2018.jpg"
+  },
+  {
+    "slug": "sylvaner-cuvee-or-weinbach-2020",
+    "nom": "Sylvaner Cuvée Or",
+    "domaine": "Weinbach",
+    "année": 2020,
+    "prix": 69,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sylvaner-cuvee-or-weinbach-2020.jpg"
+  },
+  {
+    "slug": "champagne-veuve-clicquot-2019",
+    "nom": "Champagne",
+    "domaine": "Veuve Clicquot",
+    "année": 2019,
+    "prix": 102,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-veuve-clicquot-2019.jpg"
+  },
+  {
+    "slug": "pomerol-chateau-haut-brion-2020",
+    "nom": "Pomerol",
+    "domaine": "Château Haut-Brion",
+    "année": 2020,
+    "prix": 15,
+    "couleur": "rouge",
+    "imageUrl": "/vins/pomerol-chateau-haut-brion-2020.jpg"
+  },
+  {
+    "slug": "sauternes-grande-reserve-chateau-lynch-bages-2021",
+    "nom": "Sauternes Grande Réserve",
+    "domaine": "Château Lynch-Bages",
+    "année": 2021,
+    "prix": 40.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/sauternes-grande-reserve-chateau-lynch-bages-2021.jpg"
+  },
+  {
+    "slug": "chinon-vieilles-vignes-domaine-vacheron-2019",
+    "nom": "Chinon Vieilles Vignes",
+    "domaine": "Domaine Vacheron",
+    "année": 2019,
+    "prix": 77,
+    "couleur": "rouge",
+    "imageUrl": "/vins/chinon-vieilles-vignes-domaine-vacheron-2019.jpg"
+  },
+  {
+    "slug": "pinot-gris-terroir-calcaire-weinbach-2018",
+    "nom": "Pinot Gris Terroir Calcaire",
+    "domaine": "Weinbach",
+    "année": 2018,
+    "prix": 16.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pinot-gris-terroir-calcaire-weinbach-2018.jpg"
+  },
+  {
+    "slug": "crozes-hermitage-grande-reserve-chateau-rayas-2023",
+    "nom": "Crozes-Hermitage Grande Réserve",
+    "domaine": "Château Rayas",
+    "année": 2023,
+    "prix": 32.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/crozes-hermitage-grande-reserve-chateau-rayas-2023.jpg"
+  },
+  {
+    "slug": "crozes-hermitage-guigal-2022",
+    "nom": "Crozes-Hermitage",
+    "domaine": "Guigal",
+    "année": 2022,
+    "prix": 16,
+    "couleur": "rose",
+    "imageUrl": "/vins/crozes-hermitage-guigal-2022.jpg"
+  },
+  {
+    "slug": "pouilly-fume-francois-cotat-2019",
+    "nom": "Pouilly-Fumé",
+    "domaine": "François Cotat",
+    "année": 2019,
+    "prix": 43,
+    "couleur": "rouge",
+    "imageUrl": "/vins/pouilly-fume-francois-cotat-2019.jpg"
+  },
+  {
+    "slug": "sauternes-chateau-mouton-2022",
+    "nom": "Sauternes",
+    "domaine": "Château Mouton",
+    "année": 2022,
+    "prix": 35,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sauternes-chateau-mouton-2022.jpg"
+  },
+  {
+    "slug": "sylvaner-elegance-trimbach-2019",
+    "nom": "Sylvaner Élégance",
+    "domaine": "Trimbach",
+    "année": 2019,
+    "prix": 26,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sylvaner-elegance-trimbach-2019.jpg"
+  },
+  {
+    "slug": "sauternes-c-ur-de-rose-chateau-haut-brion-2022",
+    "nom": "Sauternes Cœur de Rosé",
+    "domaine": "Château Haut-Brion",
+    "année": 2022,
+    "prix": 54,
+    "couleur": "rose",
+    "imageUrl": "/vins/sauternes-c-ur-de-rose-chateau-haut-brion-2022.jpg"
+  },
+  {
+    "slug": "pinot-gris-trimbach-2018",
+    "nom": "Pinot Gris",
+    "domaine": "Trimbach",
+    "année": 2018,
+    "prix": 25,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pinot-gris-trimbach-2018.jpg"
+  },
+  {
+    "slug": "pommard-elegance-louis-jadot-2020",
+    "nom": "Pommard Élégance",
+    "domaine": "Louis Jadot",
+    "année": 2020,
+    "prix": 18,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pommard-elegance-louis-jadot-2020.jpg"
+  },
+  {
+    "slug": "vouvray-domaine-huet-2020",
+    "nom": "Vouvray",
+    "domaine": "Domaine Huet",
+    "année": 2020,
+    "prix": 44.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/vouvray-domaine-huet-2020.jpg"
+  },
+  {
+    "slug": "champagne-cuvee-tradition-dom-perignon-2019",
+    "nom": "Champagne Cuvée Tradition",
+    "domaine": "Dom Pérignon",
+    "année": 2019,
+    "prix": 103.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-cuvee-tradition-dom-perignon-2019.jpg"
+  },
+  {
+    "slug": "crozes-hermitage-c-ur-de-rose-guigal-2018",
+    "nom": "Crozes-Hermitage Cœur de Rosé",
+    "domaine": "Guigal",
+    "année": 2018,
+    "prix": 71.5,
+    "couleur": "rose",
+    "imageUrl": "/vins/crozes-hermitage-c-ur-de-rose-guigal-2018.jpg"
+  },
+  {
+    "slug": "vouvray-domaine-vacheron-2023",
+    "nom": "Vouvray",
+    "domaine": "Domaine Vacheron",
+    "année": 2023,
+    "prix": 52.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/vouvray-domaine-vacheron-2023.jpg"
+  },
+  {
+    "slug": "pouilly-fume-domaine-huet-2022",
+    "nom": "Pouilly-Fumé",
+    "domaine": "Domaine Huet",
+    "année": 2022,
+    "prix": 45,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pouilly-fume-domaine-huet-2022.jpg"
+  },
+  {
+    "slug": "gevrey-chambertin-elegance-joseph-drouhin-2020",
+    "nom": "Gevrey-Chambertin Élégance",
+    "domaine": "Joseph Drouhin",
+    "année": 2020,
+    "prix": 75.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/gevrey-chambertin-elegance-joseph-drouhin-2020.jpg"
+  },
+  {
+    "slug": "pomerol-chateau-lynch-bages-2018",
+    "nom": "Pomerol",
+    "domaine": "Château Lynch-Bages",
+    "année": 2018,
+    "prix": 25.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pomerol-chateau-lynch-bages-2018.jpg"
+  },
+  {
+    "slug": "pomerol-chateau-lynch-bages-2022",
+    "nom": "Pomerol",
+    "domaine": "Château Lynch-Bages",
+    "année": 2022,
+    "prix": 34.5,
+    "couleur": "rose",
+    "imageUrl": "/vins/pomerol-chateau-lynch-bages-2022.jpg"
+  },
+  {
+    "slug": "vouvray-les-terrasses-domaine-vacheron-2019",
+    "nom": "Vouvray Les Terrasses",
+    "domaine": "Domaine Vacheron",
+    "année": 2019,
+    "prix": 57.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/vouvray-les-terrasses-domaine-vacheron-2019.jpg"
+  },
+  {
+    "slug": "hermitage-cuvee-prestige-beaucastel-2022",
+    "nom": "Hermitage Cuvée Prestige",
+    "domaine": "Beaucastel",
+    "année": 2022,
+    "prix": 18.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/hermitage-cuvee-prestige-beaucastel-2022.jpg"
+  },
+  {
+    "slug": "pouilly-fume-didier-dagueneau-2018",
+    "nom": "Pouilly-Fumé",
+    "domaine": "Didier Dagueneau",
+    "année": 2018,
+    "prix": 70,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pouilly-fume-didier-dagueneau-2018.jpg"
+  },
+  {
+    "slug": "chablis-les-pierres-domaine-leflaive-2022",
+    "nom": "Chablis Les Pierres",
+    "domaine": "Domaine Leflaive",
+    "année": 2022,
+    "prix": 38,
+    "couleur": "blanc",
+    "imageUrl": "/vins/chablis-les-pierres-domaine-leflaive-2022.jpg"
+  },
+  {
+    "slug": "vouvray-vieilles-vignes-francois-cotat-2019",
+    "nom": "Vouvray Vieilles Vignes",
+    "domaine": "François Cotat",
+    "année": 2019,
+    "prix": 22,
+    "couleur": "rouge",
+    "imageUrl": "/vins/vouvray-vieilles-vignes-francois-cotat-2019.jpg"
+  },
+  {
+    "slug": "pommard-cuvee-or-domaine-roumier-2019",
+    "nom": "Pommard Cuvée Or",
+    "domaine": "Domaine Roumier",
+    "année": 2019,
+    "prix": 87.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pommard-cuvee-or-domaine-roumier-2019.jpg"
+  },
+  {
+    "slug": "margaux-chateau-mouton-2018",
+    "nom": "Margaux",
+    "domaine": "Château Mouton",
+    "année": 2018,
+    "prix": 43.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/margaux-chateau-mouton-2018.jpg"
+  },
+  {
+    "slug": "hermitage-rose-de-saignee-beaucastel-2020",
+    "nom": "Hermitage Rosé de Saignée",
+    "domaine": "Beaucastel",
+    "année": 2020,
+    "prix": 38,
+    "couleur": "rose",
+    "imageUrl": "/vins/hermitage-rose-de-saignee-beaucastel-2020.jpg"
+  },
+  {
+    "slug": "sancerre-didier-dagueneau-2022",
+    "nom": "Sancerre",
+    "domaine": "Didier Dagueneau",
+    "année": 2022,
+    "prix": 61.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sancerre-didier-dagueneau-2022.jpg"
+  },
+  {
+    "slug": "crozes-hermitage-paul-jaboulet-2023",
+    "nom": "Crozes-Hermitage",
+    "domaine": "Paul Jaboulet",
+    "année": 2023,
+    "prix": 31.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/crozes-hermitage-paul-jaboulet-2023.jpg"
+  },
+  {
+    "slug": "champagne-les-pierres-ruinart-2018",
+    "nom": "Champagne Les Pierres",
+    "domaine": "Ruinart",
+    "année": 2018,
+    "prix": 141.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-les-pierres-ruinart-2018.jpg"
+  },
+  {
+    "slug": "gigondas-plaisir-domaine-du-vieux-telegraphe-2018",
+    "nom": "Gigondas Plaisir",
+    "domaine": "Domaine du Vieux Télégraphe",
+    "année": 2018,
+    "prix": 84.5,
+    "couleur": "rose",
+    "imageUrl": "/vins/gigondas-plaisir-domaine-du-vieux-telegraphe-2018.jpg"
+  },
+  {
+    "slug": "beaune-elegance-domaine-roumier-2021",
+    "nom": "Beaune Élégance",
+    "domaine": "Domaine Roumier",
+    "année": 2021,
+    "prix": 54,
+    "couleur": "blanc",
+    "imageUrl": "/vins/beaune-elegance-domaine-roumier-2021.jpg"
+  },
+  {
+    "slug": "chablis-elegance-domaine-de-la-romanee-conti-2022",
+    "nom": "Chablis Élégance",
+    "domaine": "Domaine de la Romanée-Conti",
+    "année": 2022,
+    "prix": 277.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/chablis-elegance-domaine-de-la-romanee-conti-2022.jpg"
+  },
+  {
+    "slug": "pauillac-chateau-mouton-2018",
+    "nom": "Pauillac",
+    "domaine": "Château Mouton",
+    "année": 2018,
+    "prix": 89,
+    "couleur": "rose",
+    "imageUrl": "/vins/pauillac-chateau-mouton-2018.jpg"
+  },
+  {
+    "slug": "champagne-veuve-clicquot-2018",
+    "nom": "Champagne",
+    "domaine": "Veuve Clicquot",
+    "année": 2018,
+    "prix": 79,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-veuve-clicquot-2018.jpg"
+  },
+  {
+    "slug": "champagne-les-pierres-pol-roger-2019",
+    "nom": "Champagne Les Pierres",
+    "domaine": "Pol Roger",
+    "année": 2019,
+    "prix": 51.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-les-pierres-pol-roger-2019.jpg"
+  },
+  {
+    "slug": "chinon-francois-cotat-2018",
+    "nom": "Chinon",
+    "domaine": "François Cotat",
+    "année": 2018,
+    "prix": 77.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/chinon-francois-cotat-2018.jpg"
+  },
+  {
+    "slug": "gigondas-domaine-du-vieux-telegraphe-2020",
+    "nom": "Gigondas",
+    "domaine": "Domaine du Vieux Télégraphe",
+    "année": 2020,
+    "prix": 20.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/gigondas-domaine-du-vieux-telegraphe-2020.jpg"
+  },
+  {
+    "slug": "sauternes-elegance-chateau-ausone-2021",
+    "nom": "Sauternes Élégance",
+    "domaine": "Château Ausone",
+    "année": 2021,
+    "prix": 74,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sauternes-elegance-chateau-ausone-2021.jpg"
+  },
+  {
+    "slug": "muscadet-plaisir-charles-joguet-2019",
+    "nom": "Muscadet Plaisir",
+    "domaine": "Charles Joguet",
+    "année": 2019,
+    "prix": 55.5,
+    "couleur": "rose",
+    "imageUrl": "/vins/muscadet-plaisir-charles-joguet-2019.jpg"
+  },
+  {
+    "slug": "chablis-domaine-roumier-2019",
+    "nom": "Chablis",
+    "domaine": "Domaine Roumier",
+    "année": 2019,
+    "prix": 90,
+    "couleur": "blanc",
+    "imageUrl": "/vins/chablis-domaine-roumier-2019.jpg"
+  },
+  {
+    "slug": "sancerre-elegance-domaine-huet-2023",
+    "nom": "Sancerre Élégance",
+    "domaine": "Domaine Huet",
+    "année": 2023,
+    "prix": 55.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sancerre-elegance-domaine-huet-2023.jpg"
+  },
+  {
+    "slug": "muscadet-cuvee-prestige-francois-cotat-2021",
+    "nom": "Muscadet Cuvée Prestige",
+    "domaine": "François Cotat",
+    "année": 2021,
+    "prix": 18.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/muscadet-cuvee-prestige-francois-cotat-2021.jpg"
+  },
+  {
+    "slug": "sancerre-charles-joguet-2019",
+    "nom": "Sancerre",
+    "domaine": "Charles Joguet",
+    "année": 2019,
+    "prix": 23.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sancerre-charles-joguet-2019.jpg"
+  },
+  {
+    "slug": "pommard-domaine-coche-dury-2021",
+    "nom": "Pommard",
+    "domaine": "Domaine Coche-Dury",
+    "année": 2021,
+    "prix": 186.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/pommard-domaine-coche-dury-2021.jpg"
+  },
+  {
+    "slug": "sauternes-chateau-haut-brion-2022",
+    "nom": "Sauternes",
+    "domaine": "Château Haut-Brion",
+    "année": 2022,
+    "prix": 30,
+    "couleur": "rouge",
+    "imageUrl": "/vins/sauternes-chateau-haut-brion-2022.jpg"
+  },
+  {
+    "slug": "champagne-les-pierres-krug-2023",
+    "nom": "Champagne Les Pierres",
+    "domaine": "Krug",
+    "année": 2023,
+    "prix": 144,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-les-pierres-krug-2023.jpg"
+  },
+  {
+    "slug": "sylvaner-trimbach-2022",
+    "nom": "Sylvaner",
+    "domaine": "Trimbach",
+    "année": 2022,
+    "prix": 79.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sylvaner-trimbach-2022.jpg"
+  },
+  {
+    "slug": "pommard-domaine-dujac-2023",
+    "nom": "Pommard",
+    "domaine": "Domaine Dujac",
+    "année": 2023,
+    "prix": 55,
+    "couleur": "rouge",
+    "imageUrl": "/vins/pommard-domaine-dujac-2023.jpg"
+  },
+  {
+    "slug": "sauternes-chateau-lafite-2022",
+    "nom": "Sauternes",
+    "domaine": "Château Lafite",
+    "année": 2022,
+    "prix": 453.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/sauternes-chateau-lafite-2022.jpg"
+  },
+  {
+    "slug": "sancerre-cuvee-or-francois-cotat-2020",
+    "nom": "Sancerre Cuvée Or",
+    "domaine": "François Cotat",
+    "année": 2020,
+    "prix": 58.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sancerre-cuvee-or-francois-cotat-2020.jpg"
+  },
+  {
+    "slug": "pommard-cuvee-tradition-louis-jadot-2023",
+    "nom": "Pommard Cuvée Tradition",
+    "domaine": "Louis Jadot",
+    "année": 2023,
+    "prix": 63,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pommard-cuvee-tradition-louis-jadot-2023.jpg"
+  },
+  {
+    "slug": "cote-rotie-beaucastel-2018",
+    "nom": "Côte-Rôtie",
+    "domaine": "Beaucastel",
+    "année": 2018,
+    "prix": 78,
+    "couleur": "rose",
+    "imageUrl": "/vins/cote-rotie-beaucastel-2018.jpg"
+  },
+  {
+    "slug": "meursault-domaine-dujac-2022",
+    "nom": "Meursault",
+    "domaine": "Domaine Dujac",
+    "année": 2022,
+    "prix": 17,
+    "couleur": "rose",
+    "imageUrl": "/vins/meursault-domaine-dujac-2022.jpg"
+  },
+  {
+    "slug": "vouvray-les-terrasses-didier-dagueneau-2019",
+    "nom": "Vouvray Les Terrasses",
+    "domaine": "Didier Dagueneau",
+    "année": 2019,
+    "prix": 46,
+    "couleur": "rouge",
+    "imageUrl": "/vins/vouvray-les-terrasses-didier-dagueneau-2019.jpg"
+  },
+  {
+    "slug": "muscadet-domaine-vacheron-2023",
+    "nom": "Muscadet",
+    "domaine": "Domaine Vacheron",
+    "année": 2023,
+    "prix": 67.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/muscadet-domaine-vacheron-2023.jpg"
+  },
+  {
+    "slug": "gevrey-chambertin-domaine-de-la-romanee-conti-2020",
+    "nom": "Gevrey-Chambertin",
+    "domaine": "Domaine de la Romanée-Conti",
+    "année": 2020,
+    "prix": 562.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/gevrey-chambertin-domaine-de-la-romanee-conti-2020.jpg"
+  },
+  {
+    "slug": "riesling-terroir-calcaire-marcel-deiss-2021",
+    "nom": "Riesling Terroir Calcaire",
+    "domaine": "Marcel Deiss",
+    "année": 2021,
+    "prix": 37,
+    "couleur": "blanc",
+    "imageUrl": "/vins/riesling-terroir-calcaire-marcel-deiss-2021.jpg"
+  },
+  {
+    "slug": "pomerol-grande-reserve-chateau-latour-2020",
+    "nom": "Pomerol Grande Réserve",
+    "domaine": "Château Latour",
+    "année": 2020,
+    "prix": 384.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/pomerol-grande-reserve-chateau-latour-2020.jpg"
+  },
+  {
+    "slug": "chablis-louis-jadot-2021",
+    "nom": "Chablis",
+    "domaine": "Louis Jadot",
+    "année": 2021,
+    "prix": 45,
+    "couleur": "blanc",
+    "imageUrl": "/vins/chablis-louis-jadot-2021.jpg"
+  },
+  {
+    "slug": "meursault-domaine-dujac-2021",
+    "nom": "Meursault",
+    "domaine": "Domaine Dujac",
+    "année": 2021,
+    "prix": 67,
+    "couleur": "rose",
+    "imageUrl": "/vins/meursault-domaine-dujac-2021.jpg"
+  },
+  {
+    "slug": "pauillac-ete-chateau-mouton-2021",
+    "nom": "Pauillac Été",
+    "domaine": "Château Mouton",
+    "année": 2021,
+    "prix": 67,
+    "couleur": "rose",
+    "imageUrl": "/vins/pauillac-ete-chateau-mouton-2021.jpg"
+  },
+  {
+    "slug": "champagne-terroir-calcaire-pol-roger-2021",
+    "nom": "Champagne Terroir Calcaire",
+    "domaine": "Pol Roger",
+    "année": 2021,
+    "prix": 84.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-terroir-calcaire-pol-roger-2021.jpg"
+  },
+  {
+    "slug": "margaux-chateau-margaux-2020",
+    "nom": "Margaux",
+    "domaine": "Château Margaux",
+    "année": 2020,
+    "prix": 520.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/margaux-chateau-margaux-2020.jpg"
+  },
+  {
+    "slug": "pouilly-fume-domaine-vacheron-2018",
+    "nom": "Pouilly-Fumé",
+    "domaine": "Domaine Vacheron",
+    "année": 2018,
+    "prix": 52,
+    "couleur": "rouge",
+    "imageUrl": "/vins/pouilly-fume-domaine-vacheron-2018.jpg"
+  },
+  {
+    "slug": "margaux-chateau-margaux-2019",
+    "nom": "Margaux",
+    "domaine": "Château Margaux",
+    "année": 2019,
+    "prix": 359,
+    "couleur": "rose",
+    "imageUrl": "/vins/margaux-chateau-margaux-2019.jpg"
+  },
+  {
+    "slug": "hermitage-cuvee-prestige-domaine-du-vieux-telegraphe-2018",
+    "nom": "Hermitage Cuvée Prestige",
+    "domaine": "Domaine du Vieux Télégraphe",
+    "année": 2018,
+    "prix": 13.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/hermitage-cuvee-prestige-domaine-du-vieux-telegraphe-2018.jpg"
+  },
+  {
+    "slug": "pinot-gris-hugel-2020",
+    "nom": "Pinot Gris",
+    "domaine": "Hugel",
+    "année": 2020,
+    "prix": 38,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pinot-gris-hugel-2020.jpg"
+  },
+  {
+    "slug": "chinon-charles-joguet-2022",
+    "nom": "Chinon",
+    "domaine": "Charles Joguet",
+    "année": 2022,
+    "prix": 18,
+    "couleur": "rouge",
+    "imageUrl": "/vins/chinon-charles-joguet-2022.jpg"
+  },
+  {
+    "slug": "pommard-les-terrasses-domaine-coche-dury-2020",
+    "nom": "Pommard Les Terrasses",
+    "domaine": "Domaine Coche-Dury",
+    "année": 2020,
+    "prix": 466,
+    "couleur": "rouge",
+    "imageUrl": "/vins/pommard-les-terrasses-domaine-coche-dury-2020.jpg"
+  },
+  {
+    "slug": "crozes-hermitage-cuvee-tradition-guigal-2021",
+    "nom": "Crozes-Hermitage Cuvée Tradition",
+    "domaine": "Guigal",
+    "année": 2021,
+    "prix": 63,
+    "couleur": "blanc",
+    "imageUrl": "/vins/crozes-hermitage-cuvee-tradition-guigal-2021.jpg"
+  },
+  {
+    "slug": "sylvaner-terroir-calcaire-weinbach-2021",
+    "nom": "Sylvaner Terroir Calcaire",
+    "domaine": "Weinbach",
+    "année": 2021,
+    "prix": 62,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sylvaner-terroir-calcaire-weinbach-2021.jpg"
+  },
+  {
+    "slug": "saint-emilion-elegance-chateau-mouton-2023",
+    "nom": "Saint-Émilion Élégance",
+    "domaine": "Château Mouton",
+    "année": 2023,
+    "prix": 40,
+    "couleur": "blanc",
+    "imageUrl": "/vins/saint-emilion-elegance-chateau-mouton-2023.jpg"
+  },
+  {
+    "slug": "muscadet-c-ur-de-rose-domaine-huet-2022",
+    "nom": "Muscadet Cœur de Rosé",
+    "domaine": "Domaine Huet",
+    "année": 2022,
+    "prix": 89,
+    "couleur": "rose",
+    "imageUrl": "/vins/muscadet-c-ur-de-rose-domaine-huet-2022.jpg"
+  },
+  {
+    "slug": "sancerre-charles-joguet-2019",
+    "nom": "Sancerre",
+    "domaine": "Charles Joguet",
+    "année": 2019,
+    "prix": 10.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/sancerre-charles-joguet-2019.jpg"
+  },
+  {
+    "slug": "chablis-louis-jadot-2020",
+    "nom": "Chablis",
+    "domaine": "Louis Jadot",
+    "année": 2020,
+    "prix": 12.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/chablis-louis-jadot-2020.jpg"
+  },
+  {
+    "slug": "pauillac-chateau-petrus-2020",
+    "nom": "Pauillac",
+    "domaine": "Château Pétrus",
+    "année": 2020,
+    "prix": 521.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/pauillac-chateau-petrus-2020.jpg"
+  },
+  {
+    "slug": "margaux-chateau-ausone-2018",
+    "nom": "Margaux",
+    "domaine": "Château Ausone",
+    "année": 2018,
+    "prix": 77.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/margaux-chateau-ausone-2018.jpg"
+  },
+  {
+    "slug": "champagne-veuve-clicquot-2023",
+    "nom": "Champagne",
+    "domaine": "Veuve Clicquot",
+    "année": 2023,
+    "prix": 156,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-veuve-clicquot-2023.jpg"
+  },
+  {
+    "slug": "pomerol-ete-chateau-haut-brion-2022",
+    "nom": "Pomerol Été",
+    "domaine": "Château Haut-Brion",
+    "année": 2022,
+    "prix": 80,
+    "couleur": "rose",
+    "imageUrl": "/vins/pomerol-ete-chateau-haut-brion-2022.jpg"
+  },
+  {
+    "slug": "beaune-vieilles-vignes-domaine-coche-dury-2018",
+    "nom": "Beaune Vieilles Vignes",
+    "domaine": "Domaine Coche-Dury",
+    "année": 2018,
+    "prix": 311.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/beaune-vieilles-vignes-domaine-coche-dury-2018.jpg"
+  },
+  {
+    "slug": "champagne-dom-perignon-2019",
+    "nom": "Champagne",
+    "domaine": "Dom Pérignon",
+    "année": 2019,
+    "prix": 57.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-dom-perignon-2019.jpg"
+  },
+  {
+    "slug": "margaux-chateau-latour-2020",
+    "nom": "Margaux",
+    "domaine": "Château Latour",
+    "année": 2020,
+    "prix": 542.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/margaux-chateau-latour-2020.jpg"
+  },
+  {
+    "slug": "meursault-les-terrasses-domaine-leflaive-2022",
+    "nom": "Meursault Les Terrasses",
+    "domaine": "Domaine Leflaive",
+    "année": 2022,
+    "prix": 47.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/meursault-les-terrasses-domaine-leflaive-2022.jpg"
+  },
+  {
+    "slug": "muscadet-c-ur-de-rose-charles-joguet-2021",
+    "nom": "Muscadet Cœur de Rosé",
+    "domaine": "Charles Joguet",
+    "année": 2021,
+    "prix": 45.5,
+    "couleur": "rose",
+    "imageUrl": "/vins/muscadet-c-ur-de-rose-charles-joguet-2021.jpg"
+  },
+  {
+    "slug": "saint-emilion-cuvee-prestige-chateau-petrus-2018",
+    "nom": "Saint-Émilion Cuvée Prestige",
+    "domaine": "Château Pétrus",
+    "année": 2018,
+    "prix": 460,
+    "couleur": "rouge",
+    "imageUrl": "/vins/saint-emilion-cuvee-prestige-chateau-petrus-2018.jpg"
+  },
+  {
+    "slug": "muscadet-domaine-huet-2020",
+    "nom": "Muscadet",
+    "domaine": "Domaine Huet",
+    "année": 2020,
+    "prix": 39.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/muscadet-domaine-huet-2020.jpg"
+  },
+  {
+    "slug": "champagne-veuve-clicquot-2021",
+    "nom": "Champagne",
+    "domaine": "Veuve Clicquot",
+    "année": 2021,
+    "prix": 133,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-veuve-clicquot-2021.jpg"
+  },
+  {
+    "slug": "pommard-domaine-dujac-2018",
+    "nom": "Pommard",
+    "domaine": "Domaine Dujac",
+    "année": 2018,
+    "prix": 67,
+    "couleur": "rouge",
+    "imageUrl": "/vins/pommard-domaine-dujac-2018.jpg"
+  },
+  {
+    "slug": "gewurztraminer-hugel-2022",
+    "nom": "Gewurztraminer",
+    "domaine": "Hugel",
+    "année": 2022,
+    "prix": 75.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/gewurztraminer-hugel-2022.jpg"
+  },
+  {
+    "slug": "gewurztraminer-elegance-trimbach-2019",
+    "nom": "Gewurztraminer Élégance",
+    "domaine": "Trimbach",
+    "année": 2019,
+    "prix": 89.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/gewurztraminer-elegance-trimbach-2019.jpg"
+  },
+  {
+    "slug": "muscadet-charles-joguet-2020",
+    "nom": "Muscadet",
+    "domaine": "Charles Joguet",
+    "année": 2020,
+    "prix": 69.5,
+    "couleur": "rose",
+    "imageUrl": "/vins/muscadet-charles-joguet-2020.jpg"
+  },
+  {
+    "slug": "champagne-dom-perignon-2020",
+    "nom": "Champagne",
+    "domaine": "Dom Pérignon",
+    "année": 2020,
+    "prix": 65.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-dom-perignon-2020.jpg"
+  },
+  {
+    "slug": "pauillac-chateau-haut-brion-2023",
+    "nom": "Pauillac",
+    "domaine": "Château Haut-Brion",
+    "année": 2023,
+    "prix": 56,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pauillac-chateau-haut-brion-2023.jpg"
+  },
+  {
+    "slug": "gewurztraminer-marcel-deiss-2023",
+    "nom": "Gewurztraminer",
+    "domaine": "Marcel Deiss",
+    "année": 2023,
+    "prix": 71.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/gewurztraminer-marcel-deiss-2023.jpg"
+  },
+  {
+    "slug": "pinot-gris-zind-humbrecht-2019",
+    "nom": "Pinot Gris",
+    "domaine": "Zind-Humbrecht",
+    "année": 2019,
+    "prix": 27.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/pinot-gris-zind-humbrecht-2019.jpg"
+  },
+  {
+    "slug": "margaux-c-ur-de-rose-chateau-haut-brion-2018",
+    "nom": "Margaux Cœur de Rosé",
+    "domaine": "Château Haut-Brion",
+    "année": 2018,
+    "prix": 17.5,
+    "couleur": "rose",
+    "imageUrl": "/vins/margaux-c-ur-de-rose-chateau-haut-brion-2018.jpg"
+  },
+  {
+    "slug": "beaune-domaine-coche-dury-2023",
+    "nom": "Beaune",
+    "domaine": "Domaine Coche-Dury",
+    "année": 2023,
+    "prix": 131.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/beaune-domaine-coche-dury-2023.jpg"
+  },
+  {
+    "slug": "vouvray-cuvee-prestige-didier-dagueneau-2023",
+    "nom": "Vouvray Cuvée Prestige",
+    "domaine": "Didier Dagueneau",
+    "année": 2023,
+    "prix": 71.5,
+    "couleur": "rouge",
+    "imageUrl": "/vins/vouvray-cuvee-prestige-didier-dagueneau-2023.jpg"
+  },
+  {
+    "slug": "champagne-terroir-calcaire-moet-chandon-2022",
+    "nom": "Champagne Terroir Calcaire",
+    "domaine": "Moët & Chandon",
+    "année": 2022,
+    "prix": 88.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-terroir-calcaire-moet-chandon-2022.jpg"
+  },
+  {
+    "slug": "cote-rotie-chapoutier-2021",
+    "nom": "Côte-Rôtie",
+    "domaine": "Chapoutier",
+    "année": 2021,
+    "prix": 47.5,
+    "couleur": "blanc",
+    "imageUrl": "/vins/cote-rotie-chapoutier-2021.jpg"
+  },
+  {
+    "slug": "gewurztraminer-marcel-deiss-2018",
+    "nom": "Gewurztraminer",
+    "domaine": "Marcel Deiss",
+    "année": 2018,
+    "prix": 26,
+    "couleur": "blanc",
+    "imageUrl": "/vins/gewurztraminer-marcel-deiss-2018.jpg"
+  },
+  {
+    "slug": "champagne-dom-perignon-2018",
+    "nom": "Champagne",
+    "domaine": "Dom Pérignon",
+    "année": 2018,
+    "prix": 167,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-dom-perignon-2018.jpg"
+  },
+  {
+    "slug": "champagne-veuve-clicquot-2023",
+    "nom": "Champagne",
+    "domaine": "Veuve Clicquot",
+    "année": 2023,
+    "prix": 179,
+    "couleur": "blanc",
+    "imageUrl": "/vins/champagne-veuve-clicquot-2023.jpg"
+  },
+  {
+    "slug": "chablis-domaine-leflaive-2023",
+    "nom": "Chablis",
+    "domaine": "Domaine Leflaive",
+    "année": 2023,
+    "prix": 35,
+    "couleur": "blanc",
+    "imageUrl": "/vins/chablis-domaine-leflaive-2023.jpg"
+  }
+]

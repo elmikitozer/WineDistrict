@@ -3,15 +3,7 @@ import { notFound } from 'next/navigation';
 import CavistesModal from '@/components/CavistesModal';
 import Image from 'next/image';
 import Link from 'next/link';
-function toImageSrc(name: string | null): string {
-  if (!name) return '/window.svg';
-  if (name.startsWith('http://') || name.startsWith('https://')) return name;
-  if (name.startsWith('/')) return name; // already a public path
-  const base = process.env.SUPABASE_URL;
-  const bucket = process.env.SUPABASE_BUCKET || 'images';
-  if (base) return `${base}/storage/v1/object/public/${bucket}/vins/${name}`;
-  return `/vins/${name}`;
-}
+import { getVinImageUrl } from '@/lib/vinImage';
 
 // 🧠 SEO dynamique par fiche vin
 import type { Metadata } from 'next';
@@ -82,8 +74,8 @@ export default async function Page({
 
   const cavistes = vin.stocks;
   const nbCavistes = cavistes.length;
-  // Use the DB value directly if it's an absolute URL; otherwise treat it as a bare filename that may still be local
-  const srcImageVin: string = toImageSrc(vin.imageFile);
+  // Générer l'URL de l'image (vraie image ou placeholder dynamique)
+  const srcImageVin: string = getVinImageUrl(vin);
 
   return (
     <main className="max-w-6xl mx-auto py-16 px-6">
