@@ -22,19 +22,24 @@ export function getVinImageUrl(vin: VinImageData): string {
     if (imageFile.startsWith('http://') || imageFile.startsWith('https://')) {
       return imageFile;
     }
-    // Chemin absolu
+    // Chemin absolu local
     if (imageFile.startsWith('/')) {
       return imageFile;
     }
-    // Fichier local dans /public/vins/
+    // Nom de fichier simple (ex: "vin-54.webp" ou "3.png")
+    // → On construit l'URL Supabase ou le chemin local
     if (imageFile.includes('.')) {
-      return `/vins/${imageFile}`;
-    }
-    // Fichier Supabase
-    const base = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-    const bucket = process.env.SUPABASE_BUCKET || 'images';
-    if (base) {
-      return `${base}/storage/v1/object/public/${bucket}/${imageFile}`;
+      // Vérifier si Supabase est configuré
+      const base = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+      const bucket = process.env.SUPABASE_BUCKET || 'images';
+
+      if (base) {
+        // Image sur Supabase
+        return `${base}/storage/v1/object/public/${bucket}/vins/${imageFile}`;
+      } else {
+        // Fallback : image locale dans /public/vins/
+        return `/vins/${imageFile}`;
+      }
     }
   }
 
