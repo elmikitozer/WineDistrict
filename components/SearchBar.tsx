@@ -9,7 +9,7 @@ type Vin = {
   id: number;
   nom: string;
   domaine: string;
-  année: number;
+  annee: number; // Sans accent (correspond à l'API)
 };
 
 export default function SearchBar() {
@@ -80,7 +80,7 @@ export default function SearchBar() {
             >
               <span className="font-medium text-gray-800">{vin.nom}</span>{' '}
               <span className="text-gray-500">({vin.domaine})</span>
-              <span className="text-gray-600"> - {vin.année}</span>
+              <span className="text-gray-600"> - {vin.annee}</span>
             </li>
           ))}
         </ul>
