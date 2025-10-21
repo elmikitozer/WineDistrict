@@ -153,7 +153,7 @@ function SignupContent() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 space-y-4">
+    <div className="max-w-2xl mx-auto p-6 space-y-4">
       <h1 className="text-2xl font-semibold">Créer un compte</h1>
       <p className="text-sm text-gray-600">
         Inscription ouverte aux clients. Les cavistes doivent utiliser un lien d&apos;invitation.
