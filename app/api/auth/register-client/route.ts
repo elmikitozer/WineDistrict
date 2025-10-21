@@ -14,14 +14,24 @@ function getSecret(): Uint8Array {
 }
 
 // POST /api/auth/register-client
-// Body: { email, password }
+// Body: { nom, prenom, telephone, email, password }
 export async function POST(req: Request) {
-  const body = (await req.json().catch(() => ({}))) as { email?: string; password?: string };
+  const body = (await req.json().catch(() => ({}))) as {
+    nom?: string;
+    prenom?: string;
+    telephone?: string;
+    email?: string;
+    password?: string;
+  };
+  const nom = typeof body.nom === 'string' ? body.nom.trim() : '';
+  const prenom = typeof body.prenom === 'string' ? body.prenom.trim() : '';
+  const telephone = typeof body.telephone === 'string' ? body.telephone.trim() : '';
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
   const password = typeof body.password === 'string' ? body.password : '';
-  if (!email || !password || password.length < 8) {
+
+  if (!nom || !prenom || !telephone || !email || !password || password.length < 8) {
     return NextResponse.json(
-      { error: 'Email valide et mot de passe (min 8) requis' },
+      { error: 'Nom, prénom, téléphone, email et mot de passe (min 8) requis' },
       { status: 400 }
     );
   }
@@ -44,12 +54,20 @@ export async function POST(req: Request) {
     prisma as unknown as {
       user?: {
         create: (args: {
-          data: { id: string; email: string; passwordHash: string; role: 'CLIENT' };
+          data: {
+            id: string;
+            nom: string;
+            prenom: string;
+            telephone: string;
+            email: string;
+            passwordHash: string;
+            role: 'CLIENT';
+          };
         }) => Promise<{ id: string; role: string }>;
       };
     }
   ).user?.create({
-    data: { id, email, passwordHash, role: 'CLIENT' },
+    data: { id, nom, prenom, telephone, email, passwordHash, role: 'CLIENT' },
   });
   if (!user)
     return NextResponse.json({ error: 'Création utilisateur impossible' }, { status: 500 });

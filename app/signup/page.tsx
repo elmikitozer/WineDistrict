@@ -6,6 +6,9 @@ import { Suspense } from 'react';
 function SignupContent() {
   const router = useRouter();
   const params = useSearchParams();
+  const [nom, setNom] = useState('');
+  const [prenom, setPrenom] = useState('');
+  const [telephone, setTelephone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -13,6 +16,29 @@ function SignupContent() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
+
+  // Validation du nom
+  const nomError = useMemo(() => {
+    if (!attemptedSubmit) return null;
+    if (!nom || nom.trim().length === 0) return 'Le nom est requis';
+    return null;
+  }, [nom, attemptedSubmit]);
+
+  // Validation du prénom
+  const prenomError = useMemo(() => {
+    if (!attemptedSubmit) return null;
+    if (!prenom || prenom.trim().length === 0) return 'Le prénom est requis';
+    return null;
+  }, [prenom, attemptedSubmit]);
+
+  // Validation du téléphone
+  const telephoneError = useMemo(() => {
+    if (!attemptedSubmit) return null;
+    if (!telephone || telephone.trim().length === 0) return 'Le numéro de téléphone est requis';
+    const phoneRegex = /^[0-9\s\-\+\(\)\.]+$/;
+    if (!phoneRegex.test(telephone)) return 'Format de téléphone invalide';
+    return null;
+  }, [telephone, attemptedSubmit]);
 
   // Validation de l'email
   const emailError = useMemo(() => {
@@ -42,17 +68,33 @@ function SignupContent() {
 
   const disabled = useMemo(() => {
     return (
-      !email || !email.includes('@') || !password || password.length < 8 || password !== confirm
+      !nom ||
+      nom.trim().length === 0 ||
+      !prenom ||
+      prenom.trim().length === 0 ||
+      !telephone ||
+      telephone.trim().length === 0 ||
+      !email ||
+      !email.includes('@') ||
+      !password ||
+      password.length < 8 ||
+      password !== confirm
     );
-  }, [email, password, confirm]);
+  }, [nom, prenom, telephone, email, password, confirm]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setAttemptedSubmit(true);
 
     if (disabled) {
-      // Afficher le premier message d'erreur trouvé (priorité : email > password > confirm)
-      if (emailError) {
+      // Afficher le premier message d'erreur trouvé (priorité : nom > prenom > telephone > email > password > confirm)
+      if (nomError) {
+        setError(nomError);
+      } else if (prenomError) {
+        setError(prenomError);
+      } else if (telephoneError) {
+        setError(telephoneError);
+      } else if (emailError) {
         setError(emailError);
       } else if (passwordError) {
         setError(passwordError);
@@ -68,7 +110,13 @@ function SignupContent() {
       const res = await fetch(`/api/auth/register-client`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
+        body: JSON.stringify({
+          nom: nom.trim(),
+          prenom: prenom.trim(),
+          telephone: telephone.trim(),
+          email: email.trim().toLowerCase(),
+          password,
+        }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Inscription impossible');
@@ -89,7 +137,13 @@ function SignupContent() {
 
   function handleButtonClick() {
     setAttemptedSubmit(true);
-    if (emailError) {
+    if (nomError) {
+      setError(nomError);
+    } else if (prenomError) {
+      setError(prenomError);
+    } else if (telephoneError) {
+      setError(telephoneError);
+    } else if (emailError) {
       setError(emailError);
     } else if (passwordError) {
       setError(passwordError);
@@ -113,6 +167,49 @@ function SignupContent() {
       )}
 
       <form onSubmit={onSubmit} className="space-y-3">
+        <div className="space-y-1">
+          <label className="block text-sm">Nom</label>
+          <input
+            type="text"
+            className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
+              nomError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
+            }`}
+            value={nom}
+            onChange={(e) => setNom(e.target.value)}
+            required
+          />
+          {nomError && <p className="text-xs text-red-600 mt-1">{nomError}</p>}
+        </div>
+
+        <div className="space-y-1">
+          <label className="block text-sm">Prénom</label>
+          <input
+            type="text"
+            className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
+              prenomError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
+            }`}
+            value={prenom}
+            onChange={(e) => setPrenom(e.target.value)}
+            required
+          />
+          {prenomError && <p className="text-xs text-red-600 mt-1">{prenomError}</p>}
+        </div>
+
+        <div className="space-y-1">
+          <label className="block text-sm">Téléphone</label>
+          <input
+            type="tel"
+            placeholder="Ex: 06 12 34 56 78"
+            className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
+              telephoneError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
+            }`}
+            value={telephone}
+            onChange={(e) => setTelephone(e.target.value)}
+            required
+          />
+          {telephoneError && <p className="text-xs text-red-600 mt-1">{telephoneError}</p>}
+        </div>
+
         <div className="space-y-1">
           <label className="block text-sm">Email</label>
           <input
