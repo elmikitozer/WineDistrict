@@ -47,7 +47,17 @@ export async function GET(req: Request) {
   const reservations = await prisma.reservation.findMany({
     where,
     orderBy: { date: 'desc' },
-    include: { vin: true },
+    include: { 
+      vin: true,
+      user: {
+        select: {
+          email: true,
+          nom: true,
+          prenom: true,
+          telephone: true,
+        },
+      },
+    },
   });
 
   return NextResponse.json({ items: reservations });

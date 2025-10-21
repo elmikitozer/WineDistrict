@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import Link from 'next/link';
+import QuantitySelector from './QuantitySelector';
 
 interface Caviste {
   id: number;
@@ -37,8 +38,14 @@ export default function CavistesModal({
   const [open, setOpen] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showAddedPopup, setShowAddedPopup] = useState(false);
+  const [quantities, setQuantities] = useState<Record<number, number>>({});
   const router = useRouter();
   const cart = useCart();
+
+  const getQuantity = (cavisteId: number) => quantities[cavisteId] || 1;
+  const setQuantity = (cavisteId: number, quantity: number) => {
+    setQuantities((prev) => ({ ...prev, [cavisteId]: quantity }));
+  };
 
   return (
     <>
@@ -79,43 +86,55 @@ export default function CavistesModal({
                     : `/cavistes/${stock.caviste!.id}`;
 
                   return (
-                    <li key={stock.id} className="border p-4 rounded-md">
-                      <Link
-                        href={cavisteUrl}
-                        className="font-medium text-gray-800 hover:text-rose-600 transition"
-                      >
-                        {stock.caviste!.nom}
-                      </Link>
-                      <p className="text-sm text-gray-500">{stock.caviste!.adresse}</p>
+                    <li key={stock.id} className="border p-4 rounded-md space-y-3">
+                      <div>
+                        <Link
+                          href={cavisteUrl}
+                          className="font-medium text-gray-800 hover:text-rose-600 transition"
+                        >
+                          {stock.caviste!.nom}
+                        </Link>
+                        <p className="text-sm text-gray-500">{stock.caviste!.adresse}</p>
+                      </div>
 
                       {isAuthenticated ? (
-                        <button
-                          onClick={() => {
-                          cart.addItem({
-                            vinId: stock.vinId,
-                            cavisteId: stock.caviste!.id,
-                            vinNom: vin.nom,
-                            vinDomaine: vin.domaine,
-                            vinAnnee: vin.année,
-                            vinCouleur: vin.couleur,
-                            cavisteNom: stock.caviste!.nom,
-                            cavisteAdresse: stock.caviste!.adresse,
-                            cavisteSlug: stock.caviste!.slug,
-                          });
-                            setShowAddedPopup(true);
-                            setTimeout(() => setShowAddedPopup(false), 2000);
-                          }}
-                          disabled={cart.isInCart(stock.vinId, stock.caviste!.id)}
-                          className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
-                        >
-                          {cart.isInCart(stock.vinId, stock.caviste!.id)
-                            ? 'Déjà dans le panier'
-                            : 'Ajouter au panier'}
-                        </button>
+                        <>
+                          <div className="flex items-center gap-3">
+                            <span className="text-sm font-medium text-gray-700">Quantité :</span>
+                            <QuantitySelector
+                              quantity={getQuantity(stock.caviste!.id)}
+                              onQuantityChange={(qty) => setQuantity(stock.caviste!.id, qty)}
+                            />
+                          </div>
+                          <button
+                            onClick={() => {
+                              cart.addItem({
+                                vinId: stock.vinId,
+                                cavisteId: stock.caviste!.id,
+                                vinNom: vin.nom,
+                                vinDomaine: vin.domaine,
+                                vinAnnee: vin.année,
+                                vinCouleur: vin.couleur,
+                                cavisteNom: stock.caviste!.nom,
+                                cavisteAdresse: stock.caviste!.adresse,
+                                cavisteSlug: stock.caviste!.slug,
+                                quantity: getQuantity(stock.caviste!.id),
+                              });
+                              setShowAddedPopup(true);
+                              setTimeout(() => setShowAddedPopup(false), 2000);
+                            }}
+                            disabled={cart.isInCart(stock.vinId, stock.caviste!.id)}
+                            className="w-full bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {cart.isInCart(stock.vinId, stock.caviste!.id)
+                              ? 'Déjà dans le panier'
+                              : 'Ajouter au panier'}
+                          </button>
+                        </>
                       ) : (
                         <button
                           onClick={() => setShowLoginPopup(true)}
-                          className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 mt-2"
+                          className="w-full bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700"
                         >
                           Ajouter au panier
                         </button>

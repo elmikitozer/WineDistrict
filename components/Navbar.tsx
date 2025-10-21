@@ -15,7 +15,13 @@ function Brand() {
   );
 }
 
-function DesktopLinks({ isAuthenticated, isCaviste }: { isAuthenticated?: boolean; isCaviste?: boolean }) {
+function DesktopLinks({
+  isAuthenticated,
+  isCaviste,
+}: {
+  isAuthenticated?: boolean;
+  isCaviste?: boolean;
+}) {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
@@ -222,7 +228,13 @@ export default function Navbar({ isAuthenticated, isCaviste }: NavbarProps) {
           </div>
         </div>
       </div>
-      {isOpen && <MobileMenu onClose={() => setIsOpen(false)} isAuthenticated={isAuthenticated} isCaviste={isCaviste} />}
+      {isOpen && (
+        <MobileMenu
+          onClose={() => setIsOpen(false)}
+          isAuthenticated={isAuthenticated}
+          isCaviste={isCaviste}
+        />
+      )}
     </nav>
   );
 }

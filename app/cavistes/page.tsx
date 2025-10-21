@@ -46,15 +46,27 @@ export default function CavistesPage() {
         {cavistes.map((caviste) => {
           const cavisteUrl = caviste.slug ? `/cavistes/${caviste.slug}` : `/cavistes/${caviste.id}`;
 
-          const cavisteImageUrl = caviste.imageUrl || `/api/caviste-placeholder?nom=${encodeURIComponent(caviste.nom)}`;
-          
+          const cavisteImageUrl =
+            caviste.imageUrl || `/api/caviste-placeholder?nom=${encodeURIComponent(caviste.nom)}`;
+
           return (
             <section
               key={caviste.id}
               className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition"
             >
-            <div className="flex gap-6 mb-6">
-              {/* Image caviste */}
+            <div className="flex gap-6 mb-6 items-start">
+              {/* Infos caviste */}
+              <div className="flex-1">
+                <Link
+                  href={cavisteUrl}
+                  className="text-xl font-semibold text-gray-800 hover:text-rose-600 transition"
+                >
+                  {caviste.nom}
+                </Link>
+                <p className="text-sm text-gray-500 mt-1">{caviste.adresse}</p>
+              </div>
+              
+              {/* Image caviste à droite */}
               <Link href={cavisteUrl} className="flex-shrink-0">
                 <div className="relative w-32 h-32 rounded-lg overflow-hidden bg-gray-100">
                   <Image
@@ -67,17 +79,6 @@ export default function CavistesPage() {
                   />
                 </div>
               </Link>
-              
-              {/* Infos caviste */}
-              <div className="flex-1">
-                <Link
-                  href={cavisteUrl}
-                  className="text-xl font-semibold text-gray-800 hover:text-rose-600 transition"
-                >
-                  {caviste.nom}
-                </Link>
-                <p className="text-sm text-gray-500 mt-1">{caviste.adresse}</p>
-              </div>
             </div>
 
               {caviste.stocks.length === 0 ? (

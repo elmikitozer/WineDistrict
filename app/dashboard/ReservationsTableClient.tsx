@@ -12,6 +12,12 @@ type ReservationItem = {
     domaine: string;
     année: number;
   };
+  user?: {
+    email: string;
+    nom?: string | null;
+    prenom?: string | null;
+    telephone?: string | null;
+  } | null;
 };
 
 function statusBadgeClass(s: string) {
@@ -102,17 +108,41 @@ export default function ReservationsTableClient() {
           <th className="text-left px-4 py-3">Vin</th>
           <th className="text-left px-4 py-3">Domaine</th>
           <th className="text-left px-4 py-3">Année</th>
+          <th className="text-left px-4 py-3">Client</th>
+          <th className="text-left px-4 py-3">Contact</th>
           <th className="text-left px-4 py-3">Date</th>
           <th className="text-left px-4 py-3">Statut</th>
           <th className="text-left px-4 py-3">Actions</th>
         </tr>
       </thead>
       <tbody>
-        {items.map((r) => (
+        {items.map((r) => {
+          const clientName = r.user?.prenom && r.user?.nom 
+            ? `${r.user.prenom} ${r.user.nom}` 
+            : r.user?.prenom || r.user?.nom || r.user?.email || 'Client';
+          
+          return (
           <tr key={r.id} className="border-t">
             <td className="px-4 py-3 font-medium">{r.vin.nom}</td>
             <td className="px-4 py-3">{r.vin.domaine}</td>
             <td className="px-4 py-3">{r.vin.année}</td>
+            <td className="px-4 py-3">
+              <div className="text-sm">
+                <div className="font-medium">{clientName}</div>
+                {r.user?.email && clientName !== r.user.email && (
+                  <div className="text-xs text-gray-500">{r.user.email}</div>
+                )}
+              </div>
+            </td>
+            <td className="px-4 py-3">
+              {r.user?.telephone ? (
+                <a href={`tel:${r.user.telephone}`} className="text-rose-600 hover:text-rose-800 text-xs">
+                  {r.user.telephone}
+                </a>
+              ) : (
+                <span className="text-xs text-gray-400">-</span>
+              )}
+            </td>
             <td className="px-4 py-3">{new Date(r.date).toLocaleString()}</td>
             <td className="px-4 py-3">
               <span className={`px-2 py-1 rounded text-xs ${statusBadgeClass(r.status)}`}>
@@ -123,7 +153,8 @@ export default function ReservationsTableClient() {
               <ReservationStatusControl id={r.id} initialStatus={r.status} />
             </td>
           </tr>
-        ))}
+          );
+        })}
       </tbody>
     </table>
   );

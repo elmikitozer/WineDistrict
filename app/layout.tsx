@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import NavbarServer from '../components/NavbarServer';
 import { CartProvider } from '../contexts/CartContext';
+import ScrollRestoration from '../components/ScrollRestoration';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="bg-white text-gray-900 font-sans">
         <CartProvider>
+          <ScrollRestoration />
           {/* Navbar renders session-aware via server wrapper */}
           <NavbarServer />
           <main className="min-h-screen">{children}</main>

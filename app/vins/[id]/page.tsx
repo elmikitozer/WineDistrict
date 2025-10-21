@@ -191,10 +191,15 @@ export default async function Page({
                       {vin.stocks.length >= 2 ? 's' : ''} !
                     </p>
                   )}
-                  <CavistesModal 
-                    cavistes={cavistes} 
+                  <CavistesModal
+                    cavistes={cavistes}
                     isAuthenticated={isAuthenticated}
-                    vin={{ nom: vin.nom, domaine: vin.domaine, année: vin.année, couleur: vin.couleur }}
+                    vin={{
+                      nom: vin.nom,
+                      domaine: vin.domaine,
+                      année: vin.année,
+                      couleur: vin.couleur,
+                    }}
                   />
                 </>
               ) : (

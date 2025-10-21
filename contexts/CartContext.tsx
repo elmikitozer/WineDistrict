@@ -12,14 +12,16 @@ export interface CartItem {
   cavisteNom: string;
   cavisteAdresse: string;
   cavisteSlug?: string | null;
+  quantity: number;
 }
 
 interface CartContextType {
   items: CartItem[];
+  itemCount: number;
   addItem: (item: CartItem) => void;
   removeItem: (vinId: number, cavisteId: number) => void;
+  updateQuantity: (vinId: number, cavisteId: number, quantity: number) => void;
   clearCart: () => void;
-  itemCount: number;
   isInCart: (vinId: number, cavisteId: number) => boolean;
 }
 
@@ -62,6 +64,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((prev) => prev.filter((i) => !(i.vinId === vinId && i.cavisteId === cavisteId)));
   };
 
+  const updateQuantity = (vinId: number, cavisteId: number, quantity: number) => {
+    setItems((prev) =>
+      prev.map((i) =>
+        i.vinId === vinId && i.cavisteId === cavisteId ? { ...i, quantity } : i
+      )
+    );
+  };
+
   const clearCart = () => {
     setItems([]);
   };
@@ -74,10 +84,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     <CartContext.Provider
       value={{
         items,
+        itemCount: items.length,
         addItem,
         removeItem,
+        updateQuantity,
         clearCart,
-        itemCount: items.length,
         isInCart,
       }}
     >

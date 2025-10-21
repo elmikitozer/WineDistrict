@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import QuantitySelector from '@/components/QuantitySelector';
 
 interface GroupedItems {
   cavisteNom: string;
@@ -18,11 +19,12 @@ interface GroupedItems {
     vinDomaine: string;
     vinAnnee: number;
     vinCouleur: string;
+    quantity: number;
   }>;
 }
 
 export default function CartPage() {
-  const { items, removeItem, clearCart, itemCount } = useCart();
+  const { items, removeItem, updateQuantity, clearCart, itemCount } = useCart();
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -141,61 +143,88 @@ export default function CartPage() {
             ? `/cavistes/${group.cavisteSlug}`
             : `/cavistes/${cavisteId}`;
 
+          const cavisteImageUrl = `/api/caviste-placeholder?nom=${encodeURIComponent(group.cavisteNom)}`;
+
           return (
             <div key={cavisteId} className="bg-white border-2 border-rose-100 rounded-xl shadow-sm">
               {/* Header caviste */}
-              <div className="bg-gradient-to-r from-rose-50 to-rose-100 p-4 border-b border-rose-200">
-              <Link 
-                href={cavisteUrl}
-                className="text-lg font-bold text-gray-900 hover:text-rose-600 transition"
-              >
-                {group.cavisteNom}
-              </Link>
-              <p className="text-sm text-gray-600">{group.cavisteAdresse}</p>
-              <p className="text-xs text-gray-500 mt-1">
-                {group.items.length} bouteille{group.items.length > 1 ? 's' : ''}
-              </p>
+              <div className="bg-gradient-to-r from-rose-50 to-rose-100 p-4 border-b border-rose-200 flex items-center gap-4">
+                <div className="flex-1">
+                  <Link
+                    href={cavisteUrl}
+                    className="text-lg font-bold text-gray-900 hover:text-rose-600 transition"
+                  >
+                    {group.cavisteNom}
+                  </Link>
+                  <p className="text-sm text-gray-600">{group.cavisteAdresse}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {group.items.length} bouteille{group.items.length > 1 ? 's' : ''}
+                  </p>
+                </div>
+                {/* Image caviste à droite */}
+                <Link href={cavisteUrl} className="flex-shrink-0">
+                  <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-white shadow-sm">
+                    <Image
+                      src={cavisteImageUrl}
+                      alt={group.cavisteNom}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+                </Link>
               </div>
 
               {/* Liste des vins */}
               <div className="p-4 space-y-3">
                 {group.items.map((item) => {
-                  const vinPlaceholder = `/api/wine-placeholder?nom=${encodeURIComponent(item.vinNom)}&domaine=${encodeURIComponent(item.vinDomaine)}&annee=${item.vinAnnee}&couleur=${item.vinCouleur}&variant=14`;
-                  
+                  const vinPlaceholder = `/api/wine-placeholder?nom=${encodeURIComponent(
+                    item.vinNom
+                  )}&domaine=${encodeURIComponent(item.vinDomaine)}&annee=${
+                    item.vinAnnee
+                  }&couleur=${item.vinCouleur}&variant=14`;
+
                   return (
-                  <div
-                    key={`${item.vinId}-${item.cavisteId}`}
-                    className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
-                  >
-                    {/* Image placeholder du vin */}
-                    <div className="w-12 h-16 bg-gray-100 rounded flex-shrink-0 overflow-hidden">
-                      <Image
-                        src={vinPlaceholder}
-                        alt={item.vinNom}
-                        width={48}
-                        height={64}
-                        className="object-cover w-full h-full"
-                        unoptimized
-                      />
-                    </div>
-
-                    {/* Infos vin */}
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-gray-900 truncate">{item.vinNom}</h4>
-                      <p className="text-sm text-gray-600 truncate">
-                        {item.vinDomaine} • {item.vinAnnee}
-                      </p>
-                    </div>
-
-                    {/* Bouton supprimer */}
-                    <button
-                      onClick={() => removeItem(item.vinId, item.cavisteId)}
-                      className="text-red-600 hover:text-red-800 transition p-2 hover:bg-red-100 rounded"
-                      aria-label="Retirer du panier"
+                    <div
+                      key={`${item.vinId}-${item.cavisteId}`}
+                      className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                     >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
+                      {/* Image placeholder du vin */}
+                      <div className="w-12 h-16 bg-gray-100 rounded flex-shrink-0 overflow-hidden">
+                        <Image
+                          src={vinPlaceholder}
+                          alt={item.vinNom}
+                          width={48}
+                          height={64}
+                          className="object-cover w-full h-full"
+                          unoptimized
+                        />
+                      </div>
+
+                      {/* Infos vin */}
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-gray-900 truncate">{item.vinNom}</h4>
+                        <p className="text-sm text-gray-600 truncate">
+                          {item.vinDomaine} • {item.vinAnnee}
+                        </p>
+                        <div className="mt-2">
+                          <QuantitySelector
+                            quantity={item.quantity}
+                            onQuantityChange={(qty) => updateQuantity(item.vinId, item.cavisteId, qty)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Bouton supprimer */}
+                      <button
+                        onClick={() => removeItem(item.vinId, item.cavisteId)}
+                        className="text-red-600 hover:text-red-800 transition p-2 hover:bg-red-100 rounded"
+                        aria-label="Retirer du panier"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
                   );
                 })}
               </div>
