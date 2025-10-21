@@ -2,8 +2,9 @@ import { prisma } from '@/lib/prisma';
 import { notFound, redirect } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin, Phone, Mail, Globe, Clock, Facebook, Instagram } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe, Clock, Facebook, Instagram, Star } from 'lucide-react';
 import { getVinImageUrl } from '@/lib/vinImage';
+import { getCavisteImageUrl } from '@/lib/cavisteImage';
 import { getCurrentUser } from '@/lib/auth';
 import FavoriteButton from '@/components/FavoriteButton';
 import type { Metadata } from 'next';
@@ -112,12 +113,15 @@ export default async function CavisteDetailPage({ params }: { params: Promise<{ 
       })
     : null;
 
+  const cavisteImageUrl = getCavisteImageUrl(caviste);
+
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
+      {/* Hero Section avec image */}
       <div className="bg-gradient-to-r from-rose-600 to-rose-800 text-white">
         <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="flex items-start justify-between gap-6">
+          <div className="flex items-start gap-8">
+            {/* Contenu texte */}
             <div className="flex-1">
               <h1 className="text-4xl font-bold mb-4">{caviste.nom}</h1>
               <div className="flex items-center gap-2 text-rose-100 mb-4">
@@ -125,33 +129,68 @@ export default async function CavisteDetailPage({ params }: { params: Promise<{ 
                 <p className="text-lg">{caviste.adresse}</p>
               </div>
               {caviste.description && (
-                <p className="text-rose-50 text-lg leading-relaxed max-w-2xl">
+                <p className="text-rose-50 text-lg leading-relaxed">
                   {caviste.description}
                 </p>
               )}
             </div>
 
-            {/* Bouton Favori */}
-            {user && <FavoriteButton cavisteId={caviste.id} initialIsFavorite={!!isFavorite} />}
+            {/* Image caviste à droite */}
+            <div className="flex-shrink-0">
+              <div className="relative w-48 h-48 rounded-2xl overflow-hidden border-4 border-white shadow-2xl bg-white">
+                <Image
+                  src={cavisteImageUrl}
+                  alt={caviste.nom}
+                  fill
+                  sizes="192px"
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Image principale */}
-      {caviste.imageUrl && (
-        <div className="max-w-6xl mx-auto px-6 -mt-8">
-          <div className="relative h-96 rounded-xl overflow-hidden shadow-2xl">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={caviste.imageUrl} alt={caviste.nom} className="w-full h-full object-cover" />
-          </div>
-        </div>
-      )}
 
       {/* Contenu principal */}
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Colonne principale */}
           <div className="lg:col-span-2 space-y-8">
+            {/* Google Maps */}
+            <section className="bg-white rounded-xl shadow-sm p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <MapPin className="w-6 h-6 text-rose-600" />
+                Localisation
+              </h2>
+
+              <div className="relative w-full h-96 rounded-lg overflow-hidden border border-gray-200">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY'}&q=${encodeURIComponent(
+                    caviste.adresse
+                  )}`}
+                />
+              </div>
+
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                  caviste.adresse
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 mt-4 text-rose-600 hover:text-rose-800 font-medium"
+              >
+                <MapPin className="w-4 h-4" />
+                Obtenir l&apos;itinéraire
+              </a>
+            </section>
+
             {/* Vins disponibles */}
             <section className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
@@ -208,6 +247,18 @@ export default async function CavisteDetailPage({ params }: { params: Promise<{ 
 
           {/* Sidebar */}
           <div className="space-y-6">
+            {/* Bouton Favori */}
+            {user && (
+              <section className="bg-white rounded-xl shadow-sm p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                    <Star className="w-5 h-5 text-rose-600" />
+                    Favoris
+                  </h3>
+                  <FavoriteButton cavisteId={caviste.id} initialIsFavorite={!!isFavorite} />
+                </div>
+              </section>
+            )}
             {/* Informations de contact */}
             <section className="bg-white rounded-xl shadow-sm p-6">
               <h3 className="font-bold text-gray-900 mb-4">Informations</h3>

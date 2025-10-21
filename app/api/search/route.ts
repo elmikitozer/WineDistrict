@@ -38,19 +38,23 @@ export async function GET(req: Request) {
         // Recherche combinée: texte ET année (priorité aux résultats qui matchent les deux)
         const like = `%${textWithoutYear}%`;
         const sql = Prisma.sql`
-          SELECT v.id, v.nom, v.domaine, v."année" AS "annee", v.prix, v."imageFile",
-            CASE
-              WHEN v."année" = ${year} AND
-                   (unaccent(v.nom) ILIKE unaccent(${like}) OR unaccent(v.domaine) ILIKE unaccent(${like}))
-              THEN 1
-              WHEN v."année" = ${year} THEN 2
-              ELSE 3
-            END AS priority
-          FROM "Vin" AS v
-          WHERE v."année" = ${year}
-             OR unaccent(v.nom) ILIKE unaccent(${like})
-             OR unaccent(v.domaine) ILIKE unaccent(${like})
-          ORDER BY priority ASC, v.nom ASC
+          WITH ranked AS (
+            SELECT v.id, v.nom, v.domaine, v."année", v.prix, v."imageFile",
+              CASE 
+                WHEN v."année" = ${year} AND 
+                     (unaccent(v.nom) ILIKE unaccent(${like}) OR unaccent(v.domaine) ILIKE unaccent(${like}))
+                THEN 1
+                WHEN v."année" = ${year} THEN 2
+                ELSE 3
+              END AS priority
+            FROM "Vin" AS v
+            WHERE v."année" = ${year}
+               OR unaccent(v.nom) ILIKE unaccent(${like})
+               OR unaccent(v.domaine) ILIKE unaccent(${like})
+          )
+          SELECT id, nom, domaine, "année" AS "annee", prix, "imageFile"
+          FROM ranked
+          ORDER BY priority ASC, nom ASC
           LIMIT 10
         `;
         rows = await prisma.$queryRaw(sql);
