@@ -153,6 +153,9 @@ https://*.vercel.app/*
 - `app/api/search/route.ts` - Logique de recherche refaite
 - `components/SearchBar.tsx` - Affichage résultats corrigé
 - `app/error.tsx` - Fix lint (Link au lieu de <a>)
+- `app/signup/page.tsx` - Formulaire inscription enrichi
+- `app/api/auth/register-client/route.ts` - API inscription mise à jour
+- `app/cavistes/[slug]/page.tsx` - Fix hydration error (iframe title)
 
 ### **Documentation :**
 
@@ -163,9 +166,11 @@ https://*.vercel.app/*
 
 ---
 
-## 🚀 Commits Pushés (12 commits)
+## 🚀 Commits Pushés (14 commits)
 
 ```
+defd02b feat: Ajout nom, prénom, téléphone à l'inscription client
+d41ebeb docs: Mise à jour récap - ajout fix hydration error
 29291bf fix: Hydration error - ajout title iframe Google Maps
 92c9272 docs: Récap session 21 Oct + TODO demain
 443a2bd docs: Format QUICKSTART_GOOGLE_API_RESTRICTIONS
@@ -327,6 +332,55 @@ npm run dev
 2. **Monitoring**
    - [ ] Sentry pour erreurs
    - [ ] Vercel Analytics
+
+---
+
+## 👤 **4. Inscription Client Enrichie**
+
+#### **Fonctionnalité Ajoutée :**
+
+**❌ AVANT :**
+
+- Inscription avec seulement email + mot de passe
+- Pas d'informations sur le client
+- Caviste ne connaît pas le nom du client lors des commandes
+
+**✅ APRÈS :**
+
+- Formulaire complet avec : Nom, Prénom, Téléphone, Email, Mot de passe
+- Validation de chaque champ
+- Informations sauvegardées dans la base de données
+- Affichées au caviste lors des commandes
+
+#### **Validations Ajoutées :**
+
+1. **Nom** : Non vide
+2. **Prénom** : Non vide
+3. **Téléphone** : Format valide (chiffres, espaces, tirets, +, parenthèses, points)
+4. **Email** : Format email valide
+5. **Mot de passe** : Minimum 8 caractères
+6. **Confirmation** : Doit correspondre au mot de passe
+
+#### **UX Améliorée :**
+
+- Messages d'erreur inline sous chaque champ
+- Bordure rouge si erreur
+- Priorité des erreurs (nom → prénom → téléphone → email → password → confirm)
+- Bouton grisé si formulaire invalide
+- Placeholder pour téléphone : "Ex: 06 12 34 56 78"
+- Type `tel` pour afficher clavier numérique sur mobile
+
+#### **Impact Métier :**
+
+✅ Meilleure identification des clients
+✅ Contact possible par téléphone
+✅ Informations complètes pour les cavistes lors des commandes
+✅ Conformité avec besoins métier
+
+**Fichiers modifiés :**
+
+- `app/signup/page.tsx` (formulaire)
+- `app/api/auth/register-client/route.ts` (API)
 
 ---
 
@@ -500,11 +554,12 @@ npm run dev
 
 ## ✅ Résumé de la Journée
 
-**3 Grosses Features Fixées :**
+**4 Grosses Features :**
 
 1. 🔍 Recherche rapide avec année (complètement refaite)
 2. 🔗 Normalisation tirets/espaces (flexible)
 3. 🔐 Google Maps multi-ports (documentation)
+4. 👤 Inscription enrichie (nom, prénom, téléphone)
 
 **4 Bugs Critiques Résolus :**
 
@@ -513,7 +568,7 @@ npm run dev
 3. ✅ Année non utilisée (score pertinence)
 4. ✅ Tirets/espaces recherche (normalisation)
 
-**12 Commits Pushés**
+**14 Commits Pushés**
 **4 Nouveaux Guides de Test**
 **0 Bugs Critiques Restants** ✅
 
