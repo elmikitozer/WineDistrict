@@ -1,6 +1,6 @@
 # 🔍 Test Recherche - Tirets & Espaces
 
-**Feature :** Normalisation automatique tirets/espaces  
+**Feature :** Normalisation automatique tirets/espaces
 **Date :** 21 Octobre 2025
 
 ---
@@ -14,24 +14,28 @@ Permettre de chercher **"Saint Emilion"** et trouver **"Saint-Émilion"** (et vi
 ## ✅ Tests Rapides
 
 ### Test 1 : Espace → Tiret
+
 ```
 Taper : "Saint Emilion"
 Trouve : "Saint-Émilion" ✅
 ```
 
 ### Test 2 : Tiret → Espace
+
 ```
 Taper : "Saint-Emilion"
 Trouve : "Saint-Émilion" ✅
 ```
 
 ### Test 3 : Sans Séparateur
+
 ```
 Taper : "SaintEmilion"
 Trouve : "Saint-Émilion" ✅
 ```
 
 ### Test 4 : Côtes du Rhône
+
 ```
 Taper : "cotes du rhone"
 Trouve : "Côtes du Rhône" ✅
@@ -44,6 +48,7 @@ Trouve : "Côtes du Rhône" ✅
 ```
 
 ### Test 5 : Avec Année
+
 ```
 Taper : "Saint Emilion 2018"
 Trouve : "Saint-Émilion" de 2018 EN PREMIER ✅
@@ -58,6 +63,7 @@ Trouve : "Saint-Émilion" de 2018 EN PREMIER ✅
 **Input :** `"Saint Emilion"`
 
 **Output (variantes générées) :**
+
 1. `"Saint Emilion"` (original)
 2. `"Saint-Emilion"` (espaces → tirets)
 3. `"SaintEmilion"` (sans séparateurs)
@@ -66,15 +72,15 @@ Trouve : "Saint-Émilion" de 2018 EN PREMIER ✅
 
 ```sql
 WHERE (
-  unaccent(nom) ILIKE unaccent('%Saint Emilion%') OR 
+  unaccent(nom) ILIKE unaccent('%Saint Emilion%') OR
   unaccent(domaine) ILIKE unaccent('%Saint Emilion%')
 )
 OR (
-  unaccent(nom) ILIKE unaccent('%Saint-Emilion%') OR 
+  unaccent(nom) ILIKE unaccent('%Saint-Emilion%') OR
   unaccent(domaine) ILIKE unaccent('%Saint-Emilion%')
 )
 OR (
-  unaccent(nom) ILIKE unaccent('%SaintEmilion%') OR 
+  unaccent(nom) ILIKE unaccent('%SaintEmilion%') OR
   unaccent(domaine) ILIKE unaccent('%SaintEmilion%')
 )
 ```
@@ -85,18 +91,18 @@ OR (
 
 ## 📋 Checklist Complète
 
-| Requête | Trouve | Status |
-|---------|--------|--------|
-| `Saint Emilion` | Saint-Émilion | [ ] |
-| `Saint-Emilion` | Saint-Émilion | [ ] |
-| `SaintEmilion` | Saint-Émilion | [ ] |
-| `cotes du rhone` | Côtes du Rhône | [ ] |
-| `cotes-du-rhone` | Côtes du Rhône | [ ] |
-| `cotesdur hone` | Côtes du Rhône | [ ] |
-| `Saint Emilion 2018` | Saint-Émilion 2018 premier | [ ] |
-| `Haut Brion` | Château Haut-Brion | [ ] |
-| `Haut-Brion` | Château Haut-Brion | [ ] |
-| `HautBrion` | Château Haut-Brion | [ ] |
+| Requête              | Trouve                     | Status |
+| -------------------- | -------------------------- | ------ |
+| `Saint Emilion`      | Saint-Émilion              | [ ]    |
+| `Saint-Emilion`      | Saint-Émilion              | [ ]    |
+| `SaintEmilion`       | Saint-Émilion              | [ ]    |
+| `cotes du rhone`     | Côtes du Rhône             | [ ]    |
+| `cotes-du-rhone`     | Côtes du Rhône             | [ ]    |
+| `cotesdur hone`      | Côtes du Rhône             | [ ]    |
+| `Saint Emilion 2018` | Saint-Émilion 2018 premier | [ ]    |
+| `Haut Brion`         | Château Haut-Brion         | [ ]    |
+| `Haut-Brion`         | Château Haut-Brion         | [ ]    |
+| `HautBrion`          | Château Haut-Brion         | [ ]    |
 
 ---
 
@@ -113,6 +119,7 @@ http://localhost:3000/
 ```
 
 ### Scénario 1 : Saint-Émilion
+
 1. Taper : `Saint Emilion`
 2. Vérifier dropdown affiche vins de Saint-Émilion
 3. Taper : `Saint-Emilion`
@@ -121,12 +128,14 @@ http://localhost:3000/
 6. Vérifier mêmes résultats
 
 ### Scénario 2 : Côtes du Rhône
+
 1. Taper : `cotes du rhone`
 2. Vérifier Côtes du Rhône apparaît
 3. Taper : `cotes-du-rhone`
 4. Vérifier mêmes résultats
 
 ### Scénario 3 : Avec Année
+
 1. Taper : `Saint Emilion 2018`
 2. Vérifier Saint-Émilion 2018 EN PREMIER
 3. Format : `Nom (Domaine) - 2018`
@@ -138,11 +147,13 @@ http://localhost:3000/
 ### Problème : Ne trouve toujours pas
 
 **Vérifications :**
+
 1. Vider cache : `Cmd+Shift+R`
 2. DevTools (F12) → Network → `/api/search?q=...`
 3. Vérifier réponse JSON contient résultats
 
 **Test direct API :**
+
 ```
 http://localhost:3000/api/search?q=Saint%20Emilion
 ```
@@ -154,6 +165,7 @@ Devrait retourner des vins de Saint-Émilion.
 **Normal !** La normalisation génère plusieurs variantes, donc peut matcher plus de vins.
 
 **Exemple :**
+
 - `"Haut Brion"` trouve aussi `"Château Haut-Brion"` ET `"Château Mouton Rothschild"` (si "Haut" dans nom)
 
 **Solution :** La pertinence trie les meilleurs résultats en premier.
@@ -165,6 +177,7 @@ Devrait retourner des vins de Saint-Émilion.
 ### Vins Concernés (Exemples)
 
 **Avec tirets :**
+
 - Saint-Émilion
 - Saint-Estèphe
 - Crozes-Hermitage
@@ -173,6 +186,7 @@ Devrait retourner des vins de Saint-Émilion.
 - Nuits-Saint-Georges
 
 **Recherches qui fonctionnent :**
+
 ```
 Saint Emilion      ✅
 Saint-Emilion      ✅
@@ -202,7 +216,7 @@ HautBrion          ✅
 
 ## 📊 Validation
 
-**Score :** ___/10 tests
+**Score :** \_\_\_/10 tests
 
 - ✅ 10/10 → Parfait !
 - ✅ 8-9/10 → Très bon
@@ -211,6 +225,5 @@ HautBrion          ✅
 
 ---
 
-**Status :** ✅ Implémenté et prêt à tester  
+**Status :** ✅ Implémenté et prêt à tester
 **Dernière mise à jour :** 21 Octobre 2025
-
