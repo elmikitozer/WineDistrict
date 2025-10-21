@@ -16,7 +16,7 @@
 ### A. Aller dans la bibliothèque d'APIs
 
 1. Dans le menu de gauche ☰, aller dans **"APIs et services"** → **"Bibliothèque"**
-   
+
    OU directement : https://console.cloud.google.com/apis/library
 
 ### B. Chercher et activer Maps Embed API
@@ -35,7 +35,7 @@
 ### A. Aller dans Identifiants
 
 1. Dans le menu de gauche, cliquer sur **"Identifiants"** (ou "Credentials")
-   
+
    OU directement : https://console.cloud.google.com/apis/credentials
 
 ### B. Créer une nouvelle clé
@@ -126,10 +126,10 @@ Ouvrir la **Console du navigateur** (F12) et regarder les erreurs :
 
 - **"Google Maps JavaScript API error: RefererNotAllowedMapError"**
   → Vérifier les restrictions de site web (Étape 4B)
-  
+
 - **"Google Maps JavaScript API has not been authorized"**
   → Vérifier que Maps Embed API est bien activée (Étape 2)
-  
+
 - **"InvalidKeyMapError"**
   → Vérifier que la clé est correcte dans `.env.local`
 
@@ -179,17 +179,20 @@ Si vous dépassez la limite gratuite, Google vous demandera d'activer la factura
 ### Problème 1 : "For development purposes only"
 
 **Solution** : C'est normal ! Cela signifie que :
+
 - La clé fonctionne ✅
 - Vous n'avez pas encore activé la facturation
 - La carte reste fonctionnelle
 
 Pour enlever le watermark :
+
 1. Activer la facturation dans Google Cloud
 2. Ajouter une carte bancaire (vous restez dans la limite gratuite)
 
 ### Problème 2 : Carte grise avec erreur
 
 **Solution** :
+
 1. Vérifier que Maps Embed API est activée
 2. Vérifier que la clé est correcte dans `.env.local`
 3. Redémarrer `npm run dev`
@@ -198,6 +201,7 @@ Pour enlever le watermark :
 ### Problème 3 : "This page can't load Google Maps correctly"
 
 **Solution** :
+
 1. Vérifier les restrictions de domaine (Étape 4B)
 2. Ajouter `localhost:3000/*` dans les restrictions
 3. Attendre 2-3 minutes que la restriction prenne effet
@@ -229,4 +233,3 @@ Pour enlever le watermark :
 ---
 
 **C'est tout ! 🎉 La carte Google Maps devrait maintenant fonctionner sur vos pages cavistes.**
-

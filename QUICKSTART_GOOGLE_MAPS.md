@@ -29,22 +29,28 @@ npm run dev
 ## ❓ FAQ Rapide
 
 ### Q: Quelle API activer ?
+
 **R:** **Maps Embed API** (PAS Maps JavaScript API)
 
 ### Q: Ça coûte combien ?
+
 **R:** **GRATUIT** jusqu'à 28 000 chargements/mois (largement suffisant pour MVP)
 
 ### Q: "For development purposes only" ?
+
 **R:** Normal ! La carte fonctionne. Pour enlever : activer facturation (reste gratuit).
 
 ### Q: Carte ne s'affiche pas ?
+
 **R:** Vérifier :
+
 1. Maps Embed API activée
 2. Clé correcte dans `.env.local`
 3. `npm run dev` redémarré
 4. F12 → Console pour voir l'erreur
 
 ### Q: RefererNotAllowedMapError ?
+
 **R:** Ajouter `localhost:3000/*` dans restrictions de site web
 
 ---
@@ -56,4 +62,3 @@ Voir `SETUP_GOOGLE_MAPS.md` pour le guide détaillé avec explications.
 ---
 
 **C'est tout ! 🎉**
-

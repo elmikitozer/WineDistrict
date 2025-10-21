@@ -129,9 +129,7 @@ export default async function CavisteDetailPage({ params }: { params: Promise<{ 
                 <p className="text-lg">{caviste.adresse}</p>
               </div>
               {caviste.description && (
-                <p className="text-rose-50 text-lg leading-relaxed">
-                  {caviste.description}
-                </p>
+                <p className="text-rose-50 text-lg leading-relaxed">{caviste.description}</p>
               )}
             </div>
 
@@ -172,9 +170,9 @@ export default async function CavisteDetailPage({ params }: { params: Promise<{ 
                   loading="lazy"
                   allowFullScreen
                   referrerPolicy="no-referrer-when-downgrade"
-                  src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY'}&q=${encodeURIComponent(
-                    caviste.adresse
-                  )}`}
+                  src={`https://www.google.com/maps/embed/v1/place?key=${
+                    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY'
+                  }&q=${encodeURIComponent(caviste.adresse)}`}
                 />
               </div>
 
@@ -254,9 +252,9 @@ export default async function CavisteDetailPage({ params }: { params: Promise<{ 
                   <Star className="w-5 h-5 text-rose-600" />
                   Favoris
                 </h3>
-                <FavoriteButton 
-                  cavisteId={caviste.id} 
-                  initialIsFavorite={!!isFavorite} 
+                <FavoriteButton
+                  cavisteId={caviste.id}
+                  initialIsFavorite={!!isFavorite}
                   variant="compact"
                 />
               </section>
