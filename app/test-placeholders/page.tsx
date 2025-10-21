@@ -12,7 +12,7 @@ export default function TestPlaceholdersPage() {
   const couleurs = [
     { nom: 'Rouge', value: 'rouge', description: 'Vins rouges - Palette bordeaux et or' },
     { nom: 'Blanc', value: 'blanc', description: 'Vins blancs - Palette grise et or' },
-    { nom: 'Rosé', value: 'rose', description: 'Vins rosés - Palette rose et corail' },
+    { nom: 'Rosé', value: 'rose', description: 'Vins rosés - Palette saumon et orange' },
   ];
 
   return (
@@ -20,9 +20,7 @@ export default function TestPlaceholdersPage() {
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <header className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            🎨 Design #14 - Creative
-          </h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">🎨 Design #14 - Creative</h1>
           <p className="text-lg text-gray-600 mb-2">
             Aperçu de votre placeholder selon la couleur du vin
           </p>
@@ -68,7 +66,7 @@ export default function TestPlaceholdersPage() {
         {/* Détails du design */}
         <section className="bg-white rounded-2xl shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Caractéristiques du design</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 className="font-semibold text-gray-800 mb-3">Éléments visuels</h3>
@@ -97,15 +95,21 @@ export default function TestPlaceholdersPage() {
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-start">
                   <div className="w-4 h-4 rounded-full bg-red-900 mr-2 mt-0.5" />
-                  <span><strong>Rouge :</strong> Fond bordeaux foncé, accent or (#D4AF37)</span>
+                  <span>
+                    <strong>Rouge :</strong> Fond bordeaux foncé, accent or (#D4AF37)
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <div className="w-4 h-4 rounded-full bg-gray-200 mr-2 mt-0.5" />
-                  <span><strong>Blanc :</strong> Fond gris clair, accent or (#D4AF37)</span>
+                  <span>
+                    <strong>Blanc :</strong> Fond gris clair, accent or (#D4AF37)
+                  </span>
                 </li>
                 <li className="flex items-start">
-                  <div className="w-4 h-4 rounded-full bg-pink-200 mr-2 mt-0.5" />
-                  <span><strong>Rosé :</strong> Fond rose pâle, accent corail (#FB7185)</span>
+                  <div className="w-4 h-4 rounded-full bg-orange-200 mr-2 mt-0.5" />
+                  <span>
+                    <strong>Rosé :</strong> Fond saumon pâle, accent orange (#EA580C)
+                  </span>
                 </li>
               </ul>
             </div>
@@ -116,29 +120,27 @@ export default function TestPlaceholdersPage() {
         <section className="bg-blue-50 rounded-2xl border border-blue-200 p-8 mb-8">
           <h2 className="text-2xl font-bold text-blue-900 mb-4">Comment l'appliquer ?</h2>
           <ol className="list-decimal list-inside space-y-3 text-blue-800">
-            <li>
-              Le design #14 est déjà configuré dans votre code
-            </li>
+            <li>Le design #14 est déjà configuré dans votre code</li>
             <li>
               Pour l'activer, modifiez{' '}
-              <code className="bg-blue-100 px-2 py-1 rounded text-sm">lib/vinImage.ts</code> ligne 54 :
+              <code className="bg-blue-100 px-2 py-1 rounded text-sm">lib/vinImage.ts</code> ligne
+              54 :
               <pre className="bg-blue-100 p-3 rounded mt-2 text-sm overflow-x-auto">
                 <code>{`return \`/api/wine-placeholder?$\{params.toString()}&variant=14\`;`}</code>
               </pre>
             </li>
             <li>
-              Redémarrez votre serveur de développement : <code className="bg-blue-100 px-2 py-1 rounded text-sm">npm run dev</code>
+              Redémarrez votre serveur de développement :{' '}
+              <code className="bg-blue-100 px-2 py-1 rounded text-sm">npm run dev</code>
             </li>
-            <li>
-              Les placeholders s'afficheront automatiquement pour tous les vins sans image
-            </li>
+            <li>Les placeholders s'afficheront automatiquement pour tous les vins sans image</li>
           </ol>
         </section>
 
         {/* Exemples avec différents noms */}
         <section className="bg-white rounded-2xl shadow-lg p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Exemples avec différents vins</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { nom: 'Pomerol', domaine: 'Château Pétrus', annee: '2015', couleur: 'rouge' },
@@ -166,7 +168,9 @@ export default function TestPlaceholdersPage() {
                   </div>
                   <div className="p-4 text-center">
                     <p className="font-semibold text-gray-800">{vin.nom}</p>
-                    <p className="text-sm text-gray-600">{vin.domaine} - {vin.annee}</p>
+                    <p className="text-sm text-gray-600">
+                      {vin.domaine} - {vin.annee}
+                    </p>
                   </div>
                 </div>
               );
