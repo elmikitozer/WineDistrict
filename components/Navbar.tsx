@@ -16,6 +16,8 @@ function Brand() {
 }
 
 function DesktopLinks({ isAuthenticated }: { isAuthenticated?: boolean }) {
+  const [showUserMenu, setShowUserMenu] = useState(false);
+
   return (
     <div className="hidden md:flex space-x-6 font-medium items-center">
       <Link href="/vins" className="hover:text-black">
@@ -24,15 +26,74 @@ function DesktopLinks({ isAuthenticated }: { isAuthenticated?: boolean }) {
       <Link href="/cavistes" className="hover:text-black">
         Cavistes
       </Link>
-      {isAuthenticated && <CartIcon />}
       {isAuthenticated ? (
         <>
-          <Link href="/dashboard" className="hover:text-black">
-            Dashboard
-          </Link>
-          <form action="/api/auth/logout" method="post">
-            <button className="hover:text-black">Déconnexion</button>
-          </form>
+          <CartIcon />
+          
+          {/* Menu déroulant Mon compte */}
+          <div className="relative">
+            <button
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              className="flex items-center gap-2 hover:text-black"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+              <span>Mon compte</span>
+              <svg
+                className={`w-4 h-4 transition-transform ${showUserMenu ? 'rotate-180' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {showUserMenu && (
+              <>
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setShowUserMenu(false)}
+                />
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-20">
+                  <Link
+                    href="/dashboard"
+                    className="block px-4 py-2 hover:bg-rose-50 transition"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    📦 Mes commandes
+                  </Link>
+                  <Link
+                    href="/favoris"
+                    className="block px-4 py-2 hover:bg-rose-50 transition"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    ⭐ Mes cavistes favoris
+                  </Link>
+                  <hr className="my-2 border-gray-200" />
+                  <form action="/api/auth/logout" method="post">
+                    <button
+                      type="submit"
+                      className="w-full text-left px-4 py-2 hover:bg-rose-50 transition text-red-600"
+                    >
+                      🚪 Déconnexion
+                    </button>
+                  </form>
+                </div>
+              </>
+            )}
+          </div>
         </>
       ) : (
         <div className="flex items-center gap-4">
@@ -86,11 +147,14 @@ function MobileMenu({
       </Link>
       {isAuthenticated ? (
         <>
-          <div onClick={onClose}>
+          <div onClick={onClose} className="py-2">
             <CartIcon />
           </div>
-          <Link href="/dashboard" className="block hover:text-black" onClick={onClose}>
-            Dashboard
+          <Link href="/dashboard" className="block hover:text-black py-2" onClick={onClose}>
+            📦 Mes commandes
+          </Link>
+          <Link href="/favoris" className="block hover:text-black py-2" onClick={onClose}>
+            ⭐ Mes cavistes favoris
           </Link>
           <form
             action="/api/auth/logout"
@@ -101,7 +165,7 @@ function MobileMenu({
               (e.currentTarget as HTMLFormElement).submit();
             }}
           >
-            <button className="block hover:text-black">Déconnexion</button>
+            <button className="block hover:text-black text-red-600 py-2">🚪 Déconnexion</button>
           </form>
         </>
       ) : (

@@ -33,7 +33,7 @@ export default function CartPage() {
           body: JSON.stringify({
             vinId: item.vinId,
             cavisteId: item.cavisteId,
-            csrfToken,
+            _csrf: csrfToken,
           }),
         });
 

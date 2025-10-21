@@ -21,9 +21,18 @@ model Caviste {
   slug        String?       @unique
   nom         String
   adresse     String
+  description String?       // Description du caviste
+  telephone   String?       // Numéro de téléphone
+  email       String?       // Email du caviste
+  horaires    String?       // Horaires d'ouverture (JSON ou texte)
+  siteWeb     String?       // Site web du caviste
+  facebook    String?       // Lien Facebook
+  instagram   String?       // Lien Instagram
+  imageUrl    String?       // Photo du caviste
   stocks      Stock[]
   reservation Reservation[]
   users       User[]
+  favoris     FavorisCaviste[] // Utilisateurs qui ont mis ce caviste en favoris
   integrations IntegrationConnection[]
   externalProductMappings ExternalProductMapping[]
 
@@ -82,6 +91,7 @@ model User {
   caviste      Caviste?      @relation(fields: [cavisteId], references: [id])
   client       Client?
   reservations Reservation[]
+  favoris      FavorisCaviste[] // Cavistes favoris de l'utilisateur
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -129,4 +139,19 @@ model ExternalProductMapping {
 
   @@unique([provider, cavisteId, externalProductId], name: "external_product_unique")
   @@index([cavisteId, vinId])
+}
+
+// Favoris : relation many-to-many entre User et Caviste
+model FavorisCaviste {
+  id        String   @id @default(cuid())
+  userId    String
+  cavisteId Int
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  caviste Caviste @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, cavisteId], name: "favoris_unique")
+  @@index([userId])
+  @@index([cavisteId])
 }
