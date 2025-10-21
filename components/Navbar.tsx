@@ -142,51 +142,101 @@ function MobileMenu({
   isCaviste?: boolean;
 }) {
   return (
-    <div id="mobile-menu" className="md:hidden px-4 pb-4 pt-2 space-y-3 font-medium relative z-50">
-      <div className="pt-1">
+    <div id="mobile-menu" className="md:hidden bg-rose-50 border-t border-rose-200">
+      {/* Barre de recherche */}
+      <div className="px-4 py-3 bg-white border-b border-rose-100">
         <SearchBar />
       </div>
-      <Link href="/vins" className="block hover:text-black" onClick={onClose}>
-        Vins
-      </Link>
-      <Link href="/cavistes" className="block hover:text-black" onClick={onClose}>
-        Cavistes
-      </Link>
+
+      {/* Navigation principale */}
+      <div className="px-4 py-3 space-y-1">
+        <Link
+          href="/vins"
+          className="block px-4 py-3 rounded-lg hover:bg-rose-100 transition font-medium"
+          onClick={onClose}
+        >
+          🍷 Vins
+        </Link>
+        <Link
+          href="/cavistes"
+          className="block px-4 py-3 rounded-lg hover:bg-rose-100 transition font-medium"
+          onClick={onClose}
+        >
+          🏪 Cavistes
+        </Link>
+      </div>
+
       {isAuthenticated ? (
         <>
-          <div onClick={onClose} className="py-2">
-            <CartIcon />
+          {/* Panier */}
+          <div className="px-4 py-3 border-t border-rose-200">
+            <div onClick={onClose} className="px-4 py-3 rounded-lg hover:bg-rose-100 transition">
+              <CartIcon />
+            </div>
           </div>
-          <Link href="/dashboard" className="block hover:text-black py-2" onClick={onClose}>
-            📦 Mes commandes
-          </Link>
-          {!isCaviste && (
-            <Link href="/favoris" className="block hover:text-black py-2" onClick={onClose}>
-              ⭐ Mes cavistes favoris
+
+          {/* Mon compte */}
+          <div className="px-4 py-3 border-t border-rose-200 space-y-1">
+            <div className="px-4 pb-2 text-xs font-semibold text-rose-600 uppercase tracking-wide">
+              Mon compte
+            </div>
+            <Link
+              href="/dashboard"
+              className="block px-4 py-3 rounded-lg hover:bg-rose-100 transition font-medium"
+              onClick={onClose}
+            >
+              📦 Mes commandes
             </Link>
-          )}
-          <form
-            action="/api/auth/logout"
-            method="post"
-            onSubmit={(e) => {
-              e.preventDefault();
-              onClose();
-              (e.currentTarget as HTMLFormElement).submit();
-            }}
-          >
-            <button className="block hover:text-black text-red-600 py-2">🚪 Déconnexion</button>
-          </form>
+            {!isCaviste && (
+              <Link
+                href="/favoris"
+                className="block px-4 py-3 rounded-lg hover:bg-rose-100 transition font-medium"
+                onClick={onClose}
+              >
+                ⭐ Mes cavistes favoris
+              </Link>
+            )}
+          </div>
+
+          {/* Déconnexion */}
+          <div className="px-4 py-3 border-t border-rose-200">
+            <form
+              action="/api/auth/logout"
+              method="post"
+              onSubmit={(e) => {
+                e.preventDefault();
+                onClose();
+                (e.currentTarget as HTMLFormElement).submit();
+              }}
+            >
+              <button className="w-full text-left px-4 py-3 rounded-lg hover:bg-red-50 transition font-medium text-red-600">
+                🚪 Déconnexion
+              </button>
+            </form>
+          </div>
         </>
       ) : (
-        <div className="space-y-2">
-          <Link href="/login" className="block hover:text-black" onClick={onClose}>
-            Connexion
+        <div className="px-4 py-3 border-t border-rose-200 space-y-1">
+          <Link
+            href="/login"
+            className="block px-4 py-3 rounded-lg hover:bg-rose-100 transition font-medium"
+            onClick={onClose}
+          >
+            🔑 Connexion
           </Link>
-          <Link href="/signup" className="block hover:text-black" onClick={onClose}>
-            S&apos;inscrire
+          <Link
+            href="/signup"
+            className="block px-4 py-3 rounded-lg bg-rose-600 text-white hover:bg-rose-700 transition font-medium text-center"
+            onClick={onClose}
+          >
+            ✨ S&apos;inscrire
           </Link>
           {process.env.NODE_ENV !== 'production' && (
-            <Link href="/signup-caviste" className="block hover:text-black" onClick={onClose}>
+            <Link
+              href="/signup-caviste"
+              className="block px-4 py-3 rounded-lg hover:bg-rose-100 transition font-medium text-sm text-gray-600"
+              onClick={onClose}
+            >
               S&apos;inscrire (Caviste - dev)
             </Link>
           )}
