@@ -1534,36 +1534,36 @@ function designCreative(nom: string, domaine: string, annee: string, colors: Col
           padding: '80px 60px',
         }}
       >
-        {/* Formes créatives */}
+        {/* Formes géométriques simples et élégantes */}
         <div
           style={{
             display: 'flex',
-            gap: '15px',
+            gap: '20px',
             marginBottom: '50px',
+            alignItems: 'center',
           }}
         >
           <div
             style={{
-              width: '60px',
-              height: '60px',
-              background: colors.accent,
-              borderRadius: '50% 20% 50% 20%',
-            }}
-          />
-          <div
-            style={{
-              width: '60px',
-              height: '60px',
-              background: colors.accent,
-              borderRadius: '20% 50% 20% 50%',
-            }}
-          />
-          <div
-            style={{
-              width: '60px',
-              height: '60px',
+              width: '50px',
+              height: '50px',
               background: colors.accent,
               borderRadius: '50%',
+            }}
+          />
+          <div
+            style={{
+              width: '70px',
+              height: '4px',
+              background: colors.accent,
+            }}
+          />
+          <div
+            style={{
+              width: '50px',
+              height: '50px',
+              background: colors.accent,
+              transform: 'rotate(45deg)',
             }}
           />
         </div>

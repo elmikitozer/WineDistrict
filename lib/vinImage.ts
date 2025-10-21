@@ -49,6 +49,7 @@ export function getVinImageUrl(vin: VinImageData): string {
     domaine,
     annee: String(année),
     couleur,
+    variant: '14', // Design Creative avec formes géométriques
   });
 
   return `/api/wine-placeholder?${params.toString()}`;
