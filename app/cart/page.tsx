@@ -33,7 +33,7 @@ export default function CartPage() {
 
     try {
       // Récupérer UN SEUL token CSRF pour toutes les réservations
-      const csrfRes = await fetch('/api/csrf', { 
+      const csrfRes = await fetch('/api/csrf', {
         cache: 'no-store',
         credentials: 'include', // Important pour les cookies
       });
@@ -44,7 +44,7 @@ export default function CartPage() {
       const promises = items.map(async (item) => {
         const res = await fetch('/api/reservation', {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
           },
           credentials: 'include', // Important pour envoyer le cookie
@@ -135,58 +135,58 @@ export default function CartPage() {
             return acc;
           }, {} as Record<number, GroupedItems>)
         ).map(([cavisteId, group]) => {
-          const cavisteUrl = group.cavisteSlug 
-            ? `/cavistes/${group.cavisteSlug}` 
+          const cavisteUrl = group.cavisteSlug
+            ? `/cavistes/${group.cavisteSlug}`
             : `/cavistes/${cavisteId}`;
-          
+
           return (
-          <div key={cavisteId} className="bg-white border-2 border-rose-100 rounded-xl shadow-sm">
-            {/* Header caviste */}
-            <div className="bg-gradient-to-r from-rose-50 to-rose-100 p-4 border-b border-rose-200">
-              <Link 
-                href={cavisteUrl}
-                className="text-lg font-bold text-gray-900 hover:text-rose-600 transition"
-              >
-                {group.cavisteNom}
-              </Link>
-              <p className="text-sm text-gray-600">{group.cavisteAdresse}</p>
-              <p className="text-xs text-gray-500 mt-1">
-                {group.items.length} vin{group.items.length > 1 ? 's' : ''}
-              </p>
-            </div>
-
-            {/* Liste des vins */}
-            <div className="p-4 space-y-3">
-              {group.items.map((item) => (
-                <div
-                  key={`${item.vinId}-${item.cavisteId}`}
-                  className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+            <div key={cavisteId} className="bg-white border-2 border-rose-100 rounded-xl shadow-sm">
+              {/* Header caviste */}
+              <div className="bg-gradient-to-r from-rose-50 to-rose-100 p-4 border-b border-rose-200">
+                <Link
+                  href={cavisteUrl}
+                  className="text-lg font-bold text-gray-900 hover:text-rose-600 transition"
                 >
-                  {/* Image placeholder du vin */}
-                  <div className="w-12 h-16 bg-gradient-to-br from-rose-100 to-rose-200 rounded flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl">🍷</span>
-                  </div>
+                  {group.cavisteNom}
+                </Link>
+                <p className="text-sm text-gray-600">{group.cavisteAdresse}</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {group.items.length} vin{group.items.length > 1 ? 's' : ''}
+                </p>
+              </div>
 
-                  {/* Infos vin */}
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-gray-900 truncate">{item.vinNom}</h4>
-                    <p className="text-sm text-gray-600 truncate">
-                      {item.vinDomaine} • {item.vinAnnee}
-                    </p>
-                  </div>
-
-                  {/* Bouton supprimer */}
-                  <button
-                    onClick={() => removeItem(item.vinId, item.cavisteId)}
-                    className="text-red-600 hover:text-red-800 transition p-2 hover:bg-red-100 rounded"
-                    aria-label="Retirer du panier"
+              {/* Liste des vins */}
+              <div className="p-4 space-y-3">
+                {group.items.map((item) => (
+                  <div
+                    key={`${item.vinId}-${item.cavisteId}`}
+                    className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                   >
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              ))}
+                    {/* Image placeholder du vin */}
+                    <div className="w-12 h-16 bg-gradient-to-br from-rose-100 to-rose-200 rounded flex items-center justify-center flex-shrink-0">
+                      <span className="text-2xl">🍷</span>
+                    </div>
+
+                    {/* Infos vin */}
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-semibold text-gray-900 truncate">{item.vinNom}</h4>
+                      <p className="text-sm text-gray-600 truncate">
+                        {item.vinDomaine} • {item.vinAnnee}
+                      </p>
+                    </div>
+
+                    {/* Bouton supprimer */}
+                    <button
+                      onClick={() => removeItem(item.vinId, item.cavisteId)}
+                      className="text-red-600 hover:text-red-800 transition p-2 hover:bg-red-100 rounded"
+                      aria-label="Retirer du panier"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
           );
         })}
       </div>

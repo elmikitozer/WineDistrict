@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 type Vin = {
   id: number;
@@ -20,6 +21,7 @@ type Caviste = {
   id: number;
   nom: string;
   adresse: string;
+  slug?: string | null;
   stocks: Stock[];
 };
 
@@ -39,16 +41,32 @@ export default function CavistesPage() {
       </h1>
 
       <div className="space-y-10">
-        {cavistes.map((caviste) => (
+        {cavistes.map((caviste) => {
+          const cavisteUrl = caviste.slug 
+            ? `/cavistes/${caviste.slug}` 
+            : `/cavistes/${caviste.id}`;
+          
+          return (
           <section
             key={caviste.id}
             className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition"
           >
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-800">
-                {caviste.nom}
-              </h2>
-              <p className="text-sm text-gray-500">{caviste.adresse}</p>
+            <div className="mb-6 flex items-start justify-between">
+              <div>
+                <Link 
+                  href={cavisteUrl}
+                  className="text-xl font-semibold text-gray-800 hover:text-rose-600 transition"
+                >
+                  {caviste.nom}
+                </Link>
+                <p className="text-sm text-gray-500 mt-1">{caviste.adresse}</p>
+              </div>
+              <Link
+                href={cavisteUrl}
+                className="text-sm text-rose-600 hover:text-rose-800 transition font-medium"
+              >
+                Voir la fiche →
+              </Link>
             </div>
 
             {caviste.stocks.length === 0 ? (
@@ -86,7 +104,8 @@ export default function CavistesPage() {
               </ul>
             )}
           </section>
-        ))}
+          );
+        })}
       </div>
     </main>
   );

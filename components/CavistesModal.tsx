@@ -58,7 +58,12 @@ export default function CavistesModal({
               aria-label="Fermer"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
 
@@ -68,52 +73,52 @@ export default function CavistesModal({
               {cavistes
                 .filter((s) => s.caviste)
                 .map((stock) => {
-                  const cavisteUrl = stock.caviste!.slug 
-                    ? `/cavistes/${stock.caviste!.slug}` 
+                  const cavisteUrl = stock.caviste!.slug
+                    ? `/cavistes/${stock.caviste!.slug}`
                     : `/cavistes/${stock.caviste!.id}`;
-                  
-                  return (
-                  <li key={stock.id} className="border p-4 rounded-md">
-                    <Link 
-                      href={cavisteUrl}
-                      className="font-medium text-gray-800 hover:text-rose-600 transition"
-                    >
-                      {stock.caviste!.nom}
-                    </Link>
-                    <p className="text-sm text-gray-500">{stock.caviste!.adresse}</p>
 
-                    {isAuthenticated ? (
-                      <button
-                        onClick={() => {
-                          cart.addItem({
-                            vinId: stock.vinId,
-                            cavisteId: stock.caviste!.id,
-                            vinNom: vin.nom,
-                            vinDomaine: vin.domaine,
-                            vinAnnee: vin.année,
-                            cavisteNom: stock.caviste!.nom,
-                            cavisteAdresse: stock.caviste!.adresse,
-                            cavisteSlug: stock.caviste!.slug,
-                          });
-                          setShowAddedPopup(true);
-                          setTimeout(() => setShowAddedPopup(false), 2000);
-                        }}
-                        disabled={cart.isInCart(stock.vinId, stock.caviste!.id)}
-                        className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+                  return (
+                    <li key={stock.id} className="border p-4 rounded-md">
+                      <Link
+                        href={cavisteUrl}
+                        className="font-medium text-gray-800 hover:text-rose-600 transition"
                       >
-                        {cart.isInCart(stock.vinId, stock.caviste!.id)
-                          ? 'Déjà dans le panier'
-                          : 'Ajouter au panier'}
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => setShowLoginPopup(true)}
-                        className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 mt-2"
-                      >
-                        Ajouter au panier
-                      </button>
-                    )}
-                  </li>
+                        {stock.caviste!.nom}
+                      </Link>
+                      <p className="text-sm text-gray-500">{stock.caviste!.adresse}</p>
+
+                      {isAuthenticated ? (
+                        <button
+                          onClick={() => {
+                            cart.addItem({
+                              vinId: stock.vinId,
+                              cavisteId: stock.caviste!.id,
+                              vinNom: vin.nom,
+                              vinDomaine: vin.domaine,
+                              vinAnnee: vin.année,
+                              cavisteNom: stock.caviste!.nom,
+                              cavisteAdresse: stock.caviste!.adresse,
+                              cavisteSlug: stock.caviste!.slug,
+                            });
+                            setShowAddedPopup(true);
+                            setTimeout(() => setShowAddedPopup(false), 2000);
+                          }}
+                          disabled={cart.isInCart(stock.vinId, stock.caviste!.id)}
+                          className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+                        >
+                          {cart.isInCart(stock.vinId, stock.caviste!.id)
+                            ? 'Déjà dans le panier'
+                            : 'Ajouter au panier'}
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => setShowLoginPopup(true)}
+                          className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 mt-2"
+                        >
+                          Ajouter au panier
+                        </button>
+                      )}
+                    </li>
                   );
                 })}
             </ul>
@@ -156,7 +161,12 @@ export default function CavistesModal({
               aria-label="Fermer"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
 

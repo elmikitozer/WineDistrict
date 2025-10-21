@@ -59,16 +59,23 @@ type UserLite = {
 export async function getCurrentUser(): Promise<UserLite | null> {
   const payload = await getSession();
   if (!payload?.userId) return null;
-  // Access with optional chaining to avoid runtime if model is absent
-  type FindUnique = (args: {
-    where: { id: string | number };
-    include?: { caviste?: boolean };
-  }) => Promise<UserLite | null>;
-  const userModel = (prisma as unknown as { user?: { findUnique: FindUnique } }).user;
-  if (!userModel) return null;
-  const user = (await userModel.findUnique({
-    where: { id: payload.userId },
-    include: { caviste: true },
-  })) as UserLite | null;
-  return user ?? null;
+  
+  // Sélectionner uniquement les champs dont on a besoin
+  const user = await prisma.user.findUnique({
+    where: { id: String(payload.userId) },
+    select: {
+      id: true,
+      email: true,
+      role: true,
+      cavisteId: true,
+      caviste: {
+        select: {
+          id: true,
+          nom: true,
+        },
+      },
+    },
+  });
+  
+  return user;
 }

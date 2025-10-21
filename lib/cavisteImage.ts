@@ -27,7 +27,7 @@ export function getCavisteImageUrl(caviste: CavisteImageData): string {
       // Vérifier si Supabase est configuré
       const base = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
       const bucket = process.env.SUPABASE_BUCKET || 'images';
-      
+
       if (base) {
         // Image sur Supabase
         return `${base}/storage/v1/object/public/${bucket}/cavistes/${imageUrl}`;
@@ -52,4 +52,3 @@ export function getCavisteImageUrl(caviste: CavisteImageData): string {
 export function hasRealImage(caviste: CavisteImageData): boolean {
   return !!caviste.imageUrl;
 }
-

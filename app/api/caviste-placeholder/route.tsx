@@ -18,7 +18,7 @@ export async function GET(req: Request) {
   // Couleurs aléatoires mais déterministes basées sur le nom
   const hash = nom.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const hue = hash % 360;
-  
+
   const bgColor = `hsl(${hue}, 65%, 90%)`;
   const textColor = `hsl(${hue}, 70%, 30%)`;
   const accentColor = `hsl(${hue}, 60%, 70%)`;
@@ -126,4 +126,3 @@ export async function GET(req: Request) {
     }
   );
 }
-
