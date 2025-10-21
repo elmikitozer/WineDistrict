@@ -1,6 +1,6 @@
 # 📋 TODO pour Demain - Wine District
 
-**Date :** Mercredi 22 Octobre 2025  
+**Date :** Mercredi 22 Octobre 2025
 **Session précédente :** Redesign page caviste + Google Maps + Protection clé API
 
 ---
@@ -23,6 +23,7 @@
 - [ ] **Tester** : http://localhost:3000/cavistes/vinotheque-de-la-vigne-4
 
 ### 📚 Docs de Référence
+
 - Guide complet : `docs/SETUP_GOOGLE_MAPS.md`
 - Guide rapide : `docs/QUICKSTART_GOOGLE_MAPS.md`
 - Sécurité : `docs/PROTEGER_CLE_GOOGLE_MAPS.md`
@@ -38,11 +39,13 @@ npm install react-hot-toast
 ```
 
 **Fichiers à modifier :**
+
 1. `app/layout.tsx` - Ajouter `<Toaster />`
 2. `components/FavoriteButton.tsx` - Remplacer `alert()` par `toast`
 3. `components/CavistesModal.tsx` - Idem
 
 **Exemple :**
+
 ```typescript
 import toast from 'react-hot-toast';
 
@@ -67,8 +70,8 @@ export default function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | '
 
   return (
     <div className="flex items-center justify-center p-8">
-      <div 
-        className={`${sizeClasses[size]} animate-spin rounded-full border-4 border-gray-200 border-t-rose-600`} 
+      <div
+        className={`${sizeClasses[size]} animate-spin rounded-full border-4 border-gray-200 border-t-rose-600`}
       />
     </div>
   );
@@ -76,6 +79,7 @@ export default function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | '
 ```
 
 **Utiliser dans :**
+
 - `app/dashboard/page.tsx`
 - `app/cavistes/page.tsx`
 - `app/vins/page.tsx`
@@ -114,11 +118,13 @@ model FavorisCaviste {
 ```
 
 **Migration :**
+
 ```bash
 npx prisma migrate dev --name add_indexes
 ```
 
 **Appliquer sur Supabase :**
+
 - Copier le SQL généré
 - Aller dans Supabase SQL Editor
 - Exécuter la migration
@@ -130,6 +136,7 @@ npx prisma migrate dev --name add_indexes
 ### Étapes
 
 1. **Ajouter la clé Google Maps dans Vercel**
+
    - Dashboard Vercel → Settings → Environment Variables
    - Name : `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
    - Value : Ta clé API
@@ -137,6 +144,7 @@ npx prisma migrate dev --name add_indexes
    - **CLIQUER "ADD"** (malgré l'avertissement)
 
 2. **Push vers GitHub**
+
 ```bash
 git push
 ```
@@ -156,6 +164,7 @@ git push
 ### Scénarios à Tester
 
 #### En tant que Client :
+
 - [ ] Créer un compte
 - [ ] Chercher un vin
 - [ ] Ajouter au panier
@@ -166,12 +175,14 @@ git push
 - [ ] Voir mes favoris
 
 #### En tant que Caviste :
+
 - [ ] Se connecter
 - [ ] Voir les commandes
 - [ ] Filtrer par statut
 - [ ] Valider/Annuler une commande
 
 #### Pages Publiques :
+
 - [ ] Page d'accueil
 - [ ] Liste des vins
 - [ ] Page produit vin
@@ -183,15 +194,18 @@ git push
 ## 🐛 BUGS CONNUS À VÉRIFIER
 
 ### 1. Scroll Restoration
+
 - [ ] Tester navigation `/cavistes` → `/cavistes/[slug]` → Retour
 - [ ] Vérifier que le scroll est restauré
 
 ### 2. Recherche par Année
+
 - [ ] Chercher "margaux 2018"
 - [ ] Vérifier que Château Margaux 2018 apparaît en premier
 - [ ] Vérifier qu'il n'y a pas de point "." à la fin
 
 ### 3. Stock Validation
+
 - [ ] Essayer d'ajouter plus que le stock disponible
 - [ ] Vérifier le message d'erreur
 
@@ -200,26 +214,32 @@ git push
 ## 💡 IDÉES POUR PLUS TARD (Optionnel)
 
 ### Features à Implémenter
+
 1. **Notifications Email** (SendGrid/Resend)
+
    - Confirmation de commande
    - Notification caviste
-   
+
 2. **Page Profil Utilisateur**
+
    - Modifier nom, prénom, téléphone
    - Changer mot de passe
-   
+
 3. **Filtres Avancés**
+
    - Prix min/max
    - Couleur
    - Région
    - Note/Évaluation
-   
+
 4. **Système de Notation**
+
    - Noter les vins
    - Noter les cavistes
    - Afficher moyenne
-   
+
 5. **Historique des Commandes**
+
    - Voir détails commande
    - Télécharger facture PDF
    - Récommander en un clic
@@ -235,6 +255,7 @@ git push
 ## 🔧 AMÉLIORATIONS TECHNIQUES (Optionnel)
 
 Voir le fichier `AMELIORATIONS_CODE.md` pour :
+
 - Système de logging
 - Gestion d'erreur globale
 - Tests E2E avec Playwright
@@ -246,6 +267,7 @@ Voir le fichier `AMELIORATIONS_CODE.md` pour :
 ## 📚 DOCUMENTATION À JOUR
 
 Tous les guides sont dans `docs/` :
+
 - ✅ Google Maps : Setup, Quickstart, Protection, Vercel
 - ✅ Images : Solutions, Upload, Placeholders
 - ✅ SEO : Slugs, Migration
@@ -255,13 +277,13 @@ Tous les guides sont dans `docs/` :
 
 ## ⏱️ TEMPS ESTIMÉ TOTAL : ~90 min
 
-| Priorité | Tâche | Temps |
-|----------|-------|-------|
-| 1 | Google Maps Config | 15 min |
-| 2 | Toasts + Loading | 30 min |
-| 3 | Index DB | 20 min |
-| 4 | Déploiement Vercel | 10 min |
-| 5 | Tests Fonctionnels | 15 min |
+| Priorité | Tâche              | Temps  |
+| -------- | ------------------ | ------ |
+| 1        | Google Maps Config | 15 min |
+| 2        | Toasts + Loading   | 30 min |
+| 3        | Index DB           | 20 min |
+| 4        | Déploiement Vercel | 10 min |
+| 5        | Tests Fonctionnels | 15 min |
 
 **Pause recommandée après chaque priorité ! ☕**
 
@@ -270,6 +292,7 @@ Tous les guides sont dans `docs/` :
 ## 🎯 OBJECTIF DE LA SESSION
 
 À la fin de demain, tu devrais avoir :
+
 - ✅ Google Maps fonctionnel (local + Vercel)
 - ✅ UX améliorée (toasts + loading)
 - ✅ DB optimisée (index)
@@ -283,9 +306,9 @@ Tous les guides sont dans `docs/` :
 ## 📞 AIDE
 
 Si blocage :
+
 1. Vérifier `docs/README.md` pour trouver le bon guide
 2. Chercher dans `AMELIORATIONS_CODE.md`
 3. Vérifier les commits récents : `git log --oneline -10`
 
 **Bon courage pour demain ! 💪✨**
-

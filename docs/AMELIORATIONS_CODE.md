@@ -3,6 +3,7 @@
 ## ✅ Améliorations Appliquées Aujourd'hui
 
 ### 1. Organisation Documentation ✨
+
 - ✅ Tous les `.md` déplacés dans `docs/`
 - ✅ `docs/README.md` créé avec index complet
 - ✅ Structure claire par catégorie
@@ -14,12 +15,15 @@
 ### 🔴 PRIORITÉ HAUTE
 
 #### 1. Remplacer `console.error` par un système de logging
+
 **Fichiers concernés :**
+
 - `components/FavoriteButton.tsx` (ligne 47)
 - `contexts/CartContext.tsx`
 - `app/api/favoris/route.ts`
 
 **Problème :**
+
 ```typescript
 catch (error) {
   console.error('Erreur:', error); // ❌ Pas adapté en production
@@ -28,6 +32,7 @@ catch (error) {
 ```
 
 **Solution :**
+
 ```typescript
 // lib/logger.ts (à créer)
 export const logger = {
@@ -49,12 +54,15 @@ catch (error) {
 ---
 
 #### 2. Remplacer `alert()` par des Toasts
+
 **Problème :**
+
 - `alert()` bloque l'UI
 - Design non professionnel
 - Pas responsive mobile
 
 **Solution : React Hot Toast**
+
 ```bash
 npm install react-hot-toast
 ```
@@ -84,11 +92,13 @@ toast.error('Stock insuffisant');
 ---
 
 #### 3. Ajouter des Index de Base de Données
+
 **Fichiers :** `prisma/schema.prisma`
 
 **Problème :** Requêtes lentes sur tables volumineuses
 
 **Solution :**
+
 ```prisma
 model Reservation {
   id         String   @id @default(cuid())
@@ -117,6 +127,7 @@ model Stock {
 ```
 
 Migration :
+
 ```bash
 npx prisma migrate dev --name add_indexes
 ```
@@ -126,15 +137,17 @@ npx prisma migrate dev --name add_indexes
 ### 🟡 PRIORITÉ MOYENNE
 
 #### 4. Ajouter un Loading State Global
+
 **Fichiers :** Toutes les pages avec `fetch`
 
 **Problème :**
+
 ```typescript
 const [items, setItems] = useState<Item[]>([]);
 
 useEffect(() => {
   fetch('/api/items')
-    .then(res => res.json())
+    .then((res) => res.json())
     .then(setItems);
 }, []);
 
@@ -142,13 +155,14 @@ useEffect(() => {
 ```
 
 **Solution :**
+
 ```typescript
 const [items, setItems] = useState<Item[]>([]);
 const [loading, setLoading] = useState(true);
 
 useEffect(() => {
   fetch('/api/items')
-    .then(res => res.json())
+    .then((res) => res.json())
     .then(setItems)
     .finally(() => setLoading(false));
 }, []);
@@ -161,14 +175,17 @@ if (loading) {
 ---
 
 #### 5. Optimiser les Images
+
 **Fichiers :** Toutes les images
 
 **Problème :**
+
 ```tsx
 <Image src={imageUrl} unoptimized /> // ❌ Bypass Next.js optimization
 ```
 
 **Solution :**
+
 ```tsx
 // next.config.ts
 export default {
@@ -183,18 +200,19 @@ export default {
 };
 
 // Composant
-<Image 
-  src={imageUrl} 
-  width={500} 
-  height={500} 
+<Image
+  src={imageUrl}
+  width={500}
+  height={500}
   quality={85}
   // ❌ Retirer unoptimized
-/>
+/>;
 ```
 
 ---
 
 #### 6. Créer un Composant Loading Réutilisable
+
 **Nouveau fichier :** `components/LoadingSpinner.tsx`
 
 ```typescript
@@ -207,7 +225,9 @@ export default function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | '
 
   return (
     <div className="flex items-center justify-center p-8">
-      <div className={`${sizeClasses[size]} animate-spin rounded-full border-4 border-gray-200 border-t-rose-600`} />
+      <div
+        className={`${sizeClasses[size]} animate-spin rounded-full border-4 border-gray-200 border-t-rose-600`}
+      />
     </div>
   );
 }
@@ -218,6 +238,7 @@ export default function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | '
 ### 🟢 PRIORITÉ BASSE (Nice to Have)
 
 #### 7. Ajouter Compression Gzip/Brotli
+
 **Fichier :** `next.config.ts`
 
 ```typescript
@@ -227,6 +248,7 @@ export default {
 ```
 
 #### 8. Précharger les Fonts
+
 **Fichier :** `app/layout.tsx`
 
 ```tsx
@@ -235,11 +257,12 @@ import { Geist } from 'next/font/google';
 const geist = Geist({
   subsets: ['latin'],
   display: 'swap', // ✅ Améliore FCP
-  preload: true,   // ✅ Précharge
+  preload: true, // ✅ Précharge
 });
 ```
 
 #### 9. Ajouter des Tests E2E (Playwright)
+
 ```bash
 npm install -D @playwright/test
 npx playwright install
@@ -260,11 +283,13 @@ test('affiche la carte Google Maps', async ({ page }) => {
 ## 📊 Performance Metrics (Avant/Après)
 
 ### Avant
+
 - 🟡 First Contentful Paint : ~1.8s
 - 🟡 Largest Contentful Paint : ~2.5s
 - 🟡 Time to Interactive : ~3.2s
 
 ### Après (Estimé avec améliorations)
+
 - 🟢 First Contentful Paint : ~1.2s (-33%)
 - 🟢 Largest Contentful Paint : ~1.8s (-28%)
 - 🟢 Time to Interactive : ~2.4s (-25%)
@@ -274,6 +299,7 @@ test('affiche la carte Google Maps', async ({ page }) => {
 ## 🔍 Code Smells Détectés
 
 ### 1. Duplication dans les Composants de Cartes
+
 **Fichiers :** `app/cart/page.tsx`, `app/cavistes/page.tsx`
 
 **Problème :** Code similaire répété
@@ -281,6 +307,7 @@ test('affiche la carte Google Maps', async ({ page }) => {
 **Solution :** Créer `components/WineCard.tsx` et `components/CavisteCard.tsx`
 
 ### 2. Pas de Gestion d'Erreur Globale
+
 **Solution :** Ajouter `app/error.tsx`
 
 ```tsx
@@ -301,6 +328,7 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
 ```
 
 ### 3. Variables d'Environnement Non Validées
+
 **Solution :** `lib/env.ts`
 
 ```typescript
@@ -338,4 +366,3 @@ export const env = envSchema.parse(process.env);
 ---
 
 **Le site fonctionne déjà très bien ! Ces améliorations sont pour passer au niveau supérieur. 🚀**
-

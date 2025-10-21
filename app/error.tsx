@@ -28,10 +28,8 @@ export default function Error({
             </svg>
           </div>
 
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">
-            Une erreur est survenue
-          </h2>
-          
+          <h2 className="text-2xl font-bold text-gray-900 mb-3">Une erreur est survenue</h2>
+
           <p className="text-gray-600 mb-6">
             Nous rencontrons un problème technique. Veuillez réessayer.
           </p>
@@ -66,4 +64,3 @@ export default function Error({
     </div>
   );
 }
-

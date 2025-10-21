@@ -16,12 +16,14 @@
 ### 1. 🎨 Redesign Page Caviste
 
 **Avant :**
+
 - Image caviste nulle part
 - Favoris dans le hero
 - Vins en premier
 - Design basique
 
 **Après :**
+
 - ✅ Image caviste (192×192px) à droite du titre
 - ✅ Bouton favoris dans sidebar dédiée
 - ✅ Google Maps en première position
@@ -34,16 +36,19 @@
 ### 2. 🗺️ Google Maps Interactive
 
 **Implémentation :**
+
 - Carte Google Maps Embed (384px hauteur)
 - Lien "Obtenir l'itinéraire"
 - Variable `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
 - Fallback graceful si pas de clé
 
 **Coût :**
+
 - GRATUIT jusqu'à 28 000 chargements/mois
 - Estimation MVP : 1000-5000/mois = $0
 
 **Documentation créée :**
+
 - `docs/SETUP_GOOGLE_MAPS.md` - Guide complet
 - `docs/QUICKSTART_GOOGLE_MAPS.md` - 5 minutes
 - `docs/PROTEGER_CLE_GOOGLE_MAPS.md` - Sécurité
@@ -54,6 +59,7 @@
 ### 3. ⭐ Bouton Favoris Amélioré
 
 **Nouvelles features :**
+
 - Variante `compact` pour sidebar
 - Texte explicite : "Ajouter/Retirer des favoris"
 - Design adapté à l'état (gris/rose)
@@ -66,12 +72,14 @@
 ### 4. 🔐 Sécurité Clé Google Maps
 
 **Guide complet créé :**
+
 - Restrictions par domaine (`localhost`, `*.vercel.app`)
 - Restrictions par API (Maps Embed uniquement)
 - Configuration quotas et alertes
 - Tests de sécurité
 
 **Protection :**
+
 - ✅ Clé utilisable uniquement sur tes domaines
 - ✅ Clé limitée à Maps Embed API
 - ✅ Alertes si dépassement
@@ -84,12 +92,14 @@
 **Problème :** 22 fichiers `.md` à la racine
 
 **Solution :**
+
 - ✅ Nouveau dossier `docs/`
 - ✅ 22 fichiers organisés par catégorie
 - ✅ `docs/README.md` avec index complet
 - ✅ Root project nettoyé
 
 **Structure :**
+
 ```
 docs/
 ├── README.md (index)
@@ -108,6 +118,7 @@ docs/
 **Fichier créé :** `AMELIORATIONS_CODE.md`
 
 **Problèmes détectés :**
+
 - 26 fichiers avec `console.log/error`
 - `alert()` utilisé (bloquant)
 - Pas de loading states
@@ -117,16 +128,19 @@ docs/
 **Solutions proposées :**
 
 #### 🔴 Priorité Haute
+
 1. Système de logging professionnel
 2. Remplacer `alert()` par toasts (react-hot-toast)
 3. Ajouter index DB pour performance
 
 #### 🟡 Priorité Moyenne
+
 4. Loading states global
 5. Optimiser images (retirer `unoptimized`)
 6. Composant Loading réutilisable
 
 #### 🟢 Priorité Basse
+
 7. Tests E2E (Playwright)
 8. Validation env vars (Zod)
 9. Compression (FAIT ✅)
@@ -136,18 +150,21 @@ docs/
 ### 7. 🚀 Quick Wins Appliqués
 
 **1. LoadingSpinner Component**
+
 - Fichier : `components/LoadingSpinner.tsx`
 - 3 tailles : sm, md, lg
 - Accessible (aria-label)
 - Réutilisable partout
 
 **2. Error Boundary Global**
+
 - Fichier : `app/error.tsx`
 - Design professionnel
 - Boutons "Réessayer" + "Accueil"
 - Détails techniques en dev mode
 
 **3. Compression Activée**
+
 - `next.config.ts` : `compress: true`
 - Gzip/Brotli automatique
 - Réduction taille assets ~30%
@@ -161,21 +178,25 @@ docs/
 ### Priorités Session Suivante :
 
 1. **Google Maps Config** (15 min)
+
    - Activer Maps Embed API
    - Configurer restrictions
    - Tester
 
 2. **Toasts + Loading** (30 min)
+
    - Installer react-hot-toast
    - Remplacer alert()
    - Utiliser LoadingSpinner
 
 3. **Index DB** (20 min)
+
    - Ajouter index Prisma
    - Migration
    - Appliquer sur Supabase
 
 4. **Déploiement Vercel** (10 min)
+
    - Ajouter var d'env Google Maps
    - Push GitHub
    - Vérifier déploiement
@@ -192,6 +213,7 @@ docs/
 ## 📊 Métriques
 
 ### Commits
+
 - `fb8ca88` - Redesign page caviste + Google Maps
 - `f465482` - Guide Google Maps + bouton favoris
 - `8c24f90` - Quickstart Google Maps
@@ -202,11 +224,13 @@ docs/
 **Total : 6 commits**
 
 ### Fichiers Modifiés
+
 - 28 fichiers changed
 - 823 insertions
 - 34 deletions
 
 ### Documentation
+
 - 4 nouveaux guides Google Maps
 - 1 guide améliorations code
 - 1 TODO demain
@@ -250,18 +274,21 @@ docs/
 ## 💡 Décisions Techniques
 
 ### 1. Google Maps Embed API
-**Choix :** Maps Embed API (pas JavaScript API)  
-**Raison :** Plus simple, gratuit, suffit pour afficher carte  
+
+**Choix :** Maps Embed API (pas JavaScript API)
+**Raison :** Plus simple, gratuit, suffit pour afficher carte
 **Alternative rejetée :** Directions API (trop cher, pas nécessaire)
 
 ### 2. Horaires Cavistes
-**Choix :** Saisie manuelle pour MVP  
-**Raison :** Gratuit, simple, contrôle total  
+
+**Choix :** Saisie manuelle pour MVP
+**Raison :** Gratuit, simple, contrôle total
 **Future :** Google Places API en hybride (avec cache)
 
 ### 3. Clé API Publique
-**Problème :** Vercel avertissement "NEXT_PUBLIC_ + KEY"  
-**Solution :** Normal pour Google Maps, protégé par restrictions  
+
+**Problème :** Vercel avertissement "NEXT*PUBLIC* + KEY"
+**Solution :** Normal pour Google Maps, protégé par restrictions
 **Sécurité :** Domaines + API restreints
 
 ---
@@ -269,6 +296,7 @@ docs/
 ## 🔗 Ressources Créées
 
 ### Guides Principaux
+
 1. **Setup Google Maps** - Configuration complète
 2. **Quickstart Google Maps** - 5 minutes
 3. **Protéger Clé API** - Sécurité
@@ -277,10 +305,12 @@ docs/
 6. **TODO Demain** - Plan session suivante
 
 ### Composants Créés
+
 1. `LoadingSpinner` - Loading réutilisable
 2. `Error` - Gestion erreur globale
 
 ### Configuration
+
 1. `next.config.ts` - Compression activée
 2. `docs/` - Organisation documentation
 
@@ -289,18 +319,21 @@ docs/
 ## 🎓 Apprentissages
 
 ### Google Maps
+
 - Maps Embed API vs JavaScript API
 - Restrictions domaine + API
 - Quotas et facturation
 - Déploiement Vercel avec clé publique
 
 ### Performance
+
 - Importance des index DB
 - Loading states pour UX
 - Compression assets
 - Error boundaries
 
 ### Organisation
+
 - Importance documentation structurée
 - Quick wins vs long term
 - Priorisation améliorations
@@ -310,6 +343,7 @@ docs/
 ## 📈 Prochaines Étapes
 
 ### Demain (22 Octobre)
+
 1. ✅ Configurer Google Maps
 2. ✅ Améliorer UX (toasts + loading)
 3. ✅ Optimiser DB (index)
@@ -317,6 +351,7 @@ docs/
 5. ✅ Tests complets
 
 ### Semaine Prochaine
+
 - Notifications email
 - Page profil
 - Filtres avancés
@@ -324,6 +359,7 @@ docs/
 - Tests E2E
 
 ### Mois Prochain
+
 - Système notation
 - Programme fidélité
 - App mobile ?
@@ -363,9 +399,8 @@ docs/
 
 **Excellente session ! Tout est prêt pour demain. 💪✨**
 
-**Date :** 21 Octobre 2025  
-**Durée :** ~3 heures  
-**Commits :** 6  
-**Fichiers :** 28  
+**Date :** 21 Octobre 2025
+**Durée :** ~3 heures
+**Commits :** 6
+**Fichiers :** 28
 **Documentation :** 8 guides
-
