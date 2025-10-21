@@ -3,6 +3,7 @@
 ## 🎯 Vue d'Ensemble
 
 Google te recommande de protéger ta clé pour éviter :
+
 - ❌ Utilisation non autorisée par d'autres sites
 - ❌ Dépassement de quota (facturation inattendue)
 - ❌ Abus de ta clé par des robots
@@ -38,6 +39,7 @@ https://wine-district*.vercel.app/*
 ```
 
 **Si tu as un domaine personnalisé** (ex: `winedistrict.com`) :
+
 ```
 https://winedistrict.com/*
 https://*.winedistrict.com/*
@@ -47,11 +49,11 @@ https://*.winedistrict.com/*
 
 ⚠️ **IMPORTANT** : Le format doit être précis !
 
-| ✅ CORRECT | ❌ INCORRECT |
-|-----------|-------------|
-| `https://*.vercel.app/*` | `*.vercel.app` |
-| `localhost:3000/*` | `localhost:3000` (sans `/*`) |
-| `https://winedistrict.com/*` | `winedistrict.com` |
+| ✅ CORRECT                   | ❌ INCORRECT                 |
+| ---------------------------- | ---------------------------- |
+| `https://*.vercel.app/*`     | `*.vercel.app`               |
+| `localhost:3000/*`           | `localhost:3000` (sans `/*`) |
+| `https://winedistrict.com/*` | `winedistrict.com`           |
 
 ### E. Sauvegarder
 
@@ -72,22 +74,25 @@ https://*.winedistrict.com/*
 Dans le menu déroulant :
 
 **✅ COCHER :**
+
 - Maps Embed API
 
 **❌ NE PAS COCHER :**
+
 - Maps JavaScript API
 - Places API
 - Directions API
 - Geocoding API
 - Roads API
 - Street View API
-- *(Toutes les autres)*
+- _(Toutes les autres)_
 
 ### C. Pourquoi restreindre par API ?
 
 Si quelqu'un vole ta clé, il ne pourra l'utiliser **QUE** pour Maps Embed API (cartes intégrées).
 
 Il **NE POURRA PAS** :
+
 - Faire des recherches de lieux (Places API) = $$$$
 - Calculer des itinéraires (Directions API) = $$$$
 - Géocoder des adresses (Geocoding API) = $$$$
@@ -148,20 +153,20 @@ Créer un fichier HTML test :
 <!-- test-steal-key.html -->
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Test Vol de Clé</title>
-</head>
-<body>
-  <h1>Test : Cette carte ne devrait PAS s'afficher</h1>
-  <iframe
-    width="600"
-    height="450"
-    style="border:0"
-    loading="lazy"
-    allowfullscreen
-    src="https://www.google.com/maps/embed/v1/place?key=TA_CLE_ICI&q=Paris"
-  ></iframe>
-</body>
+  <head>
+    <title>Test Vol de Clé</title>
+  </head>
+  <body>
+    <h1>Test : Cette carte ne devrait PAS s'afficher</h1>
+    <iframe
+      width="600"
+      height="450"
+      style="border:0"
+      loading="lazy"
+      allowfullscreen
+      src="https://www.google.com/maps/embed/v1/place?key=TA_CLE_ICI&q=Paris"
+    ></iframe>
+  </body>
 </html>
 ```
 
@@ -186,6 +191,7 @@ Créer un fichier HTML test :
 ### B. Alertes de Sécurité
 
 Google te notifiera automatiquement si :
+
 - ❌ Ta clé est utilisée depuis un domaine non autorisé
 - ❌ Pic inhabituel de requêtes
 - ❌ Erreurs répétées
@@ -193,10 +199,12 @@ Google te notifiera automatiquement si :
 ### C. Rotation de la Clé (Optionnel)
 
 **Quand ?**
+
 - Si tu suspectes que ta clé a été compromise
 - Tous les 6-12 mois (bonne pratique)
 
 **Comment ?**
+
 1. Google Cloud Console → Identifiants
 2. Créer une **nouvelle** clé API
 3. Ajouter les mêmes restrictions
@@ -292,6 +300,7 @@ Google te notifiera automatiquement si :
 **Cause** : `localhost:3000/*` pas dans les référents
 
 **Solution** :
+
 1. Google Cloud Console → Ta clé API
 2. Restrictions d'application → Ajouter `localhost:3000/*`
 3. Enregistrer
@@ -305,6 +314,7 @@ Google te notifiera automatiquement si :
 **Cause** : Domaine Vercel pas dans les référents
 
 **Solution** :
+
 1. Copier l'URL exacte Vercel : `wine-district-abc123.vercel.app`
 2. Google Cloud Console → Ta clé API
 3. Ajouter `https://*.vercel.app/*`
@@ -317,6 +327,7 @@ Google te notifiera automatiquement si :
 **Cause** : Maps Embed API pas dans les restrictions d'API
 
 **Solution** :
+
 1. Google Cloud Console → Ta clé API
 2. Restrictions d'API → Cocher "Maps Embed API"
 3. Enregistrer
@@ -326,6 +337,7 @@ Google te notifiera automatiquement si :
 **Symptôme** : Carte ne s'affiche nulle part
 
 **Solution** : Temporairement désactiver les restrictions pour tester
+
 1. Restrictions d'application → Sélectionner "Aucune restriction"
 2. Tester si la carte s'affiche
 3. Si oui → Problème de configuration des référents
@@ -400,4 +412,3 @@ Budget : $5/mois avec alertes
 2. ✅ Tester sur localhost et Vercel
 3. ✅ Vérifier le monitoring dans 24h
 4. 🚀 Déployer en production avec confiance !
-

@@ -5,8 +5,8 @@
 Quand tu ajoutes `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` dans Vercel, tu vois :
 
 ```
-⚠️ This key, which is prefixed with NEXT_PUBLIC_ and includes the term KEY, 
-   might expose sensitive information to the browser. 
+⚠️ This key, which is prefixed with NEXT_PUBLIC_ and includes the term KEY,
+   might expose sensitive information to the browser.
    Verify it is safe to share publicly.
 ```
 
@@ -33,6 +33,7 @@ Vercel te prévient parce que **TOUT** ce qui commence par `NEXT_PUBLIC_` est **
 ### 1. **Restriction par Domaine**
 
 Dans Google Cloud Console, tu as configuré :
+
 ```
 localhost:3000/*
 *.vercel.app/*
@@ -70,10 +71,10 @@ Tu peux voir l'usage en temps réel dans Google Cloud Console et configurer des 
 
 ### 2. Ajouter la Variable
 
-| Champ | Valeur |
-|-------|--------|
-| **Name** | `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` |
-| **Value** | `AIzaSyA_xxxxxxxxxxxxxxxxxxxxx` |
+| Champ           | Valeur                                  |
+| --------------- | --------------------------------------- |
+| **Name**        | `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`       |
+| **Value**       | `AIzaSyA_xxxxxxxxxxxxxxxxxxxxx`         |
 | **Environment** | ✅ Production ✅ Preview ✅ Development |
 
 ### 3. Vercel Affiche l'Avertissement
@@ -113,6 +114,7 @@ localhost:3000/*  (optionnel en prod)
 Vérifier que **SEULE** "Maps Embed API" est cochée.
 
 ❌ Ne pas cocher :
+
 - Maps JavaScript API
 - Places API
 - Directions API
@@ -125,6 +127,7 @@ Vérifier que **SEULE** "Maps Embed API" est cochée.
 ### Domaine Automatique Vercel
 
 Quand tu déploies, Vercel te donne une URL comme :
+
 ```
 https://wine-district-xyz123.vercel.app
 ```
@@ -145,6 +148,7 @@ https://wine-district-xyz123.vercel.app
 Exemple : `winedistrict.com`
 
 Ajouter aussi :
+
 ```
 winedistrict.com/*
 *.winedistrict.com/*
@@ -172,6 +176,7 @@ Vercel déploie automatiquement.
 **Cause** : Le domaine Vercel n'est pas dans les restrictions
 
 **Solution** :
+
 1. Copier l'URL exacte depuis Vercel (ex: `wine-district-abc123.vercel.app`)
 2. Aller dans Google Cloud Console
 3. Ajouter `*.vercel.app/*` dans les restrictions
@@ -198,12 +203,12 @@ Vercel déploie automatiquement.
 
 ## 📊 Comparaison : Public vs Privé
 
-| Variable | Préfixe | Exposition | Exemple |
-|----------|---------|------------|---------|
-| Google Maps API | `NEXT_PUBLIC_` | ✅ Public (OK) | Maps dans iframe |
-| Supabase URL | `NEXT_PUBLIC_` | ✅ Public (OK) | Client-side fetch |
-| JWT Secret | ❌ Pas de préfixe | 🔒 Privé | Signature tokens |
-| Database URL | ❌ Pas de préfixe | 🔒 Privé | Connexion DB |
+| Variable        | Préfixe           | Exposition     | Exemple           |
+| --------------- | ----------------- | -------------- | ----------------- |
+| Google Maps API | `NEXT_PUBLIC_`    | ✅ Public (OK) | Maps dans iframe  |
+| Supabase URL    | `NEXT_PUBLIC_`    | ✅ Public (OK) | Client-side fetch |
+| JWT Secret      | ❌ Pas de préfixe | 🔒 Privé       | Signature tokens  |
+| Database URL    | ❌ Pas de préfixe | 🔒 Privé       | Connexion DB      |
 
 ---
 
@@ -234,6 +239,7 @@ Après le déploiement :
 **Cause** : Variable pas ajoutée ou mal nommée
 
 **Solution** :
+
 1. Vercel Dashboard → Settings → Environment Variables
 2. Vérifier le nom exact : `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
 3. Redéployer : Deployments → ... → Redeploy
@@ -243,6 +249,7 @@ Après le déploiement :
 **Cause** : Restrictions de domaine
 
 **Solution** :
+
 1. Google Cloud Console → Identifiants
 2. Ajouter `*.vercel.app/*`
 3. Attendre 2-3 minutes
@@ -254,6 +261,7 @@ Après le déploiement :
 **Solution** : Rien à faire, la carte fonctionne !
 
 Pour enlever le watermark :
+
 1. Google Cloud Console → Facturation
 2. Ajouter une carte bancaire
 3. Tu restes dans la limite gratuite
@@ -312,4 +320,3 @@ Pour enlever le watermark :
 ---
 
 **C'est tout ! Clique sur "Add" et déploie en toute confiance ! 🚀**
-
