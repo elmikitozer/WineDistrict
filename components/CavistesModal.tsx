@@ -122,13 +122,12 @@ export default function CavistesModal({
                               });
                               setShowAddedPopup(true);
                               setTimeout(() => setShowAddedPopup(false), 2000);
+                              // Réinitialiser la quantité à 1 après ajout
+                              setQuantity(stock.caviste!.id, 1);
                             }}
-                            disabled={cart.isInCart(stock.vinId, stock.caviste!.id)}
-                            className="w-full bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700"
                           >
-                            {cart.isInCart(stock.vinId, stock.caviste!.id)
-                              ? 'Déjà dans le panier'
-                              : 'Ajouter au panier'}
+                            Ajouter au panier
                           </button>
                         </>
                       ) : (

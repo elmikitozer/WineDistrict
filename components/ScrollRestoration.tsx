@@ -7,32 +7,39 @@ export default function ScrollRestoration() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Restaurer la position au chargement
-    const savedPosition = sessionStorage.getItem('scrollPosition');
-    if (savedPosition) {
-      setTimeout(() => {
+    // Créer une clé unique pour cette page
+    const scrollKey = `scroll-${pathname}`;
+    
+    // Restaurer la position sauvegardée pour cette page
+    const savedPosition = sessionStorage.getItem(scrollKey);
+    if (savedPosition && window.history.state?.scroll !== false) {
+      // Petit délai pour laisser la page se charger
+      const timeoutId = setTimeout(() => {
         window.scrollTo(0, parseInt(savedPosition));
-        sessionStorage.removeItem('scrollPosition');
-      }, 100);
+      }, 50);
+      return () => clearTimeout(timeoutId);
     }
 
-    // Sauvegarder la position avant de quitter
-    const saveScrollPosition = () => {
-      sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+    // Sauvegarder la position actuelle avant de quitter
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem(scrollKey, window.scrollY.toString());
     };
 
-    // Écouter les clics sur les liens
+    // Sauvegarder aussi lors des navigations internes
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.tagName === 'A' || target.closest('a')) {
-        saveScrollPosition();
+      const link = target.closest('a');
+      if (link && link.href && link.href.startsWith(window.location.origin)) {
+        sessionStorage.setItem(scrollKey, window.scrollY.toString());
       }
     };
 
-    window.addEventListener('click', handleClick);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('click', handleClick);
 
     return () => {
-      window.removeEventListener('click', handleClick);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('click', handleClick);
     };
   }, [pathname]);
 

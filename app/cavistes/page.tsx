@@ -54,32 +54,32 @@ export default function CavistesPage() {
               key={caviste.id}
               className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition"
             >
-            <div className="flex gap-6 mb-6 items-start">
-              {/* Infos caviste */}
-              <div className="flex-1">
-                <Link
-                  href={cavisteUrl}
-                  className="text-xl font-semibold text-gray-800 hover:text-rose-600 transition"
-                >
-                  {caviste.nom}
-                </Link>
-                <p className="text-sm text-gray-500 mt-1">{caviste.adresse}</p>
-              </div>
-              
-              {/* Image caviste à droite */}
-              <Link href={cavisteUrl} className="flex-shrink-0">
-                <div className="relative w-32 h-32 rounded-lg overflow-hidden bg-gray-100">
-                  <Image
-                    src={cavisteImageUrl}
-                    alt={caviste.nom}
-                    fill
-                    sizes="128px"
-                    className="object-cover"
-                    unoptimized
-                  />
+              <div className="flex gap-6 mb-6 items-start">
+                {/* Infos caviste */}
+                <div className="flex-1">
+                  <Link
+                    href={cavisteUrl}
+                    className="text-xl font-semibold text-gray-800 hover:text-rose-600 transition"
+                  >
+                    {caviste.nom}
+                  </Link>
+                  <p className="text-sm text-gray-500 mt-1">{caviste.adresse}</p>
                 </div>
-              </Link>
-            </div>
+
+                {/* Image caviste à droite */}
+                <Link href={cavisteUrl} className="flex-shrink-0">
+                  <div className="relative w-32 h-32 rounded-lg overflow-hidden bg-gray-100">
+                    <Image
+                      src={cavisteImageUrl}
+                      alt={caviste.nom}
+                      fill
+                      sizes="128px"
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+                </Link>
+              </div>
 
               {caviste.stocks.length === 0 ? (
                 <p className="text-sm text-gray-400 italic">Aucun vin répertorié pour le moment.</p>

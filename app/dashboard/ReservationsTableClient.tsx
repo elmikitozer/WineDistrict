@@ -108,8 +108,9 @@ export default function ReservationsTableClient() {
           <th className="text-left px-4 py-3">Vin</th>
           <th className="text-left px-4 py-3">Domaine</th>
           <th className="text-left px-4 py-3">Année</th>
-          <th className="text-left px-4 py-3">Client</th>
-          <th className="text-left px-4 py-3">Contact</th>
+          <th className="text-left px-4 py-3">Nom</th>
+          <th className="text-left px-4 py-3">Prénom</th>
+          <th className="text-left px-4 py-3">Téléphone</th>
           <th className="text-left px-4 py-3">Date</th>
           <th className="text-left px-4 py-3">Statut</th>
           <th className="text-left px-4 py-3">Actions</th>
@@ -117,42 +118,39 @@ export default function ReservationsTableClient() {
       </thead>
       <tbody>
         {items.map((r) => {
-          const clientName = r.user?.prenom && r.user?.nom 
-            ? `${r.user.prenom} ${r.user.nom}` 
-            : r.user?.prenom || r.user?.nom || r.user?.email || 'Client';
-          
           return (
-          <tr key={r.id} className="border-t">
-            <td className="px-4 py-3 font-medium">{r.vin.nom}</td>
-            <td className="px-4 py-3">{r.vin.domaine}</td>
-            <td className="px-4 py-3">{r.vin.année}</td>
-            <td className="px-4 py-3">
-              <div className="text-sm">
-                <div className="font-medium">{clientName}</div>
-                {r.user?.email && clientName !== r.user.email && (
-                  <div className="text-xs text-gray-500">{r.user.email}</div>
+            <tr key={r.id} className="border-t">
+              <td className="px-4 py-3 font-medium">{r.vin.nom}</td>
+              <td className="px-4 py-3">{r.vin.domaine}</td>
+              <td className="px-4 py-3">{r.vin.année}</td>
+              <td className="px-4 py-3">
+                {r.user?.nom || <span className="text-gray-400 italic">-</span>}
+              </td>
+              <td className="px-4 py-3">
+                {r.user?.prenom || <span className="text-gray-400 italic">-</span>}
+              </td>
+              <td className="px-4 py-3">
+                {r.user?.telephone ? (
+                  <a
+                    href={`tel:${r.user.telephone}`}
+                    className="text-rose-600 hover:text-rose-800"
+                  >
+                    {r.user.telephone}
+                  </a>
+                ) : (
+                  <span className="text-gray-400 italic">-</span>
                 )}
-              </div>
-            </td>
-            <td className="px-4 py-3">
-              {r.user?.telephone ? (
-                <a href={`tel:${r.user.telephone}`} className="text-rose-600 hover:text-rose-800 text-xs">
-                  {r.user.telephone}
-                </a>
-              ) : (
-                <span className="text-xs text-gray-400">-</span>
-              )}
-            </td>
-            <td className="px-4 py-3">{new Date(r.date).toLocaleString()}</td>
-            <td className="px-4 py-3">
-              <span className={`px-2 py-1 rounded text-xs ${statusBadgeClass(r.status)}`}>
-                {r.status}
-              </span>
-            </td>
-            <td className="px-4 py-3">
-              <ReservationStatusControl id={r.id} initialStatus={r.status} />
-            </td>
-          </tr>
+              </td>
+              <td className="px-4 py-3">{new Date(r.date).toLocaleString()}</td>
+              <td className="px-4 py-3">
+                <span className={`px-2 py-1 rounded text-xs ${statusBadgeClass(r.status)}`}>
+                  {r.status}
+                </span>
+              </td>
+              <td className="px-4 py-3">
+                <ReservationStatusControl id={r.id} initialStatus={r.status} />
+              </td>
+            </tr>
           );
         })}
       </tbody>

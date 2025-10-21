@@ -22,7 +22,6 @@ interface CartContextType {
   removeItem: (vinId: number, cavisteId: number) => void;
   updateQuantity: (vinId: number, cavisteId: number, quantity: number) => void;
   clearCart: () => void;
-  isInCart: (vinId: number, cavisteId: number) => boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -54,8 +53,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = (item: CartItem) => {
     setItems((prev) => {
       // Vérifier si l'item existe déjà
-      const exists = prev.some((i) => i.vinId === item.vinId && i.cavisteId === item.cavisteId);
-      if (exists) return prev;
+      const existingIndex = prev.findIndex((i) => i.vinId === item.vinId && i.cavisteId === item.cavisteId);
+      
+      if (existingIndex >= 0) {
+        // Si l'item existe, on augmente la quantité
+        const newItems = [...prev];
+        newItems[existingIndex] = {
+          ...newItems[existingIndex],
+          quantity: newItems[existingIndex].quantity + item.quantity,
+        };
+        return newItems;
+      }
+      
+      // Sinon on ajoute le nouvel item
       return [...prev, item];
     });
   };
@@ -76,10 +86,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems([]);
   };
 
-  const isInCart = (vinId: number, cavisteId: number) => {
-    return items.some((i) => i.vinId === vinId && i.cavisteId === cavisteId);
-  };
-
   return (
     <CartContext.Provider
       value={{
@@ -89,7 +95,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         removeItem,
         updateQuantity,
         clearCart,
-        isInCart,
       }}
     >
       {children}

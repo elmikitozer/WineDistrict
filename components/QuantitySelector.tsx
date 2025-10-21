@@ -35,15 +35,15 @@ export default function QuantitySelector({
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1">
       <button
         type="button"
         onClick={handleDecrement}
         disabled={quantity <= min}
-        className="w-8 h-8 rounded-md border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+        className="w-7 h-7 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition text-gray-600"
         aria-label="Diminuer la quantité"
       >
-        <Minus size={16} />
+        <Minus size={14} />
       </button>
       
       <input
@@ -52,19 +52,18 @@ export default function QuantitySelector({
         onChange={handleInputChange}
         min={min}
         max={max}
-        className="w-16 text-center border border-gray-300 rounded-md py-1 focus:outline-none focus:ring-2 focus:ring-rose-300"
+        className="w-12 text-center border border-gray-300 rounded py-1 text-sm focus:outline-none focus:ring-1 focus:ring-rose-300"
       />
       
       <button
         type="button"
         onClick={handleIncrement}
         disabled={quantity >= max}
-        className="w-8 h-8 rounded-md border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+        className="w-7 h-7 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition text-gray-600"
         aria-label="Augmenter la quantité"
       >
-        <Plus size={16} />
+        <Plus size={14} />
       </button>
     </div>
   );
 }
-
