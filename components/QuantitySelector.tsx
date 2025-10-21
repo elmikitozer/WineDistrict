@@ -45,7 +45,7 @@ export default function QuantitySelector({
       >
         <Minus size={14} />
       </button>
-      
+
       <input
         type="number"
         value={quantity}
@@ -54,7 +54,7 @@ export default function QuantitySelector({
         max={max}
         className="w-12 text-center border border-gray-300 rounded py-1 text-sm focus:outline-none focus:ring-1 focus:ring-rose-300"
       />
-      
+
       <button
         type="button"
         onClick={handleIncrement}

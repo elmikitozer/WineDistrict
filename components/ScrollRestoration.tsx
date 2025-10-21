@@ -7,6 +7,11 @@ export default function ScrollRestoration() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // Ne pas gérer le scroll sur la page d'accueil
+    if (pathname === '/') {
+      return;
+    }
+
     // Créer une clé unique pour cette page
     const scrollKey = `scroll-${pathname}`;
     
@@ -45,4 +50,3 @@ export default function ScrollRestoration() {
 
   return null;
 }
-

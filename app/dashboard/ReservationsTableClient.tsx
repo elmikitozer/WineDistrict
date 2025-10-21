@@ -131,10 +131,7 @@ export default function ReservationsTableClient() {
               </td>
               <td className="px-4 py-3">
                 {r.user?.telephone ? (
-                  <a
-                    href={`tel:${r.user.telephone}`}
-                    className="text-rose-600 hover:text-rose-800"
-                  >
+                  <a href={`tel:${r.user.telephone}`} className="text-rose-600 hover:text-rose-800">
                     {r.user.telephone}
                   </a>
                 ) : (

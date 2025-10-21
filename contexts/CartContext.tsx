@@ -53,8 +53,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = (item: CartItem) => {
     setItems((prev) => {
       // Vérifier si l'item existe déjà
-      const existingIndex = prev.findIndex((i) => i.vinId === item.vinId && i.cavisteId === item.cavisteId);
-      
+      const existingIndex = prev.findIndex(
+        (i) => i.vinId === item.vinId && i.cavisteId === item.cavisteId
+      );
+
       if (existingIndex >= 0) {
         // Si l'item existe, on augmente la quantité
         const newItems = [...prev];
@@ -64,7 +66,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         };
         return newItems;
       }
-      
+
       // Sinon on ajoute le nouvel item
       return [...prev, item];
     });
@@ -76,9 +78,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const updateQuantity = (vinId: number, cavisteId: number, quantity: number) => {
     setItems((prev) =>
-      prev.map((i) =>
-        i.vinId === vinId && i.cavisteId === cavisteId ? { ...i, quantity } : i
-      )
+      prev.map((i) => (i.vinId === vinId && i.cavisteId === cavisteId ? { ...i, quantity } : i))
     );
   };
 

@@ -16,6 +16,7 @@ interface Caviste {
 interface Stock {
   id: number;
   vinId: number;
+  quantite: number;
   caviste?: Caviste;
 }
 
@@ -38,6 +39,7 @@ export default function CavistesModal({
   const [open, setOpen] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showAddedPopup, setShowAddedPopup] = useState(false);
+  const [stockError, setStockError] = useState<string | null>(null);
   const [quantities, setQuantities] = useState<Record<number, number>>({});
   const router = useRouter();
   const cart = useCart();
@@ -45,12 +47,16 @@ export default function CavistesModal({
   const getQuantity = (cavisteId: number) => quantities[cavisteId] || 1;
   const setQuantity = (cavisteId: number, quantity: number) => {
     setQuantities((prev) => ({ ...prev, [cavisteId]: quantity }));
+    setStockError(null); // Réinitialiser l'erreur
   };
 
   return (
     <>
       <button
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+          setStockError(null);
+        }}
         className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700"
       >
         Voir les cavistes
@@ -76,6 +82,13 @@ export default function CavistesModal({
             </button>
 
             <h2 className="text-xl font-bold mb-4 pr-8">Cavistes disponibles</h2>
+
+            {/* Message d'erreur stock */}
+            {stockError && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                {stockError}
+              </div>
+            )}
 
             <ul className="space-y-4">
               {cavistes
@@ -104,10 +117,19 @@ export default function CavistesModal({
                             <QuantitySelector
                               quantity={getQuantity(stock.caviste!.id)}
                               onQuantityChange={(qty) => setQuantity(stock.caviste!.id, qty)}
+                              max={stock.quantite}
                             />
+                            <span className="text-xs text-gray-500">
+                              ({stock.quantite} disponible{stock.quantite > 1 ? 's' : ''})
+                            </span>
                           </div>
                           <button
                             onClick={() => {
+                              const qty = getQuantity(stock.caviste!.id);
+                              if (qty > stock.quantite) {
+                                setStockError(`Stock insuffisant. Seulement ${stock.quantite} bouteille${stock.quantite > 1 ? 's' : ''} disponible${stock.quantite > 1 ? 's' : ''}.`);
+                                return;
+                              }
                               cart.addItem({
                                 vinId: stock.vinId,
                                 cavisteId: stock.caviste!.id,
@@ -118,8 +140,9 @@ export default function CavistesModal({
                                 cavisteNom: stock.caviste!.nom,
                                 cavisteAdresse: stock.caviste!.adresse,
                                 cavisteSlug: stock.caviste!.slug,
-                                quantity: getQuantity(stock.caviste!.id),
+                                quantity: qty,
                               });
+                              setStockError(null);
                               setShowAddedPopup(true);
                               setTimeout(() => setShowAddedPopup(false), 2000);
                               // Réinitialiser la quantité à 1 après ajout

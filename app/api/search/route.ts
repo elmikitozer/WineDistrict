@@ -26,15 +26,36 @@ export async function GET(req: Request) {
     rows = await prisma.$queryRaw(sql);
   } else {
     const like = `%${q}%`; // contient (préfixe/suffixe conservés)
-    const sql = Prisma.sql`
-      SELECT v.id, v.nom, v.domaine, v."année" AS "annee", v.prix, v."imageFile"
-      FROM "Vin" AS v
-      WHERE unaccent(v.nom) ILIKE unaccent(${like})
-         OR unaccent(v.domaine) ILIKE unaccent(${like})
-      ORDER BY v.nom ASC
-      LIMIT 10
-    `;
-    rows = await prisma.$queryRaw(sql);
+    
+    // Vérifier si la requête contient un nombre (année potentielle)
+    const yearMatch = q.match(/\d{4}/);
+    const hasYear = yearMatch !== null;
+    
+    if (hasYear) {
+      // Recherche incluant l'année
+      const year = parseInt(yearMatch[0]);
+      const sql = Prisma.sql`
+        SELECT v.id, v.nom, v.domaine, v."année" AS "annee", v.prix, v."imageFile"
+        FROM "Vin" AS v
+        WHERE (unaccent(v.nom) ILIKE unaccent(${like})
+           OR unaccent(v.domaine) ILIKE unaccent(${like})
+           OR v."année" = ${year})
+        ORDER BY v.nom ASC
+        LIMIT 10
+      `;
+      rows = await prisma.$queryRaw(sql);
+    } else {
+      // Recherche sans année
+      const sql = Prisma.sql`
+        SELECT v.id, v.nom, v.domaine, v."année" AS "annee", v.prix, v."imageFile"
+        FROM "Vin" AS v
+        WHERE unaccent(v.nom) ILIKE unaccent(${like})
+           OR unaccent(v.domaine) ILIKE unaccent(${like})
+        ORDER BY v.nom ASC
+        LIMIT 10
+      `;
+      rows = await prisma.$queryRaw(sql);
+    }
   }
 
   // Désactive le cache côté client/CDN pour la live search

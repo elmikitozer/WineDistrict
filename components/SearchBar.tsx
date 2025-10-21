@@ -9,7 +9,6 @@ type Vin = {
   id: number;
   nom: string;
   domaine: string;
-  // TIP: évite les accents dans les clés TS/DB: annee: number;
   année: number;
 };
 
