@@ -5,6 +5,39 @@ import { Prisma } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 
+/**
+ * Normalise le texte pour la recherche :
+ * - "Saint Emilion" → recherche "Saint-Emilion" et "Saint Emilion"
+ * - "SaintEmilion" → recherche "Saint-Emilion" et "Saint Emilion"
+ */
+function normalizeSearchText(text: string): string[] {
+  const normalized = text.trim();
+  
+  // Générer des variantes avec tirets et espaces
+  const variants: string[] = [];
+  
+  // Variante originale
+  variants.push(normalized);
+  
+  // Variante avec espaces remplacés par tirets
+  if (normalized.includes(' ')) {
+    variants.push(normalized.replace(/\s+/g, '-'));
+  }
+  
+  // Variante avec tirets remplacés par espaces
+  if (normalized.includes('-')) {
+    variants.push(normalized.replace(/-/g, ' '));
+  }
+  
+  // Variante sans espaces ni tirets (pour "SaintEmilion")
+  const withoutSeparators = normalized.replace(/[\s-]/g, '');
+  if (withoutSeparators !== normalized) {
+    variants.push(withoutSeparators);
+  }
+  
+  return [...new Set(variants)]; // Dédupliquer
+}
+
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const qRaw = url.searchParams.get('q') ?? '';
@@ -37,7 +70,14 @@ export async function GET(req: Request) {
 
     if (year && textWithoutYear.length > 0) {
       // Recherche COMBINÉE : texte + année (priorité absolue)
-      const like = `%${textWithoutYear}%`;
+      const variants = normalizeSearchText(textWithoutYear);
+      const likes = variants.map(v => `%${v}%`);
+      
+      // Construire les conditions OR pour toutes les variantes
+      const textConditions = likes.map((like) => 
+        Prisma.sql`(unaccent(v.nom) ILIKE unaccent(${like}) OR unaccent(v.domaine) ILIKE unaccent(${like}))`
+      );
+      
       const sql = Prisma.sql`
         SELECT
           v.id,
@@ -48,23 +88,20 @@ export async function GET(req: Request) {
           v."imageFile",
           -- Score de pertinence
           CASE
-            -- Match parfait : nom/domaine + année
+            -- Match parfait : nom/domaine + année (n'importe quelle variante)
             WHEN v."année" = ${year} AND (
-              unaccent(v.nom) ILIKE unaccent(${like}) OR
-              unaccent(v.domaine) ILIKE unaccent(${like})
+              ${Prisma.join(textConditions, ' OR ')}
             ) THEN 1
             -- Année seule
             WHEN v."année" = ${year} THEN 2
-            -- Texte seul (sans année)
-            WHEN unaccent(v.nom) ILIKE unaccent(${like}) OR
-                 unaccent(v.domaine) ILIKE unaccent(${like}) THEN 3
+            -- Texte seul (sans année, n'importe quelle variante)
+            WHEN ${Prisma.join(textConditions, ' OR ')} THEN 3
             ELSE 4
           END AS relevance
         FROM "Vin" AS v
         WHERE
           v."année" = ${year} OR
-          unaccent(v.nom) ILIKE unaccent(${like}) OR
-          unaccent(v.domaine) ILIKE unaccent(${like})
+          ${Prisma.join(textConditions, ' OR ')}
         ORDER BY relevance ASC, v.nom ASC
         LIMIT 10
       `;
@@ -81,13 +118,19 @@ export async function GET(req: Request) {
       rows = await prisma.$queryRaw(sql);
     } else {
       // Recherche TEXTE SEUL (sans année)
-      const like = `%${textWithoutYear}%`;
+      const variants = normalizeSearchText(textWithoutYear);
+      const likes = variants.map(v => `%${v}%`);
+      
+      // Construire les conditions OR pour toutes les variantes
+      const textConditions = likes.map((like) => 
+        Prisma.sql`(unaccent(v.nom) ILIKE unaccent(${like}) OR unaccent(v.domaine) ILIKE unaccent(${like}))`
+      );
+      
       const sql = Prisma.sql`
         SELECT v.id, v.nom, v.domaine, v."année" AS annee, v.prix, v."imageFile"
         FROM "Vin" AS v
         WHERE
-          unaccent(v.nom) ILIKE unaccent(${like}) OR
-          unaccent(v.domaine) ILIKE unaccent(${like})
+          ${Prisma.join(textConditions, ' OR ')}
         ORDER BY v.nom ASC
         LIMIT 10
       `;
