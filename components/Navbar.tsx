@@ -168,13 +168,6 @@ function MobileMenu({
 
       {isAuthenticated ? (
         <>
-          {/* Panier */}
-          <div className="px-4 py-3 border-t border-rose-200">
-            <div onClick={onClose} className="px-4 py-3 rounded-lg hover:bg-rose-100 transition">
-              <CartIcon />
-            </div>
-          </div>
-
           {/* Mon compte */}
           <div className="px-4 py-3 border-t border-rose-200 space-y-1">
             <div className="px-4 pb-2 text-xs font-semibold text-rose-600 uppercase tracking-wide">
@@ -265,7 +258,10 @@ export default function Navbar({ isAuthenticated, isCaviste }: NavbarProps) {
           <Brand />
           <SearchCenter />
           <DesktopLinks isAuthenticated={isAuthenticated} isCaviste={isCaviste} />
-          <div className="md:hidden">
+          
+          {/* Mobile: Panier + Burger */}
+          <div className="md:hidden flex items-center gap-4">
+            {isAuthenticated && <CartIcon />}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="focus:outline-none"
