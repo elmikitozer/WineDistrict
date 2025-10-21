@@ -37,7 +37,7 @@ export default function CartPage() {
 
     try {
       // Récupérer UN SEUL token CSRF pour toutes les réservations
-      const csrfRes = await fetch('/api/csrf', {
+      const csrfRes = await fetch('/api/csrf', { 
         cache: 'no-store',
         credentials: 'include', // Important pour les cookies
       });
@@ -45,29 +45,42 @@ export default function CartPage() {
       const { csrfToken } = await csrfRes.json();
 
       // Créer toutes les réservations en parallèle avec le même token
-      const promises = items.map(async (item) => {
-        const res = await fetch('/api/reservation', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include', // Important pour envoyer le cookie
-          body: JSON.stringify({
-            vinId: item.vinId,
-            cavisteId: item.cavisteId,
-            _csrf: csrfToken,
-          }),
-        });
+      const results = await Promise.allSettled(
+        items.map(async (item) => {
+          const res = await fetch('/api/reservation', {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include', // Important pour envoyer le cookie
+            body: JSON.stringify({
+              vinId: item.vinId,
+              cavisteId: item.cavisteId,
+              quantity: item.quantity,
+              _csrf: csrfToken,
+            }),
+          });
 
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.error || `Erreur pour ${item.vinNom}`);
-        }
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            throw new Error(data.error || `Erreur pour ${item.vinNom}`);
+          }
 
-        return res.json();
-      });
+          return { item, data: await res.json() };
+        })
+      );
 
-      await Promise.all(promises);
+      // Vérifier s'il y a des erreurs
+      const errors = results
+        .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
+        .map((r) => r.reason.message);
+
+      if (errors.length > 0) {
+        setError(
+          `Certains articles ne sont plus disponibles :\n${errors.join('\n')}`
+        );
+        return;
+      }
 
       // Vider le panier
       clearCart();
@@ -119,7 +132,7 @@ export default function CartPage() {
 
       {error && (
         <div className="mb-6 p-4 rounded-lg bg-red-50 text-red-700 border border-red-200">
-          {error}
+          <pre className="whitespace-pre-wrap font-sans text-sm">{error}</pre>
         </div>
       )}
 

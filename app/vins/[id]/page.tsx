@@ -123,9 +123,10 @@ export default async function Page({
   // Générer l'URL de l'image (vraie image ou placeholder dynamique)
   const srcImageVin: string = getVinImageUrl(vin);
 
-  // Vérifier si l'utilisateur est connecté
+  // Vérifier si l'utilisateur est connecté ET est un client (pas caviste)
   const user = await getCurrentUser();
   const isAuthenticated = !!user;
+  const isClient = isAuthenticated && user.role === 'CLIENT';
 
   return (
     <>
@@ -193,7 +194,7 @@ export default async function Page({
                   )}
                   <CavistesModal
                     cavistes={cavistes}
-                    isAuthenticated={isAuthenticated}
+                    isAuthenticated={isClient}
                     vin={{
                       nom: vin.nom,
                       domaine: vin.domaine,

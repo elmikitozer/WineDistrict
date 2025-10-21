@@ -8,6 +8,7 @@ import { getSession } from '@/lib/auth';
 const ReservationSchema = z.object({
   vinId: z.coerce.number().int().positive(),
   cavisteId: z.coerce.number().int().positive(),
+  quantity: z.coerce.number().int().positive().default(1),
 });
 
 function readContentType(req: Request) {
@@ -51,18 +52,49 @@ export async function POST(req: Request) {
   const parsed = ReservationSchema.safeParse({
     vinId: data.vinId,
     cavisteId: data.cavisteId,
+    quantity: data.quantity,
   });
   if (!parsed.success) {
     return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
   }
 
-  const { vinId, cavisteId } = parsed.data;
+  const { vinId, cavisteId, quantity } = parsed.data;
 
   // Récupérer l'userId de l'utilisateur connecté (optionnel)
   const session = await getSession();
   const userId = session?.userId ? String(session.userId) : null;
 
-  // 4) TODO: transaction stock → reservation (quand prêt)
+  // 4) Vérifier le stock disponible
+  const stock = await prisma.stock.findFirst({
+    where: {
+      vinId,
+      cavisteId,
+    },
+    select: {
+      quantite: true,
+      vin: {
+        select: {
+          nom: true,
+        },
+      },
+    },
+  });
+
+  if (!stock) {
+    return NextResponse.json({ error: 'Stock introuvable' }, { status: 404 });
+  }
+
+  if (stock.quantite < quantity) {
+    return NextResponse.json({
+      error: `Stock insuffisant. Seulement ${stock.quantite} bouteille${
+        stock.quantite > 1 ? 's' : ''
+      } disponible${stock.quantite > 1 ? 's' : ''} pour ${stock.vin.nom}.`,
+      available: stock.quantite,
+    }, { status: 400 });
+  }
+
+  // 5) Créer la réservation (TODO: créer une ligne par bouteille si besoin)
+  // Pour l'instant, créons une seule réservation avec la quantité
   const reservationData: {
     vinId: number;
     cavisteId: number;
@@ -78,10 +110,17 @@ export async function POST(req: Request) {
     reservationData.userId = userId;
   }
 
-  const reservation = await prisma.reservation.create({
-    data: reservationData,
-    select: { id: true },
-  });
+  // Créer X réservations (une par bouteille)
+  const reservations = await Promise.all(
+    Array.from({ length: quantity }, () =>
+      prisma.reservation.create({
+        data: reservationData,
+        select: { id: true },
+      })
+    )
+  );
+
+  const reservation = reservations[0];
 
   // 5) UX : si form => redirect 303 vers la page précédente (avec un flag)
   if (isForm) {
