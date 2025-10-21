@@ -32,11 +32,20 @@ Ajoute **TOUS** ces domaines un par un :
 
 ```
 localhost:3000/*
-localhost:3000
+localhost:3001/*
+localhost:3002/*
 http://localhost:3000/*
+http://localhost:3001/*
+http://localhost:3002/*
 https://*.vercel.app/*
 https://wine-district*.vercel.app/*
 ```
+
+**⚠️ Pourquoi plusieurs ports localhost ?**
+
+- Next.js utilise le port 3000 par défaut
+- Si le port 3000 est occupé, Next.js passe à 3001, 3002, etc.
+- Ajouter les 3 premiers ports couvre 99% des cas
 
 **Si tu as un domaine personnalisé** (ex: `winedistrict.com`) :
 
@@ -218,7 +227,12 @@ Google te notifiera automatiquement si :
 
 ### ✅ Restrictions d'Application (Domaines)
 
-- [ ] `localhost:3000/*` (développement local)
+- [ ] `localhost:3000/*` (développement local - port par défaut)
+- [ ] `localhost:3001/*` (développement local - port alternatif)
+- [ ] `localhost:3002/*` (développement local - port alternatif)
+- [ ] `http://localhost:3000/*` (avec http explicite)
+- [ ] `http://localhost:3001/*` (avec http explicite)
+- [ ] `http://localhost:3002/*` (avec http explicite)
 - [ ] `https://*.vercel.app/*` (déploiements Vercel)
 - [ ] `https://tondomaine.com/*` (production, si applicable)
 - [ ] **PAS** de wildcard `*` seul (dangereux)
@@ -376,6 +390,11 @@ Google te notifiera automatiquement si :
 
 ```
 localhost:3000/*
+localhost:3001/*
+localhost:3002/*
+http://localhost:3000/*
+http://localhost:3001/*
+http://localhost:3002/*
 https://*.vercel.app/*
 https://tondomaine.com/*
 ```
