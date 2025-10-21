@@ -73,11 +73,11 @@ export async function POST(req: Request) {
     cavisteId,
     status: 'en_attente',
   };
-  
+
   if (userId) {
     reservationData.userId = userId;
   }
-  
+
   const reservation = await prisma.reservation.create({
     data: reservationData,
     select: { id: true },
