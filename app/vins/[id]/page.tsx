@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { getVinImageUrl } from '@/lib/vinImage';
 import ClientWrapper from '@/components/ClientWrapper';
 import ReservationConfirmation from '@/components/ReservationConfirmation';
+import { getCurrentUser } from '@/lib/auth';
 
 // 🧠 SEO dynamique par fiche vin
 import type { Metadata } from 'next';
@@ -123,6 +124,10 @@ export default async function Page({
   const nbCavistes = cavistes.length;
   // Générer l'URL de l'image (vraie image ou placeholder dynamique)
   const srcImageVin: string = getVinImageUrl(vin);
+  
+  // Vérifier si l'utilisateur est connecté
+  const user = await getCurrentUser();
+  const isAuthenticated = !!user;
 
   return (
     <>
@@ -191,7 +196,7 @@ export default async function Page({
                       {vin.stocks.length >= 2 ? 's' : ''} !
                     </p>
                   )}
-                  <CavistesModal cavistes={cavistes} />
+                  <CavistesModal cavistes={cavistes} isAuthenticated={isAuthenticated} />
                 </>
               ) : (
                 <div className="rounded-xl border border-dashed border-gray-200 p-4 bg-gray-50">

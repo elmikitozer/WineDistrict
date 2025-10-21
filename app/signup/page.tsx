@@ -10,6 +10,33 @@ export default function SignupPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
+
+  // Validation de l'email
+  const emailError = useMemo(() => {
+    if (!attemptedSubmit) return null;
+    if (!email) return 'L\'email est requis';
+    if (!email.includes('@')) return 'L\'email doit contenir un @';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return 'Format d\'email invalide';
+    return null;
+  }, [email, attemptedSubmit]);
+
+  // Validation du mot de passe
+  const passwordError = useMemo(() => {
+    if (!attemptedSubmit) return null;
+    if (!password) return 'Le mot de passe est requis';
+    if (password.length < 8) return 'Le mot de passe doit contenir au moins 8 caractères';
+    return null;
+  }, [password, attemptedSubmit]);
+
+  // Validation de la confirmation
+  const confirmError = useMemo(() => {
+    if (!attemptedSubmit) return null;
+    if (!confirm) return 'La confirmation est requise';
+    if (password !== confirm) return 'Les mots de passe ne correspondent pas';
+    return null;
+  }, [password, confirm, attemptedSubmit]);
 
   const disabled = useMemo(() => {
     return (
@@ -19,7 +46,20 @@ export default function SignupPage() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (disabled) return;
+    setAttemptedSubmit(true);
+    
+    if (disabled) {
+      // Afficher le premier message d'erreur trouvé (priorité : email > password > confirm)
+      if (emailError) {
+        setError(emailError);
+      } else if (passwordError) {
+        setError(passwordError);
+      } else if (confirmError) {
+        setError(confirmError);
+      }
+      return;
+    }
+    
     setSubmitting(true);
     setError(null);
     try {
@@ -36,6 +76,17 @@ export default function SignupPage() {
       setError(err instanceof Error ? err.message : 'Erreur inattendue');
     } finally {
       setSubmitting(false);
+    }
+  }
+  
+  function handleButtonClick() {
+    setAttemptedSubmit(true);
+    if (emailError) {
+      setError(emailError);
+    } else if (passwordError) {
+      setError(passwordError);
+    } else if (confirmError) {
+      setError(confirmError);
     }
   }
 
@@ -58,41 +109,61 @@ export default function SignupPage() {
           <label className="block text-sm">Email</label>
           <input
             type="email"
-            className="border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-rose-300"
+            className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
+              emailError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
+            }`}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+          {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
         </div>
         <div className="space-y-1">
-          <label className="block text-sm">Mot de passe</label>
+          <label className="block text-sm">Mot de passe <span className="text-xs text-gray-500">(min. 8 caractères)</span></label>
           <input
             type="password"
-            className="border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-rose-300"
+            className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
+              passwordError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
+            }`}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             minLength={8}
             required
           />
+          {passwordError && <p className="text-xs text-red-600 mt-1">{passwordError}</p>}
         </div>
         <div className="space-y-1">
           <label className="block text-sm">Confirmer le mot de passe</label>
           <input
             type="password"
-            className="border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-rose-300"
+            className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
+              confirmError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
+            }`}
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             minLength={8}
             required
           />
+          {confirmError && <p className="text-xs text-red-600 mt-1">{confirmError}</p>}
         </div>
         <button
           type="submit"
-          disabled={disabled || submitting}
-          className="bg-rose-600 text-white rounded-lg px-4 py-2 disabled:opacity-50"
+          disabled={submitting}
+          onClick={(e) => {
+            if (disabled) {
+              e.preventDefault();
+              handleButtonClick();
+            }
+          }}
+          className="bg-rose-600 text-white rounded-lg px-4 py-2 disabled:opacity-50 hover:bg-rose-700 transition w-full"
         >
           {submitting ? 'Création…' : 'Créer mon compte'}
         </button>
+        {disabled && attemptedSubmit && (
+          <p className="text-xs text-gray-500 text-center">
+            Veuillez corriger les erreurs ci-dessus pour continuer
+          </p>
+        )}
       </form>
     </div>
   );
