@@ -1,6 +1,6 @@
 # ⚡ Quick Start - Ajouter Plusieurs Ports Localhost
 
-**Problème :** Ton serveur Next.js tourne sur `localhost:3001` au lieu de `3000` ?  
+**Problème :** Ton serveur Next.js tourne sur `localhost:3001` au lieu de `3000` ?
 **Solution :** Ajoute **tous les ports** dans les restrictions Google API !
 
 ---
@@ -121,7 +121,7 @@ $ npm run dev
 2. Aller sur `http://localhost:3001/cavistes/vinotheque-de-la-vigne-4`
 3. **Vérifier** : La carte Google Maps s'affiche-t-elle ?
 
-**✅ OUI** → Tout fonctionne !  
+**✅ OUI** → Tout fonctionne !
 **❌ NON** → Voir dépannage ci-dessous.
 
 ---
@@ -131,6 +131,7 @@ $ npm run dev
 ### Problème : "This page can't load Google Maps correctly"
 
 **Erreur Console (F12) :**
+
 ```
 Google Maps JavaScript API error: RefererNotAllowedMapError
 ```
@@ -211,6 +212,7 @@ $ npm run dev
 ### Que se Passe-t-il en Production ?
 
 En production (Vercel), l'URL sera :
+
 ```
 https://wine-district-abc123.vercel.app
 ```
@@ -236,13 +238,14 @@ https://*.vercel.app/*    (production Vercel)
 ### ✅ Ce Que Tu NE DOIS PAS Faire
 
 ❌ **N'ajoute PAS :**
+
 ```
 localhost:*/*             (wildcard port = DANGEREUX)
 *                         (wildcard complet = DANGEREUX)
 http://*                  (wildcard domaine = DANGEREUX)
 ```
 
-**Pourquoi ?**  
+**Pourquoi ?**
 Ces wildcards permettraient à N'IMPORTE QUI d'utiliser ta clé depuis n'importe quel site !
 
 ---
@@ -268,4 +271,3 @@ Ces wildcards permettraient à N'IMPORTE QUI d'utiliser ta clé depuis n'importe
 ---
 
 **C'est tout ! Ton serveur peut maintenant tourner sur n'importe quel port entre 3000 et 3002. 🚀**
-
