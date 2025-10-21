@@ -7,9 +7,10 @@ import { useRouter } from 'next/navigation';
 interface FavoriteButtonProps {
   cavisteId: number;
   initialIsFavorite: boolean;
+  variant?: 'default' | 'compact';
 }
 
-export default function FavoriteButton({ cavisteId, initialIsFavorite }: FavoriteButtonProps) {
+export default function FavoriteButton({ cavisteId, initialIsFavorite, variant = 'default' }: FavoriteButtonProps) {
   const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -50,6 +51,26 @@ export default function FavoriteButton({ cavisteId, initialIsFavorite }: Favorit
     }
   }
 
+  if (variant === 'compact') {
+    // Version compacte pour la sidebar
+    return (
+      <button
+        onClick={toggleFavorite}
+        disabled={loading}
+        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition ${
+          isFavorite
+            ? 'bg-rose-600 text-white hover:bg-rose-700'
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+        } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+      >
+        <Heart className={`w-4 h-4 ${isFavorite ? 'fill-white' : ''}`} />
+        {isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+      </button>
+    );
+  }
+
+  // Version par défaut (hero)
   return (
     <button
       onClick={toggleFavorite}

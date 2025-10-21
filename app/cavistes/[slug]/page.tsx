@@ -250,13 +250,15 @@ export default async function CavisteDetailPage({ params }: { params: Promise<{ 
             {/* Bouton Favori */}
             {user && (
               <section className="bg-white rounded-xl shadow-sm p-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-gray-900 flex items-center gap-2">
-                    <Star className="w-5 h-5 text-rose-600" />
-                    Favoris
-                  </h3>
-                  <FavoriteButton cavisteId={caviste.id} initialIsFavorite={!!isFavorite} />
-                </div>
+                <h3 className="font-bold text-gray-900 flex items-center gap-2 mb-4">
+                  <Star className="w-5 h-5 text-rose-600" />
+                  Favoris
+                </h3>
+                <FavoriteButton 
+                  cavisteId={caviste.id} 
+                  initialIsFavorite={!!isFavorite} 
+                  variant="compact"
+                />
               </section>
             )}
             {/* Informations de contact */}

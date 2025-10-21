@@ -40,8 +40,8 @@ export async function GET(req: Request) {
         const sql = Prisma.sql`
           WITH ranked AS (
             SELECT v.id, v.nom, v.domaine, v."année", v.prix, v."imageFile",
-              CASE 
-                WHEN v."année" = ${year} AND 
+              CASE
+                WHEN v."année" = ${year} AND
                      (unaccent(v.nom) ILIKE unaccent(${like}) OR unaccent(v.domaine) ILIKE unaccent(${like}))
                 THEN 1
                 WHEN v."année" = ${year} THEN 2
