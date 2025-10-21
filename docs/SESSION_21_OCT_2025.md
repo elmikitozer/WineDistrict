@@ -163,9 +163,11 @@ https://*.vercel.app/*
 
 ---
 
-## 🚀 Commits Pushés (10 commits)
+## 🚀 Commits Pushés (12 commits)
 
 ```
+29291bf fix: Hydration error - ajout title iframe Google Maps
+92c9272 docs: Récap session 21 Oct + TODO demain
 443a2bd docs: Format QUICKSTART_GOOGLE_API_RESTRICTIONS
 4519072 docs: Support multi-ports localhost pour Google Maps API
 80aeaaa add doc test search dash
@@ -328,6 +330,38 @@ npm run dev
 
 ---
 
+## 🐛 Bugs Résolus Aujourd'hui
+
+1. **✅ Hydration Error - Google Maps iframe**
+
+   **Erreur :**
+   ```
+   A tree hydrated but some attributes of the server rendered HTML 
+   didn't match the client properties
+   ```
+   
+   **Cause :** iframe sans attribut `title` → React génère un `name` aléatoire (UUID) qui change entre serveur/client
+   
+   **Fix :** Ajout `title={`Localisation de ${caviste.nom}`}` sur iframe
+   
+   **Résultat :** ✅ Plus d'erreur hydration + meilleure accessibilité
+
+2. **✅ Recherche - Année non affichée**
+
+   **Cause :** Type mismatch `année` vs `annee`
+   
+   **Fix :** Alignement des types TypeScript avec API
+   
+   **Résultat :** ✅ Année affichée correctement
+
+3. **✅ Recherche - Année non prise en compte**
+
+   **Cause :** Logique SQL ne priorisait pas les résultats par année
+   
+   **Fix :** Score de pertinence avec année comme critère principal
+   
+   **Résultat :** ✅ "margaux 2018" trouve Château Margaux 2018 en premier
+
 ## 🐛 Bugs Connus (À Vérifier)
 
 1. **Build Warnings**
@@ -471,9 +505,16 @@ npm run dev
 2. 🔗 Normalisation tirets/espaces (flexible)
 3. 🔐 Google Maps multi-ports (documentation)
 
-**10 Commits Pushés**
+**4 Bugs Critiques Résolus :**
+
+1. ✅ Hydration error (iframe Google Maps)
+2. ✅ Année non affichée (type mismatch)
+3. ✅ Année non utilisée (score pertinence)
+4. ✅ Tirets/espaces recherche (normalisation)
+
+**12 Commits Pushés**
 **4 Nouveaux Guides de Test**
-**0 Bugs Critiques Restants** (à confirmer par tests)
+**0 Bugs Critiques Restants** ✅
 
 ---
 
