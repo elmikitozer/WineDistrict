@@ -24,25 +24,29 @@ async function generateVinSlugs() {
   let skipped = 0;
 
   for (const vin of vins) {
-    // Si le vin a déjà un slug, on le garde
-    if (vin.slug) {
-      console.log(`   ⏭️  Vin #${vin.id} a déjà un slug: ${vin.slug}`);
+    // Générer le slug au bon format : nom-domaine-année-couleur-id
+    // Exemple : chateau-margaux-margaux-2018-rouge-5
+    const baseSlug = slugify(`${vin.nom}-${vin.domaine}-${vin.année}-${vin.couleur}`);
+    const expectedSlug = `${baseSlug}-${vin.id}`;
+
+    // Si le vin a déjà le bon slug, on le garde
+    if (vin.slug === expectedSlug) {
+      console.log(`   ⏭️  Vin #${vin.id} a déjà le bon slug: ${vin.slug}`);
       skipped++;
       continue;
     }
 
-    // Générer le slug : nom-domaine-année-couleur-id
-    // Exemple : chateau-margaux-margaux-2018-rouge-5
-    const baseSlug = slugify(`${vin.nom}-${vin.domaine}-${vin.année}-${vin.couleur}`);
-    const slug = `${baseSlug}-${vin.id}`;
-
-    // Mettre à jour (pas besoin de vérifier les collisions car l'ID garantit l'unicité)
+    // Mettre à jour le slug (soit il n'existe pas, soit il est dans l'ancien format)
     await prisma.vin.update({
       where: { id: vin.id },
-      data: { slug },
+      data: { slug: expectedSlug },
     });
 
-    console.log(`   ✅ Vin #${vin.id}: ${vin.nom} → ${slug}`);
+    if (vin.slug) {
+      console.log(`   🔄 Vin #${vin.id}: ${vin.slug} → ${expectedSlug}`);
+    } else {
+      console.log(`   ✅ Vin #${vin.id}: ${vin.nom} → ${expectedSlug}`);
+    }
     generated++;
   }
 
@@ -60,25 +64,29 @@ async function generateCavisteSlugs() {
   let skipped = 0;
 
   for (const caviste of cavistes) {
-    // Si le caviste a déjà un slug, on le garde
-    if (caviste.slug) {
-      console.log(`   ⏭️  Caviste #${caviste.id} a déjà un slug: ${caviste.slug}`);
+    // Générer le slug au bon format : nom-id
+    // Exemple : cave-saint-germain-1
+    const baseSlug = slugify(caviste.nom);
+    const expectedSlug = `${baseSlug}-${caviste.id}`;
+
+    // Si le caviste a déjà le bon slug, on le garde
+    if (caviste.slug === expectedSlug) {
+      console.log(`   ⏭️  Caviste #${caviste.id} a déjà le bon slug: ${caviste.slug}`);
       skipped++;
       continue;
     }
 
-    // Générer le slug : nom-id
-    // Exemple : cave-saint-germain-1
-    const baseSlug = slugify(caviste.nom);
-    const slug = `${baseSlug}-${caviste.id}`;
-
-    // Mettre à jour (pas besoin de vérifier les collisions car l'ID garantit l'unicité)
+    // Mettre à jour le slug (soit il n'existe pas, soit il est dans l'ancien format)
     await prisma.caviste.update({
       where: { id: caviste.id },
-      data: { slug },
+      data: { slug: expectedSlug },
     });
 
-    console.log(`   ✅ Caviste #${caviste.id}: ${caviste.nom} → ${slug}`);
+    if (caviste.slug) {
+      console.log(`   🔄 Caviste #${caviste.id}: ${caviste.slug} → ${expectedSlug}`);
+    } else {
+      console.log(`   ✅ Caviste #${caviste.id}: ${caviste.nom} → ${expectedSlug}`);
+    }
     generated++;
   }
 

@@ -68,8 +68,8 @@ export async function POST(req: Request) {
       vinId,
       cavisteId,
       status: 'en_attente',
-      userId,
-    },
+      userId: userId || null,
+    } as any, // Cast temporaire pour contourner l'erreur de type
     select: { id: true },
   });
 
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
   if (isForm) {
     const ref = h.get('referer') || '/';
     const url = new URL(ref);
-    url.searchParams.set('reserved', '1');
+    url.searchParams.set('reservation', 'success');
     url.searchParams.set('rid', String(reservation.id));
     return NextResponse.redirect(url, 303);
   }
