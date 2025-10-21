@@ -85,12 +85,15 @@ export async function POST(req: Request) {
   }
 
   if (stock.quantite < quantity) {
-    return NextResponse.json({
-      error: `Stock insuffisant. Seulement ${stock.quantite} bouteille${
-        stock.quantite > 1 ? 's' : ''
-      } disponible${stock.quantite > 1 ? 's' : ''} pour ${stock.vin.nom}.`,
-      available: stock.quantite,
-    }, { status: 400 });
+    return NextResponse.json(
+      {
+        error: `Stock insuffisant. Seulement ${stock.quantite} bouteille${
+          stock.quantite > 1 ? 's' : ''
+        } disponible${stock.quantite > 1 ? 's' : ''} pour ${stock.vin.nom}.`,
+        available: stock.quantite,
+      },
+      { status: 400 }
+    );
   }
 
   // 5) Créer la réservation (TODO: créer une ligne par bouteille si besoin)

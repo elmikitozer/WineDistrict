@@ -37,7 +37,7 @@ export default function CartPage() {
 
     try {
       // Récupérer UN SEUL token CSRF pour toutes les réservations
-      const csrfRes = await fetch('/api/csrf', { 
+      const csrfRes = await fetch('/api/csrf', {
         cache: 'no-store',
         credentials: 'include', // Important pour les cookies
       });
@@ -49,7 +49,7 @@ export default function CartPage() {
         items.map(async (item) => {
           const res = await fetch('/api/reservation', {
             method: 'POST',
-            headers: { 
+            headers: {
               'Content-Type': 'application/json',
             },
             credentials: 'include', // Important pour envoyer le cookie
@@ -76,9 +76,7 @@ export default function CartPage() {
         .map((r) => r.reason.message);
 
       if (errors.length > 0) {
-        setError(
-          `Certains articles ne sont plus disponibles :\n${errors.join('\n')}`
-        );
+        setError(`Certains articles ne sont plus disponibles :\n${errors.join('\n')}`);
         return;
       }
 
@@ -156,7 +154,9 @@ export default function CartPage() {
             ? `/cavistes/${group.cavisteSlug}`
             : `/cavistes/${cavisteId}`;
 
-          const cavisteImageUrl = `/api/caviste-placeholder?nom=${encodeURIComponent(group.cavisteNom)}`;
+          const cavisteImageUrl = `/api/caviste-placeholder?nom=${encodeURIComponent(
+            group.cavisteNom
+          )}`;
 
           return (
             <div key={cavisteId} className="bg-white border-2 border-rose-100 rounded-xl shadow-sm">
@@ -224,7 +224,9 @@ export default function CartPage() {
                         <div className="mt-2">
                           <QuantitySelector
                             quantity={item.quantity}
-                            onQuantityChange={(qty) => updateQuantity(item.vinId, item.cavisteId, qty)}
+                            onQuantityChange={(qty) =>
+                              updateQuantity(item.vinId, item.cavisteId, qty)
+                            }
                           />
                         </div>
                       </div>

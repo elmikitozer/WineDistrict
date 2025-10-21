@@ -28,19 +28,19 @@ export async function GET(req: Request) {
     // Vérifier si la requête contient un nombre (année potentielle)
     const yearMatch = q.match(/\d{4}/);
     const hasYear = yearMatch !== null;
-    
+
     if (hasYear) {
       // Extraire l'année et le reste de la requête
       const year = parseInt(yearMatch[0]);
       const textWithoutYear = q.replace(/\d{4}/, '').trim();
-      
+
       if (textWithoutYear.length > 0) {
         // Recherche combinée: texte ET année (priorité aux résultats qui matchent les deux)
         const like = `%${textWithoutYear}%`;
         const sql = Prisma.sql`
           SELECT v.id, v.nom, v.domaine, v."année" AS "annee", v.prix, v."imageFile",
-            CASE 
-              WHEN v."année" = ${year} AND 
+            CASE
+              WHEN v."année" = ${year} AND
                    (unaccent(v.nom) ILIKE unaccent(${like}) OR unaccent(v.domaine) ILIKE unaccent(${like}))
               THEN 1
               WHEN v."année" = ${year} THEN 2

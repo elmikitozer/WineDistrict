@@ -36,7 +36,7 @@ export default function ScrollRestoration() {
       const link = target.closest('a');
       if (link && link.href && link.href.startsWith(window.location.origin)) {
         sessionStorage.setItem(scrollKey, window.scrollY.toString());
-        
+
         // Si on navigue depuis /cavistes vers une sous-page, sauvegarder aussi pour /cavistes
         if (pathname === '/cavistes' && link.href.includes('/cavistes/')) {
           sessionStorage.setItem('scroll-/cavistes', window.scrollY.toString());
