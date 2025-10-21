@@ -164,6 +164,7 @@ export default async function CavisteDetailPage({ params }: { params: Promise<{ 
 
               <div className="relative w-full h-96 rounded-lg overflow-hidden border border-gray-200">
                 <iframe
+                  title={`Localisation de ${caviste.nom}`}
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}

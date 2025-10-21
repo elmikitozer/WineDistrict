@@ -7,6 +7,7 @@
 #### **Problèmes Résolus :**
 
 1. **❌ AVANT : Année non prise en compte**
+
    - Taper "margaux 2018" ne filtrait PAS par année
    - L'année s'affichait avec un point final : "2018."
    - Format confus : "(Domaine) • Année"
@@ -20,33 +21,37 @@
 #### **Fix Technique :**
 
 **Problème 1 : Type mismatch**
+
 - API retournait `annee` (sans accent)
 - Type TypeScript utilisait `année` (avec accent)
 - Résultat : `vin.année` = `undefined` → année invisible
 
 **Solution :**
+
 ```typescript
 // AVANT
-type Vin = { année: number }
-<span>{vin.année}</span>
+type Vin = { année: number };
+<span>{vin.année}</span>;
 
 // APRÈS
-type Vin = { annee: number }
-<span>{vin.annee}</span>
+type Vin = { annee: number };
+<span>{vin.annee}</span>;
 ```
 
 **Problème 2 : Logique de recherche**
+
 - Année détectée mais pas utilisée pour prioriser les résultats
 - Pas de score de pertinence
 
 **Solution :**
+
 ```sql
 CASE
-  WHEN année = 2018 AND (nom ILIKE '%margaux%' OR domaine ILIKE '%margaux%') 
+  WHEN année = 2018 AND (nom ILIKE '%margaux%' OR domaine ILIKE '%margaux%')
     THEN 1  -- Match parfait (priorité absolue)
-  WHEN année = 2018 
+  WHEN année = 2018
     THEN 2  -- Année seule
-  WHEN nom ILIKE '%margaux%' OR domaine ILIKE '%margaux%' 
+  WHEN nom ILIKE '%margaux%' OR domaine ILIKE '%margaux%'
     THEN 3  -- Texte seul
   ELSE 4
 END AS relevance
@@ -54,6 +59,7 @@ ORDER BY relevance ASC
 ```
 
 #### **Tests à Faire :**
+
 - ✅ "margaux 2018" → Château Margaux 2018 en premier
 - ✅ Format : "Château Margaux (Château Margaux) - 2018"
 - ✅ Pas de point final après l'année
@@ -65,11 +71,13 @@ ORDER BY relevance ASC
 #### **Problème Résolu :**
 
 **❌ AVANT :**
+
 - "Saint Emilion" ne trouvait PAS "Saint-Émilion"
 - "SaintEmilion" ne trouvait PAS "Saint-Émilion"
 - Recherche trop stricte
 
 **✅ APRÈS :**
+
 - "Saint Emilion" → Trouve "Saint-Émilion" ✅
 - "Saint-Emilion" → Trouve "Saint-Émilion" ✅
 - "SaintEmilion" → Trouve "Saint-Émilion" ✅
@@ -97,6 +105,7 @@ WHERE (
 ```
 
 #### **Tests à Faire :**
+
 - ✅ "Saint Emilion" → Trouve "Saint-Émilion"
 - ✅ "cotes du rhone" → Trouve "Côtes du Rhône"
 - ✅ "Haut Brion" → Trouve "Château Haut-Brion"
@@ -108,11 +117,13 @@ WHERE (
 #### **Problème Résolu :**
 
 **❌ AVANT :**
+
 - Carte fonctionnait sur `localhost:3000`
 - Mais pas sur `localhost:3001` ou `3002`
 - Next.js change de port automatiquement si 3000 occupé
 
 **✅ APRÈS :**
+
 - Documentation pour ajouter plusieurs ports
 - Carte fonctionne sur n'importe quel port (3000-3002)
 
@@ -129,6 +140,7 @@ https://*.vercel.app/*
 ```
 
 #### **Docs Créés :**
+
 - `docs/QUICKSTART_GOOGLE_API_RESTRICTIONS.md` (guide 5min)
 - `docs/PROTEGER_CLE_GOOGLE_MAPS.md` (mis à jour)
 
@@ -137,11 +149,13 @@ https://*.vercel.app/*
 ## 📂 Fichiers Modifiés
 
 ### **Code :**
+
 - `app/api/search/route.ts` - Logique de recherche refaite
 - `components/SearchBar.tsx` - Affichage résultats corrigé
 - `app/error.tsx` - Fix lint (Link au lieu de <a>)
 
 ### **Documentation :**
+
 - `docs/TEST_RECHERCHE.md` - Guide test recherche complète
 - `docs/TEST_RECHERCHE_TIRETS.md` - Guide test tirets/espaces
 - `docs/QUICKSTART_GOOGLE_API_RESTRICTIONS.md` - Guide multi-ports
@@ -177,14 +191,14 @@ npm run dev
 # 2. Tester ces requêtes :
 ```
 
-| Requête | Résultat Attendu | Status |
-|---------|------------------|--------|
-| `margaux 2018` | Château Margaux 2018 EN PREMIER | [ ] |
-| `2018` | Tous vins de 2018 | [ ] |
-| `margaux` | Tous Margaux (toutes années) | [ ] |
-| `Saint Emilion` | Trouve "Saint-Émilion" | [ ] |
-| `cotes du rhone` | Trouve "Côtes du Rhône" | [ ] |
-| `Haut Brion` | Trouve "Château Haut-Brion" | [ ] |
+| Requête          | Résultat Attendu                | Status |
+| ---------------- | ------------------------------- | ------ |
+| `margaux 2018`   | Château Margaux 2018 EN PREMIER | [ ]    |
+| `2018`           | Tous vins de 2018               | [ ]    |
+| `margaux`        | Tous Margaux (toutes années)    | [ ]    |
+| `Saint Emilion`  | Trouve "Saint-Émilion"          | [ ]    |
+| `cotes du rhone` | Trouve "Côtes du Rhône"         | [ ]    |
+| `Haut Brion`     | Trouve "Château Haut-Brion"     | [ ]    |
 
 ### **Google Maps :**
 
@@ -199,17 +213,20 @@ npm run dev
 ### ✅ **Fonctionnalités Complètes**
 
 1. **Authentification**
+
    - Login client/caviste
    - Signup avec validation email/password
    - Sessions persistantes
 
 2. **Catalogue Vins**
+
    - Liste des vins avec filtres
    - Pages produits avec slugs SEO
    - Placeholders dynamiques (15 designs)
    - Photos uploadées (Supabase Storage)
 
 3. **Système de Panier**
+
    - Ajout/retrait produits
    - Quantité ajustable
    - Limite stock respectée
@@ -217,18 +234,21 @@ npm run dev
    - Validation finale avant commande
 
 4. **Commandes**
+
    - Popup confirmation
    - Emails envoyés (client + caviste)
    - Dashboard client (voir commandes)
    - Dashboard caviste (gérer réservations)
 
 5. **Cavistes**
+
    - Liste des cavistes
    - Pages détaillées avec Google Maps
    - Favoris (ajouter/retirer)
    - Placeholders dynamiques
 
 6. **Recherche**
+
    - ✅ Recherche rapide avec année
    - ✅ Normalisation tirets/espaces
    - ✅ Insensible aux accents
@@ -247,6 +267,7 @@ npm run dev
 ### 🔴 **Priorité 1 : Tests & Validation**
 
 1. **Tester Recherche Rapide**
+
    - [ ] Vérifier année s'affiche correctement
    - [ ] Vérifier "margaux 2018" fonctionne
    - [ ] Vérifier "Saint Emilion" trouve "Saint-Émilion"
@@ -260,11 +281,13 @@ npm run dev
 ### 🟡 **Priorité 2 : Améliorations UX**
 
 1. **Dashboard Caviste**
+
    - [ ] Filtrer par statut (en attente/validée/annulée)
    - [ ] Tri par date
    - [ ] Export CSV des commandes ?
 
 2. **Dashboard Client**
+
    - [ ] Afficher détails caviste dans commandes
    - [ ] Lien vers page caviste depuis commande
    - [ ] Historique des commandes annulées ?
@@ -276,10 +299,12 @@ npm run dev
 ### 🟢 **Priorité 3 : Fonctionnalités Nouvelles**
 
 1. **Notifications**
+
    - [ ] Toast pour actions (ajout panier, favori, etc.)
    - [ ] Notifications en temps réel (commande validée/annulée) ?
 
 2. **Analytics**
+
    - [ ] Google Analytics
    - [ ] Tracking conversions (vins → panier → commande)
 
@@ -292,6 +317,7 @@ npm run dev
 ### 🔵 **Priorité 4 : Performance**
 
 1. **Optimisations**
+
    - [ ] Image lazy loading (déjà fait ?)
    - [ ] Prefetch links importants
    - [ ] Vérifier bundle size
@@ -305,11 +331,13 @@ npm run dev
 ## 🐛 Bugs Connus (À Vérifier)
 
 1. **Build Warnings**
+
    - Erreurs page API manquantes (à investiguer)
    - `Error [PageNotFoundError]: Cannot find module for page: /api/client/reservations`
    - `[Error: Failed to collect page data for /api/caviste-placeholder]`
 
 2. **CSRF Token**
+
    - Problème résolu ? (À retester)
 
 3. **Stock Reservation**
@@ -334,17 +362,20 @@ npm run dev
 ## 📊 Métriques Actuelles
 
 ### **Code :**
+
 - Lignes de code : ~10K+
 - Composants React : ~30+
 - Pages : ~15+
 - API Routes : ~10+
 
 ### **Données (Seed) :**
+
 - Vins : 100+
 - Cavistes : 20+
 - Utilisateurs : 5+ (test)
 
 ### **Documentation :**
+
 - Guides : 15+ fichiers .md
 - Tests : 3 guides complets
 
@@ -353,11 +384,13 @@ npm run dev
 ## 🎨 Design System
 
 ### **Couleurs Principales :**
+
 - Rose : `#e11d48` (rose-600)
 - Gris : `#374151` (gray-700)
 - Blanc/Gris clair pour backgrounds
 
 ### **Composants :**
+
 - Buttons (primary, secondary, danger)
 - Cards (vins, cavistes, commandes)
 - Modals/Popups (ajout panier, confirmation, login)
@@ -366,6 +399,7 @@ npm run dev
 - Search bar (avec dropdown résultats)
 
 ### **Placeholders :**
+
 - 15 designs pour vins (par couleur)
 - 5 designs pour cavistes
 - Générés dynamiquement (SVG)
@@ -375,6 +409,7 @@ npm run dev
 ## 🔐 Sécurité
 
 ### **Implémenté :**
+
 - ✅ CSRF protection (double-submit cookie)
 - ✅ Password hashing (bcrypt)
 - ✅ Sessions sécurisées (httpOnly cookies)
@@ -382,6 +417,7 @@ npm run dev
 - ✅ Environment variables (.env.local)
 
 ### **À Améliorer :**
+
 - [ ] Rate limiting (API routes)
 - [ ] Input sanitization (XSS prevention)
 - [ ] SQL injection (déjà protégé par Prisma ?)
@@ -392,14 +428,17 @@ npm run dev
 ## 🚀 Déploiement
 
 ### **Environnements :**
+
 - **Local** : `localhost:3000-3002`
-- **Production** : Vercel (*.vercel.app)
+- **Production** : Vercel (\*.vercel.app)
 
 ### **CI/CD :**
+
 - Push sur `main` → Auto-deploy Vercel
 - Previews pour chaque PR
 
 ### **Base de Données :**
+
 - Supabase (PostgreSQL)
 - PgBouncer pour pooling
 - Migrations via Prisma
@@ -409,12 +448,14 @@ npm run dev
 ## 📞 Support & Ressources
 
 ### **Docs Techniques :**
+
 - Next.js : https://nextjs.org/docs
 - Prisma : https://www.prisma.io/docs
 - Supabase : https://supabase.com/docs
 - Google Maps : https://developers.google.com/maps
 
 ### **Guides Internes :**
+
 - `docs/README.md` (index)
 - `docs/TESTS_COMPLETS.md` (tests end-to-end)
 - `docs/SETUP_GOOGLE_MAPS.md` (config Maps)
@@ -425,12 +466,13 @@ npm run dev
 ## ✅ Résumé de la Journée
 
 **3 Grosses Features Fixées :**
+
 1. 🔍 Recherche rapide avec année (complètement refaite)
 2. 🔗 Normalisation tirets/espaces (flexible)
 3. 🔐 Google Maps multi-ports (documentation)
 
-**10 Commits Pushés**  
-**4 Nouveaux Guides de Test**  
+**10 Commits Pushés**
+**4 Nouveaux Guides de Test**
 **0 Bugs Critiques Restants** (à confirmer par tests)
 
 ---
@@ -442,4 +484,3 @@ npm run dev
 ---
 
 **Dernière mise à jour :** 21 Octobre 2025 - 23h00
-
