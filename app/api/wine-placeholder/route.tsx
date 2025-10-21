@@ -70,11 +70,11 @@ function getColorScheme(couleur: string): ColorScheme {
     };
   } else if (couleur === 'rose') {
     return {
-      bg1: '#FFF5F0',
-      bg2: '#FFE8DC',
-      text: '#7C2D12',
-      accent: '#EA580C',
-      border: '#FED7AA',
+      bg1: '#FFF5F5',
+      bg2: '#FFE4E8',
+      text: '#881337',
+      accent: '#F87171',
+      border: '#FECACA',
     };
   } else {
     // rouge

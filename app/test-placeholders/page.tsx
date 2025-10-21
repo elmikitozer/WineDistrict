@@ -12,7 +12,7 @@ export default function TestPlaceholdersPage() {
   const couleurs = [
     { nom: 'Rouge', value: 'rouge', description: 'Vins rouges - Palette bordeaux et or' },
     { nom: 'Blanc', value: 'blanc', description: 'Vins blancs - Palette grise et or' },
-    { nom: 'Rosé', value: 'rose', description: 'Vins rosés - Palette saumon et orange' },
+    { nom: 'Rosé', value: 'rose', description: 'Vins rosés - Palette corail et saumon' },
   ];
 
   return (
@@ -106,9 +106,9 @@ export default function TestPlaceholdersPage() {
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <div className="w-4 h-4 rounded-full bg-orange-200 mr-2 mt-0.5" />
+                  <div className="w-4 h-4 rounded-full bg-red-200 mr-2 mt-0.5" />
                   <span>
-                    <strong>Rosé :</strong> Fond saumon pâle, accent orange (#EA580C)
+                    <strong>Rosé :</strong> Fond rose pâle, accent corail (#F87171)
                   </span>
                 </li>
               </ul>
