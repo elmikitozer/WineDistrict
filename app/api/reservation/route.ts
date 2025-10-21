@@ -63,13 +63,23 @@ export async function POST(req: Request) {
   const userId = session?.userId ? String(session.userId) : null;
 
   // 4) TODO: transaction stock → reservation (quand prêt)
+  const reservationData: {
+    vinId: number;
+    cavisteId: number;
+    status: string;
+    userId?: string | null;
+  } = {
+    vinId,
+    cavisteId,
+    status: 'en_attente',
+  };
+  
+  if (userId) {
+    reservationData.userId = userId;
+  }
+  
   const reservation = await prisma.reservation.create({
-    data: {
-      vinId,
-      cavisteId,
-      status: 'en_attente',
-      userId: userId || null,
-    } as any, // Cast temporaire pour contourner l'erreur de type
+    data: reservationData,
     select: { id: true },
   });
 

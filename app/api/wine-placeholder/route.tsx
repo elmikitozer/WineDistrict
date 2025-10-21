@@ -27,21 +27,21 @@ export async function GET(req: NextRequest) {
     case '5':
       return designMinimalistSerif(nom, domaine, annee, colors);
     case '6':
-      return designVintageClassic(nom, domaine, annee, colors);
+      return designVintageClassic(nom, domaine, annee);
     case '7':
-      return designVintageElegant(nom, domaine, annee, colors);
+      return designVintageElegant(nom, domaine, annee);
     case '8':
-      return designVintageRustic(nom, domaine, annee, colors);
+      return designVintageRustic(nom, domaine, annee);
     case '9':
-      return designVintageOrnate(nom, domaine, annee, colors);
+      return designVintageOrnate(nom, domaine, annee);
     case '10':
-      return designVintageNoble(nom, domaine, annee, colors);
+      return designVintageNoble(nom, domaine, annee);
     case '11':
       return designArtistic(nom, domaine, annee, colors);
     case '12':
       return designModern(nom, domaine, annee, colors);
     case '13':
-      return designLuxury(nom, domaine, annee, colors);
+      return designLuxury(nom, domaine, annee);
     case '14':
       return designCreative(nom, domaine, annee, colors);
     case '15':
@@ -569,7 +569,7 @@ function designMinimalistSerif(nom: string, domaine: string, annee: string, colo
 // ===== INSPIRÉS DU DESIGN #4 (Vintage) =====
 
 // Design 6: Vintage Classic
-function designVintageClassic(nom: string, domaine: string, annee: string, _colors: ColorScheme) {
+function designVintageClassic(nom: string, domaine: string, annee: string) {
   return new ImageResponse(
     (
       <div
@@ -695,7 +695,7 @@ function designVintageClassic(nom: string, domaine: string, annee: string, _colo
 }
 
 // Design 7: Vintage Elegant
-function designVintageElegant(nom: string, domaine: string, annee: string, _colors: ColorScheme) {
+function designVintageElegant(nom: string, domaine: string, annee: string) {
   return new ImageResponse(
     (
       <div
@@ -818,7 +818,7 @@ function designVintageElegant(nom: string, domaine: string, annee: string, _colo
 }
 
 // Design 8: Vintage Rustic
-function designVintageRustic(nom: string, domaine: string, annee: string, _colors: ColorScheme) {
+function designVintageRustic(nom: string, domaine: string, annee: string) {
   return new ImageResponse(
     (
       <div
@@ -944,7 +944,7 @@ function designVintageRustic(nom: string, domaine: string, annee: string, _color
 }
 
 // Design 9: Vintage Ornate
-function designVintageOrnate(nom: string, domaine: string, annee: string, _colors: ColorScheme) {
+function designVintageOrnate(nom: string, domaine: string, annee: string) {
   return new ImageResponse(
     (
       <div
@@ -1070,7 +1070,7 @@ function designVintageOrnate(nom: string, domaine: string, annee: string, _color
 }
 
 // Design 10: Vintage Noble
-function designVintageNoble(nom: string, domaine: string, annee: string, _colors: ColorScheme) {
+function designVintageNoble(nom: string, domaine: string, annee: string) {
   return new ImageResponse(
     (
       <div
@@ -1425,7 +1425,7 @@ function designModern(nom: string, domaine: string, annee: string, colors: Color
 }
 
 // Design 13: Luxury
-function designLuxury(nom: string, domaine: string, annee: string, _colors: ColorScheme) {
+function designLuxury(nom: string, domaine: string, annee: string) {
   return new ImageResponse(
     (
       <div
