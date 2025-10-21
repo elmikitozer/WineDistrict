@@ -167,61 +167,67 @@ function SignupContent() {
       )}
 
       <form onSubmit={onSubmit} className="space-y-3">
-        <div className="space-y-1">
-          <label className="block text-sm">Nom</label>
-          <input
-            type="text"
-            className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
-              nomError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
-            }`}
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
-            required
-          />
-          {nomError && <p className="text-xs text-red-600 mt-1">{nomError}</p>}
+        {/* Nom et Prénom sur 2 colonnes */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="space-y-1">
+            <label className="block text-sm">Nom</label>
+            <input
+              type="text"
+              className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
+                nomError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
+              }`}
+              value={nom}
+              onChange={(e) => setNom(e.target.value)}
+              required
+            />
+            {nomError && <p className="text-xs text-red-600 mt-1">{nomError}</p>}
+          </div>
+
+          <div className="space-y-1">
+            <label className="block text-sm">Prénom</label>
+            <input
+              type="text"
+              className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
+                prenomError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
+              }`}
+              value={prenom}
+              onChange={(e) => setPrenom(e.target.value)}
+              required
+            />
+            {prenomError && <p className="text-xs text-red-600 mt-1">{prenomError}</p>}
+          </div>
         </div>
 
-        <div className="space-y-1">
-          <label className="block text-sm">Prénom</label>
-          <input
-            type="text"
-            className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
-              prenomError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
-            }`}
-            value={prenom}
-            onChange={(e) => setPrenom(e.target.value)}
-            required
-          />
-          {prenomError && <p className="text-xs text-red-600 mt-1">{prenomError}</p>}
-        </div>
+        {/* Téléphone et Email sur 2 colonnes */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="space-y-1">
+            <label className="block text-sm">Téléphone</label>
+            <input
+              type="tel"
+              placeholder="Ex: 06 12 34 56 78"
+              className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
+                telephoneError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
+              }`}
+              value={telephone}
+              onChange={(e) => setTelephone(e.target.value)}
+              required
+            />
+            {telephoneError && <p className="text-xs text-red-600 mt-1">{telephoneError}</p>}
+          </div>
 
-        <div className="space-y-1">
-          <label className="block text-sm">Téléphone</label>
-          <input
-            type="tel"
-            placeholder="Ex: 06 12 34 56 78"
-            className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
-              telephoneError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
-            }`}
-            value={telephone}
-            onChange={(e) => setTelephone(e.target.value)}
-            required
-          />
-          {telephoneError && <p className="text-xs text-red-600 mt-1">{telephoneError}</p>}
-        </div>
-
-        <div className="space-y-1">
-          <label className="block text-sm">Email</label>
-          <input
-            type="email"
-            className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
-              emailError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
-            }`}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
+          <div className="space-y-1">
+            <label className="block text-sm">Email</label>
+            <input
+              type="email"
+              className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
+                emailError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
+              }`}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
+          </div>
         </div>
         <div className="space-y-1">
           <label className="block text-sm">
