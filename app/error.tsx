@@ -52,12 +52,12 @@ export default function Error({
             >
               Réessayer
             </button>
-            <a
-              href="/"
+            <button
+              onClick={() => window.location.href = '/'}
               className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition font-medium"
             >
               Accueil
-            </a>
+            </button>
           </div>
         </div>
       </div>
