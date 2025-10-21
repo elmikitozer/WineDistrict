@@ -335,31 +335,32 @@ npm run dev
 1. **✅ Hydration Error - Google Maps iframe**
 
    **Erreur :**
+
    ```
-   A tree hydrated but some attributes of the server rendered HTML 
+   A tree hydrated but some attributes of the server rendered HTML
    didn't match the client properties
    ```
-   
+
    **Cause :** iframe sans attribut `title` → React génère un `name` aléatoire (UUID) qui change entre serveur/client
-   
+
    **Fix :** Ajout `title={`Localisation de ${caviste.nom}`}` sur iframe
-   
+
    **Résultat :** ✅ Plus d'erreur hydration + meilleure accessibilité
 
 2. **✅ Recherche - Année non affichée**
 
    **Cause :** Type mismatch `année` vs `annee`
-   
+
    **Fix :** Alignement des types TypeScript avec API
-   
+
    **Résultat :** ✅ Année affichée correctement
 
 3. **✅ Recherche - Année non prise en compte**
 
    **Cause :** Logique SQL ne priorisait pas les résultats par année
-   
+
    **Fix :** Score de pertinence avec année comme critère principal
-   
+
    **Résultat :** ✅ "margaux 2018" trouve Château Margaux 2018 en premier
 
 ## 🐛 Bugs Connus (À Vérifier)
