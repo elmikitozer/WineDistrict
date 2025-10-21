@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
+import Link from 'next/link';
 
 interface Caviste {
   id: number;
   nom: string;
   adresse: string;
+  slug?: string | null;
 }
 
 interface Stock {
@@ -48,15 +50,36 @@ export default function CavistesModal({
 
       {open && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-xl max-h-[90vh] overflow-auto shadow-xl">
-            <h2 className="text-xl font-bold mb-4">Cavistes disponibles</h2>
+          <div className="bg-white rounded-lg p-6 w-full max-w-xl max-h-[90vh] overflow-auto shadow-xl relative">
+            {/* Bouton fermer */}
+            <button
+              onClick={() => setOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
+              aria-label="Fermer"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <h2 className="text-xl font-bold mb-4 pr-8">Cavistes disponibles</h2>
 
             <ul className="space-y-4">
               {cavistes
                 .filter((s) => s.caviste)
-                .map((stock) => (
+                .map((stock) => {
+                  const cavisteUrl = stock.caviste!.slug 
+                    ? `/cavistes/${stock.caviste!.slug}` 
+                    : `/cavistes/${stock.caviste!.id}`;
+                  
+                  return (
                   <li key={stock.id} className="border p-4 rounded-md">
-                    <p className="font-medium text-gray-800">{stock.caviste!.nom}</p>
+                    <Link 
+                      href={cavisteUrl}
+                      className="font-medium text-gray-800 hover:text-rose-600 transition"
+                    >
+                      {stock.caviste!.nom}
+                    </Link>
                     <p className="text-sm text-gray-500">{stock.caviste!.adresse}</p>
 
                     {isAuthenticated ? (
@@ -70,6 +93,7 @@ export default function CavistesModal({
                             vinAnnee: vin.année,
                             cavisteNom: stock.caviste!.nom,
                             cavisteAdresse: stock.caviste!.adresse,
+                            cavisteSlug: stock.caviste!.slug,
                           });
                           setShowAddedPopup(true);
                           setTimeout(() => setShowAddedPopup(false), 2000);
@@ -90,7 +114,8 @@ export default function CavistesModal({
                       </button>
                     )}
                   </li>
-                ))}
+                  );
+                })}
             </ul>
 
             <div className="mt-6 flex items-center justify-between">
@@ -123,7 +148,18 @@ export default function CavistesModal({
       {/* Popup de connexion requise */}
       {showLoginPopup && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-2xl p-8 max-w-md mx-4 shadow-2xl">
+          <div className="bg-white rounded-2xl p-8 max-w-md mx-4 shadow-2xl relative">
+            {/* Bouton fermer */}
+            <button
+              onClick={() => setShowLoginPopup(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
+              aria-label="Fermer"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
             {/* Icône d'alerte */}
             <div className="flex justify-center mb-6">
               <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">

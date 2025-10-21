@@ -29,19 +29,14 @@ function DesktopLinks({ isAuthenticated }: { isAuthenticated?: boolean }) {
       {isAuthenticated ? (
         <>
           <CartIcon />
-          
+
           {/* Menu déroulant Mon compte */}
           <div className="relative">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
               className="flex items-center gap-2 hover:text-black"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -56,16 +51,18 @@ function DesktopLinks({ isAuthenticated }: { isAuthenticated?: boolean }) {
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
 
             {showUserMenu && (
               <>
-                <div
-                  className="fixed inset-0 z-10"
-                  onClick={() => setShowUserMenu(false)}
-                />
+                <div className="fixed inset-0 z-10" onClick={() => setShowUserMenu(false)} />
                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-20">
                   <Link
                     href="/dashboard"

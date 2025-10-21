@@ -10,6 +10,7 @@ export interface CartItem {
   vinAnnee: number;
   cavisteNom: string;
   cavisteAdresse: string;
+  cavisteSlug?: string | null;
 }
 
 interface CartContextType {
