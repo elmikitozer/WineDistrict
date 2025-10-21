@@ -15,7 +15,7 @@ function Brand() {
   );
 }
 
-function DesktopLinks({ isAuthenticated }: { isAuthenticated?: boolean }) {
+function DesktopLinks({ isAuthenticated, isCaviste }: { isAuthenticated?: boolean; isCaviste?: boolean }) {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
@@ -71,13 +71,15 @@ function DesktopLinks({ isAuthenticated }: { isAuthenticated?: boolean }) {
                   >
                     📦 Mes commandes
                   </Link>
-                  <Link
-                    href="/favoris"
-                    className="block px-4 py-2 hover:bg-rose-50 transition"
-                    onClick={() => setShowUserMenu(false)}
-                  >
-                    ⭐ Mes cavistes favoris
-                  </Link>
+                  {!isCaviste && (
+                    <Link
+                      href="/favoris"
+                      className="block px-4 py-2 hover:bg-rose-50 transition"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      ⭐ Mes cavistes favoris
+                    </Link>
+                  )}
                   <hr className="my-2 border-gray-200" />
                   <form action="/api/auth/logout" method="post">
                     <button
@@ -127,9 +129,11 @@ function SearchCenter() {
 function MobileMenu({
   onClose,
   isAuthenticated,
+  isCaviste,
 }: {
   onClose: () => void;
   isAuthenticated?: boolean;
+  isCaviste?: boolean;
 }) {
   return (
     <div id="mobile-menu" className="md:hidden px-4 pb-4 pt-2 space-y-3 font-medium relative z-50">
@@ -150,9 +154,11 @@ function MobileMenu({
           <Link href="/dashboard" className="block hover:text-black py-2" onClick={onClose}>
             📦 Mes commandes
           </Link>
-          <Link href="/favoris" className="block hover:text-black py-2" onClick={onClose}>
-            ⭐ Mes cavistes favoris
-          </Link>
+          {!isCaviste && (
+            <Link href="/favoris" className="block hover:text-black py-2" onClick={onClose}>
+              ⭐ Mes cavistes favoris
+            </Link>
+          )}
           <form
             action="/api/auth/logout"
             method="post"
@@ -184,9 +190,9 @@ function MobileMenu({
   );
 }
 
-type NavbarProps = { isAuthenticated?: boolean };
+type NavbarProps = { isAuthenticated?: boolean; isCaviste?: boolean };
 
-export default function Navbar({ isAuthenticated }: NavbarProps) {
+export default function Navbar({ isAuthenticated, isCaviste }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -202,7 +208,7 @@ export default function Navbar({ isAuthenticated }: NavbarProps) {
         <div className="flex justify-between h-16 items-center">
           <Brand />
           <SearchCenter />
-          <DesktopLinks isAuthenticated={isAuthenticated} />
+          <DesktopLinks isAuthenticated={isAuthenticated} isCaviste={isCaviste} />
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -216,7 +222,7 @@ export default function Navbar({ isAuthenticated }: NavbarProps) {
           </div>
         </div>
       </div>
-      {isOpen && <MobileMenu onClose={() => setIsOpen(false)} isAuthenticated={isAuthenticated} />}
+      {isOpen && <MobileMenu onClose={() => setIsOpen(false)} isAuthenticated={isAuthenticated} isCaviste={isCaviste} />}
     </nav>
   );
 }

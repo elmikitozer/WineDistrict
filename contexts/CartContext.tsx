@@ -8,6 +8,7 @@ export interface CartItem {
   vinNom: string;
   vinDomaine: string;
   vinAnnee: number;
+  vinCouleur: string;
   cavisteNom: string;
   cavisteAdresse: string;
   cavisteSlug?: string | null;

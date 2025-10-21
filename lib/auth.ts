@@ -59,7 +59,7 @@ type UserLite = {
 export async function getCurrentUser(): Promise<UserLite | null> {
   const payload = await getSession();
   if (!payload?.userId) return null;
-  
+
   // Sélectionner uniquement les champs dont on a besoin
   const user = await prisma.user.findUnique({
     where: { id: String(payload.userId) },
@@ -76,6 +76,6 @@ export async function getCurrentUser(): Promise<UserLite | null> {
       },
     },
   });
-  
+
   return user;
 }

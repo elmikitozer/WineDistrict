@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface GroupedItems {
   cavisteNom: string;
@@ -16,6 +17,7 @@ interface GroupedItems {
     vinNom: string;
     vinDomaine: string;
     vinAnnee: number;
+    vinCouleur: string;
   }>;
 }
 
@@ -143,28 +145,38 @@ export default function CartPage() {
             <div key={cavisteId} className="bg-white border-2 border-rose-100 rounded-xl shadow-sm">
               {/* Header caviste */}
               <div className="bg-gradient-to-r from-rose-50 to-rose-100 p-4 border-b border-rose-200">
-                <Link
-                  href={cavisteUrl}
-                  className="text-lg font-bold text-gray-900 hover:text-rose-600 transition"
-                >
-                  {group.cavisteNom}
-                </Link>
-                <p className="text-sm text-gray-600">{group.cavisteAdresse}</p>
-                <p className="text-xs text-gray-500 mt-1">
-                  {group.items.length} vin{group.items.length > 1 ? 's' : ''}
-                </p>
+              <Link 
+                href={cavisteUrl}
+                className="text-lg font-bold text-gray-900 hover:text-rose-600 transition"
+              >
+                {group.cavisteNom}
+              </Link>
+              <p className="text-sm text-gray-600">{group.cavisteAdresse}</p>
+              <p className="text-xs text-gray-500 mt-1">
+                {group.items.length} bouteille{group.items.length > 1 ? 's' : ''}
+              </p>
               </div>
 
               {/* Liste des vins */}
               <div className="p-4 space-y-3">
-                {group.items.map((item) => (
+                {group.items.map((item) => {
+                  const vinPlaceholder = `/api/wine-placeholder?nom=${encodeURIComponent(item.vinNom)}&domaine=${encodeURIComponent(item.vinDomaine)}&annee=${item.vinAnnee}&couleur=${item.vinCouleur}&variant=14`;
+                  
+                  return (
                   <div
                     key={`${item.vinId}-${item.cavisteId}`}
                     className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                   >
                     {/* Image placeholder du vin */}
-                    <div className="w-12 h-16 bg-gradient-to-br from-rose-100 to-rose-200 rounded flex items-center justify-center flex-shrink-0">
-                      <span className="text-2xl">🍷</span>
+                    <div className="w-12 h-16 bg-gray-100 rounded flex-shrink-0 overflow-hidden">
+                      <Image
+                        src={vinPlaceholder}
+                        alt={item.vinNom}
+                        width={48}
+                        height={64}
+                        className="object-cover w-full h-full"
+                        unoptimized
+                      />
                     </div>
 
                     {/* Infos vin */}
@@ -184,7 +196,8 @@ export default function CartPage() {
                       <Trash2 size={18} />
                     </button>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           );

@@ -80,7 +80,7 @@ export default function SearchBar() {
               className="px-4 py-2 text-sm hover:bg-rose-50 cursor-pointer transition-colors duration-150"
             >
               <span className="font-medium text-gray-800">{vin.nom}</span>{' '}
-              <span className="text-gray-500">({vin.domaine})</span>
+              <span className="text-gray-500">({vin.domaine}) • {vin.année}</span>
             </li>
           ))}
         </ul>

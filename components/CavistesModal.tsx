@@ -22,6 +22,7 @@ interface Vin {
   nom: string;
   domaine: string;
   année: number;
+  couleur: string;
 }
 
 export default function CavistesModal({
@@ -90,16 +91,17 @@ export default function CavistesModal({
                       {isAuthenticated ? (
                         <button
                           onClick={() => {
-                            cart.addItem({
-                              vinId: stock.vinId,
-                              cavisteId: stock.caviste!.id,
-                              vinNom: vin.nom,
-                              vinDomaine: vin.domaine,
-                              vinAnnee: vin.année,
-                              cavisteNom: stock.caviste!.nom,
-                              cavisteAdresse: stock.caviste!.adresse,
-                              cavisteSlug: stock.caviste!.slug,
-                            });
+                          cart.addItem({
+                            vinId: stock.vinId,
+                            cavisteId: stock.caviste!.id,
+                            vinNom: vin.nom,
+                            vinDomaine: vin.domaine,
+                            vinAnnee: vin.année,
+                            vinCouleur: vin.couleur,
+                            cavisteNom: stock.caviste!.nom,
+                            cavisteAdresse: stock.caviste!.adresse,
+                            cavisteSlug: stock.caviste!.slug,
+                          });
                             setShowAddedPopup(true);
                             setTimeout(() => setShowAddedPopup(false), 2000);
                           }}
@@ -123,19 +125,16 @@ export default function CavistesModal({
                 })}
             </ul>
 
-            <div className="mt-6 flex items-center justify-between">
-              <button onClick={() => setOpen(false)} className="text-sm text-gray-500 underline">
-                Fermer
-              </button>
-              {cart.itemCount > 0 && (
+            {cart.itemCount > 0 && (
+              <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => router.push('/cart')}
                   className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm font-medium"
                 >
                   Voir mon panier ({cart.itemCount})
                 </button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       )}

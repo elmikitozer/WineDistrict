@@ -11,6 +11,7 @@ Votre code est prêt et committé, mais **2 migrations SQL** doivent être exéc
 ### Fichier : `MIGRATION_FAVORIS.sql`
 
 Cette migration ajoute :
+
 - ✅ Table `FavorisCaviste` (relation many-to-many User ↔ Caviste)
 - ✅ 8 nouveaux champs au modèle `Caviste` :
   - `description` (TEXT)
@@ -38,6 +39,7 @@ Cette migration ajoute :
 ### Fichier : `MIGRATION_USER_INFO.sql`
 
 Cette migration ajoute :
+
 - ✅ Champ `nom` (VARCHAR 255) au modèle `User`
 - ✅ Champ `prenom` (VARCHAR 255) au modèle `User`
 - ✅ Champ `telephone` (VARCHAR 255) au modèle `User`
@@ -52,7 +54,9 @@ Cette migration ajoute :
 6. Vérifier qu'il n'y a pas d'erreurs
 
 ### ⚠️ **CRITIQUE** :
+
 Sans cette migration, le **Dashboard** plantera avec l'erreur :
+
 ```
 PrismaClientKnownRequestError: The column `User.nom` does not exist in the current database.
 ```
@@ -64,21 +68,25 @@ PrismaClientKnownRequestError: The column `User.nom` does not exist in the curre
 Après avoir exécuté les 2 migrations, vérifiez que tout fonctionne :
 
 ### 1. **Dashboard**
+
 - Aller sur `/dashboard`
 - Vérifier qu'il n'y a plus d'erreur `User.nom does not exist`
 - Le dashboard doit s'afficher normalement
 
 ### 2. **Page Favoris**
+
 - Aller sur `/favoris`
 - Tester l'ajout/suppression de cavistes favoris
 - Vérifier que les données persistent
 
 ### 3. **Page Caviste**
+
 - Aller sur `/cavistes/[slug]`
 - Tester le bouton "Ajouter aux favoris"
 - Vérifier que l'icône cœur se remplit
 
 ### 4. **Panier**
+
 - Ajouter des vins de différents cavistes
 - Vérifier que le panier groupe par caviste
 - Vérifier que les noms cavistes sont cliquables
@@ -101,14 +109,17 @@ Après avoir exécuté les 2 migrations, vérifiez que tout fonctionne :
 ## 🐛 **En cas de problème**
 
 ### Erreur : "column already exists"
+
 - ✅ C'est normal si vous avez déjà exécuté une partie de la migration
 - Les migrations utilisent `IF NOT EXISTS` pour éviter les doublons
 - Vérifiez juste qu'il n'y a pas d'erreur rouge
 
 ### Erreur : "table already exists"
+
 - ✅ Idem, pas de problème grâce à `IF NOT EXISTS`
 
 ### Erreur : "User.nom does not exist" persiste
+
 - ❌ La migration `MIGRATION_USER_INFO.sql` n'a pas été appliquée
 - Vérifiez dans Supabase : **Table Editor** → Table `User` → Vérifier que les colonnes `nom`, `prenom`, `telephone` existent
 
@@ -117,12 +128,14 @@ Après avoir exécuté les 2 migrations, vérifiez que tout fonctionne :
 ## 📊 **État actuel du code**
 
 ### ✅ Ce qui fonctionne SANS migration :
+
 - Toutes les pages sauf le Dashboard
 - Panier (avec groupe par caviste)
 - Liens cavistes sur `/cavistes`
 - Placeholders dynamiques (vins + cavistes)
 
 ### ⚠️ Ce qui nécessite la migration :
+
 - Dashboard (erreur `User.nom`)
 - Favoris cavistes (table manquante)
 - Page détail caviste (champs manquants)
@@ -132,6 +145,7 @@ Après avoir exécuté les 2 migrations, vérifiez que tout fonctionne :
 ## 🎉 **Après les migrations**
 
 Tout sera fonctionnel ! Vous pourrez :
+
 - ✅ Voir votre dashboard sans erreur
 - ✅ Ajouter des cavistes en favoris
 - ✅ Voir les infos complètes des cavistes (téléphone, email, etc.)
@@ -143,9 +157,9 @@ Tout sera fonctionnel ! Vous pourrez :
 ## 📞 **Besoin d'aide ?**
 
 Si vous rencontrez des problèmes, vérifiez :
+
 1. Les migrations ont bien été exécutées dans Supabase
 2. Le serveur de dev a été redémarré
 3. Le Prisma client a été régénéré : `npx prisma generate`
 
 Bon courage ! 🚀🍷
-
