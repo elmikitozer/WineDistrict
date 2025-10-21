@@ -31,7 +31,11 @@ function LoginContent() {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || 'Impossible de se connecter');
       }
-      router.replace('/dashboard');
+
+      // Rediriger vers la page d'origine ou le dashboard
+      const redirectTo = params?.get('redirect') || '/dashboard';
+      router.replace(redirectTo);
+      router.refresh(); // Force le rafraîchissement pour mettre à jour la navbar
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erreur inattendue');
     } finally {

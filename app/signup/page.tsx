@@ -1,9 +1,11 @@
 'use client';
 import { useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function SignupPage() {
+function SignupContent() {
   const router = useRouter();
+  const params = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -15,10 +17,10 @@ export default function SignupPage() {
   // Validation de l'email
   const emailError = useMemo(() => {
     if (!attemptedSubmit) return null;
-    if (!email) return 'L\'email est requis';
-    if (!email.includes('@')) return 'L\'email doit contenir un @';
+    if (!email) return "L'email est requis";
+    if (!email.includes('@')) return "L'email doit contenir un @";
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return 'Format d\'email invalide';
+    if (!emailRegex.test(email)) return "Format d'email invalide";
     return null;
   }, [email, attemptedSubmit]);
 
@@ -47,7 +49,7 @@ export default function SignupPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setAttemptedSubmit(true);
-    
+
     if (disabled) {
       // Afficher le premier message d'erreur trouvé (priorité : email > password > confirm)
       if (emailError) {
@@ -59,7 +61,7 @@ export default function SignupPage() {
       }
       return;
     }
-    
+
     setSubmitting(true);
     setError(null);
     try {
@@ -71,14 +73,20 @@ export default function SignupPage() {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Inscription impossible');
       setSuccess(true);
-      setTimeout(() => router.replace('/dashboard'), 800);
+
+      // Rediriger vers la page d'origine ou le dashboard
+      const redirectTo = params?.get('redirect') || '/dashboard';
+      setTimeout(() => {
+        router.replace(redirectTo);
+        router.refresh(); // Force le rafraîchissement pour mettre à jour la navbar
+      }, 800);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erreur inattendue');
     } finally {
       setSubmitting(false);
     }
   }
-  
+
   function handleButtonClick() {
     setAttemptedSubmit(true);
     if (emailError) {
@@ -119,7 +127,9 @@ export default function SignupPage() {
           {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
         </div>
         <div className="space-y-1">
-          <label className="block text-sm">Mot de passe <span className="text-xs text-gray-500">(min. 8 caractères)</span></label>
+          <label className="block text-sm">
+            Mot de passe <span className="text-xs text-gray-500">(min. 8 caractères)</span>
+          </label>
           <input
             type="password"
             className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
@@ -166,5 +176,13 @@ export default function SignupPage() {
         )}
       </form>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<div className="p-6">Chargement…</div>}>
+      <SignupContent />
+    </Suspense>
   );
 }

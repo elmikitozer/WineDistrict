@@ -6,8 +6,6 @@ import { Prisma } from '@prisma/client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getVinImageUrl } from '@/lib/vinImage';
-import ClientWrapper from '@/components/ClientWrapper';
-import ReservationConfirmation from '@/components/ReservationConfirmation';
 
 interface Vin {
   id: number;
@@ -63,9 +61,6 @@ export default async function PageVins({
 
   return (
     <>
-      <ClientWrapper>
-        <ReservationConfirmation />
-      </ClientWrapper>
       <main className="p-10 max-w-6xl mx-auto">
         <h1 className="text-4xl font-extrabold text-rose-900 mb-6 tracking-tight text-center">
           {q ? `Résultats pour « ${q} »` : 'Notre sélection de vins'}

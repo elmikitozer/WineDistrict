@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useCart } from '@/contexts/CartContext';
 
 interface Caviste {
   id: number;
@@ -15,27 +16,26 @@ interface Stock {
   caviste?: Caviste;
 }
 
-export default function CavistesModal({ cavistes, isAuthenticated }: { cavistes: Stock[], isAuthenticated?: boolean }) {
-  const [open, setOpen] = useState(false);
-  const [csrf, setCsrf] = useState<string | null>(null);
-  const [csrfError, setCsrfError] = useState<string | null>(null);
-  const [showLoginPopup, setShowLoginPopup] = useState(false);
-  const router = useRouter();
+interface Vin {
+  nom: string;
+  domaine: string;
+  année: number;
+}
 
-  useEffect(() => {
-    if (!open) return;
-    // Récupère le token et pose le cookie wd_csrf
-    (async () => {
-      try {
-        const res = await fetch('/api/csrf', { cache: 'no-store' });
-        if (!res.ok) throw new Error('CSRF fetch failed');
-        const { csrfToken } = await res.json();
-        setCsrf(csrfToken);
-      } catch {
-        setCsrfError('Sécurisation indisponible, réessaie dans un instant.');
-      }
-    })();
-  }, [open]);
+export default function CavistesModal({
+  cavistes,
+  isAuthenticated,
+  vin,
+}: {
+  cavistes: Stock[];
+  isAuthenticated?: boolean;
+  vin: Vin;
+}) {
+  const [open, setOpen] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [showAddedPopup, setShowAddedPopup] = useState(false);
+  const router = useRouter();
+  const cart = useCart();
 
   return (
     <>
@@ -51,8 +51,6 @@ export default function CavistesModal({ cavistes, isAuthenticated }: { cavistes:
           <div className="bg-white rounded-lg p-6 w-full max-w-xl max-h-[90vh] overflow-auto shadow-xl">
             <h2 className="text-xl font-bold mb-4">Cavistes disponibles</h2>
 
-            {csrfError && <p className="mb-3 text-sm text-red-600">{csrfError}</p>}
-
             <ul className="space-y-4">
               {cavistes
                 .filter((s) => s.caviste)
@@ -62,37 +60,63 @@ export default function CavistesModal({ cavistes, isAuthenticated }: { cavistes:
                     <p className="text-sm text-gray-500">{stock.caviste!.adresse}</p>
 
                     {isAuthenticated ? (
-                      <form action="/api/reservation" method="POST" className="mt-2">
-                        <input type="hidden" name="vinId" value={stock.vinId} />
-                        <input type="hidden" name="cavisteId" value={stock.caviste!.id} />
-                        {/* 🔐 CSRF double-submit */}
-                        <input type="hidden" name="_csrf" value={csrf ?? ''} />
-                        <button
-                          type="submit"
-                          disabled={!csrf}
-                          aria-disabled={!csrf}
-                          className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 disabled:opacity-50"
-                          title={!csrf ? 'Sécurisation en cours...' : 'Réserver'}
-                        >
-                          {csrf ? 'Réserver' : 'Sécurisation…'}
-                        </button>
-                      </form>
+                      <button
+                        onClick={() => {
+                          cart.addItem({
+                            vinId: stock.vinId,
+                            cavisteId: stock.caviste!.id,
+                            vinNom: vin.nom,
+                            vinDomaine: vin.domaine,
+                            vinAnnee: vin.année,
+                            cavisteNom: stock.caviste!.nom,
+                            cavisteAdresse: stock.caviste!.adresse,
+                          });
+                          setShowAddedPopup(true);
+                          setTimeout(() => setShowAddedPopup(false), 2000);
+                        }}
+                        disabled={cart.isInCart(stock.vinId, stock.caviste!.id)}
+                        className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+                      >
+                        {cart.isInCart(stock.vinId, stock.caviste!.id)
+                          ? 'Déjà dans le panier'
+                          : 'Ajouter au panier'}
+                      </button>
                     ) : (
                       <button
                         onClick={() => setShowLoginPopup(true)}
                         className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 mt-2"
                       >
-                        Réserver
+                        Ajouter au panier
                       </button>
                     )}
                   </li>
                 ))}
             </ul>
 
-            <button onClick={() => setOpen(false)} className="mt-6 text-sm text-gray-500 underline">
-              Fermer
-            </button>
+            <div className="mt-6 flex items-center justify-between">
+              <button onClick={() => setOpen(false)} className="text-sm text-gray-500 underline">
+                Fermer
+              </button>
+              {cart.itemCount > 0 && (
+                <button
+                  onClick={() => router.push('/cart')}
+                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm font-medium"
+                >
+                  Voir mon panier ({cart.itemCount})
+                </button>
+              )}
+            </div>
           </div>
+        </div>
+      )}
+
+      {/* Popup "Ajouté au panier" */}
+      {showAddedPopup && (
+        <div className="fixed bottom-4 right-4 z-[70] bg-green-600 text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 animate-slide-up">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span className="font-medium">Ajouté au panier !</span>
         </div>
       )}
 
@@ -120,9 +144,7 @@ export default function CavistesModal({ cavistes, isAuthenticated }: { cavistes:
             </div>
 
             {/* Titre */}
-            <h3 className="text-2xl font-bold text-gray-900 text-center mb-4">
-              Connexion requise
-            </h3>
+            <h3 className="text-2xl font-bold text-gray-900 text-center mb-4">Connexion requise</h3>
 
             {/* Message */}
             <p className="text-gray-600 text-center mb-6">
@@ -135,7 +157,9 @@ export default function CavistesModal({ cavistes, isAuthenticated }: { cavistes:
                 onClick={() => {
                   setShowLoginPopup(false);
                   setOpen(false);
-                  router.push('/login');
+                  // Passer l'URL actuelle comme paramètre de redirection
+                  const currentPath = window.location.pathname;
+                  router.push(`/login?redirect=${encodeURIComponent(currentPath)}`);
                 }}
                 className="bg-rose-600 text-white px-6 py-3 rounded-lg hover:bg-rose-700 transition font-medium"
               >
@@ -145,7 +169,9 @@ export default function CavistesModal({ cavistes, isAuthenticated }: { cavistes:
                 onClick={() => {
                   setShowLoginPopup(false);
                   setOpen(false);
-                  router.push('/signup');
+                  // Passer l'URL actuelle comme paramètre de redirection
+                  const currentPath = window.location.pathname;
+                  router.push(`/signup?redirect=${encodeURIComponent(currentPath)}`);
                 }}
                 className="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition font-medium"
               >

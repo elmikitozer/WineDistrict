@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import SearchBar from './SearchBar';
+import CartIcon from './CartIcon';
 
 function Brand() {
   return (
@@ -16,13 +17,14 @@ function Brand() {
 
 function DesktopLinks({ isAuthenticated }: { isAuthenticated?: boolean }) {
   return (
-    <div className="hidden md:flex space-x-6 font-medium">
+    <div className="hidden md:flex space-x-6 font-medium items-center">
       <Link href="/vins" className="hover:text-black">
         Vins
       </Link>
       <Link href="/cavistes" className="hover:text-black">
         Cavistes
       </Link>
+      {isAuthenticated && <CartIcon />}
       {isAuthenticated ? (
         <>
           <Link href="/dashboard" className="hover:text-black">
@@ -84,6 +86,9 @@ function MobileMenu({
       </Link>
       {isAuthenticated ? (
         <>
+          <div onClick={onClose}>
+            <CartIcon />
+          </div>
           <Link href="/dashboard" className="block hover:text-black" onClick={onClose}>
             Dashboard
           </Link>
@@ -134,8 +139,8 @@ export default function Navbar({ isAuthenticated }: NavbarProps) {
     <nav className="bg-rose-100 text-rose-800 border-b border-rose-200 shadow-md sticky top-0 z-50">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-            <Brand />
-            <SearchCenter />
+          <Brand />
+          <SearchCenter />
           <DesktopLinks isAuthenticated={isAuthenticated} />
           <div className="md:hidden">
             <button

@@ -118,11 +118,11 @@ export default function TestPlaceholdersPage() {
 
         {/* Instructions */}
         <section className="bg-blue-50 rounded-2xl border border-blue-200 p-8 mb-8">
-          <h2 className="text-2xl font-bold text-blue-900 mb-4">Comment l'appliquer ?</h2>
+          <h2 className="text-2xl font-bold text-blue-900 mb-4">Comment l&apos;appliquer ?</h2>
           <ol className="list-decimal list-inside space-y-3 text-blue-800">
             <li>Le design #14 est déjà configuré dans votre code</li>
             <li>
-              Pour l'activer, modifiez{' '}
+              Pour l&apos;activer, modifiez{' '}
               <code className="bg-blue-100 px-2 py-1 rounded text-sm">lib/vinImage.ts</code> ligne
               54 :
               <pre className="bg-blue-100 p-3 rounded mt-2 text-sm overflow-x-auto">
@@ -133,7 +133,9 @@ export default function TestPlaceholdersPage() {
               Redémarrez votre serveur de développement :{' '}
               <code className="bg-blue-100 px-2 py-1 rounded text-sm">npm run dev</code>
             </li>
-            <li>Les placeholders s'afficheront automatiquement pour tous les vins sans image</li>
+            <li>
+              Les placeholders s&apos;afficheront automatiquement pour tous les vins sans image
+            </li>
           </ol>
         </section>
 
@@ -145,7 +147,7 @@ export default function TestPlaceholdersPage() {
             {[
               { nom: 'Pomerol', domaine: 'Château Pétrus', annee: '2015', couleur: 'rouge' },
               { nom: 'Chablis', domaine: 'William Fèvre', annee: '2022', couleur: 'blanc' },
-              { nom: 'Tavel', domaine: "Château d'Aqueria", annee: '2023', couleur: 'rose' },
+              { nom: 'Tavel', domaine: 'Château d&apos;Aqueria', annee: '2023', couleur: 'rose' },
             ].map((vin, idx) => {
               const params = new URLSearchParams({
                 nom: vin.nom,

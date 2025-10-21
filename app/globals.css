@@ -2,14 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer components {
   .btn-filter {
-    @apply px-3 py-1 rounded-md border border-gray-300 text-gray-700 text-sm 
+    @apply px-3 py-1 rounded-md border border-gray-300 text-gray-700 text-sm
            hover:bg-gray-100 transition-colors duration-150;
     @apply shadow-sm hover:shadow rounded-md;
-  
-          }
+  }
 
   .btn-filter-active {
     @apply bg-rose-100 border-rose-400 text-rose-800 font-medium;
@@ -21,14 +19,26 @@
 
 /* animations douces */
 @keyframes fadeUp {
-  0% { opacity: 0; transform: translateY(8px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.animate-fadeUp { animation: fadeUp .6s ease-out both; }
+.animate-fadeUp {
+  animation: fadeUp 0.6s ease-out both;
+}
 
 @keyframes marquee {
-  0% { transform: translateX(0);}
-  100% { transform: translateX(-50%);}
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 .animate-marquee {
   display: inline-flex;
@@ -36,13 +46,20 @@
   animation: marquee 20s linear infinite;
 }
 
-
 /* Bounces contrôlés pour l'emoji 🍷 */
 @keyframes wineBounce {
-  0%   { transform: translateY(0); }
-  35%  { transform: translateY(-10px); }
-  70%  { transform: translateY(0); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(-10px);
+  }
+  70% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 /* 1 seul rebond */
@@ -55,4 +72,18 @@
   animation: wineBounce 700ms ease-out 2 both;
 }
 
+/* Animation slide-up pour les notifications */
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out both;
+}

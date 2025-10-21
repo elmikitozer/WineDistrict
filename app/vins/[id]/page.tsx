@@ -4,8 +4,6 @@ import CavistesModal from '@/components/CavistesModal';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getVinImageUrl } from '@/lib/vinImage';
-import ClientWrapper from '@/components/ClientWrapper';
-import ReservationConfirmation from '@/components/ReservationConfirmation';
 import { getCurrentUser } from '@/lib/auth';
 
 // 🧠 SEO dynamique par fiche vin
@@ -124,16 +122,13 @@ export default async function Page({
   const nbCavistes = cavistes.length;
   // Générer l'URL de l'image (vraie image ou placeholder dynamique)
   const srcImageVin: string = getVinImageUrl(vin);
-  
+
   // Vérifier si l'utilisateur est connecté
   const user = await getCurrentUser();
   const isAuthenticated = !!user;
 
   return (
     <>
-      <ClientWrapper>
-        <ReservationConfirmation />
-      </ClientWrapper>
       <main className="max-w-6xl mx-auto py-16 px-6">
         {/* <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border"> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
@@ -196,7 +191,11 @@ export default async function Page({
                       {vin.stocks.length >= 2 ? 's' : ''} !
                     </p>
                   )}
-                  <CavistesModal cavistes={cavistes} isAuthenticated={isAuthenticated} />
+                  <CavistesModal
+                    cavistes={cavistes}
+                    isAuthenticated={isAuthenticated}
+                    vin={{ nom: vin.nom, domaine: vin.domaine, année: vin.année }}
+                  />
                 </>
               ) : (
                 <div className="rounded-xl border border-dashed border-gray-200 p-4 bg-gray-50">
