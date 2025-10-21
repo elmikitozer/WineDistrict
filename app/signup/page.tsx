@@ -200,6 +200,20 @@ function SignupContent() {
 
         {/* Téléphone et Email sur 2 colonnes */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="space-y-1">
+            <label className="block text-sm">Email</label>
+            <input
+              type="email"
+              className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
+                emailError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
+              }`}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
+          </div>
+          
           <div className="space-y-1">
             <label className="block text-sm">Téléphone</label>
             <input
@@ -215,19 +229,6 @@ function SignupContent() {
             {telephoneError && <p className="text-xs text-red-600 mt-1">{telephoneError}</p>}
           </div>
 
-          <div className="space-y-1">
-            <label className="block text-sm">Email</label>
-            <input
-              type="email"
-              className={`border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 ${
-                emailError ? 'border-red-500 focus:ring-red-300' : 'focus:ring-rose-300'
-              }`}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
-          </div>
         </div>
         <div className="space-y-1">
           <label className="block text-sm">
