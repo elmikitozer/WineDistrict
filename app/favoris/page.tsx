@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Heart, MapPin, Phone, Mail, Globe, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface Caviste {
   id: number;
@@ -75,8 +76,9 @@ export default function FavorisPage() {
 
       // Retirer de la liste locale
       setFavoris(favoris.filter((f) => f.cavisteId !== cavisteId));
+      toast.success('Caviste retiré des favoris');
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Erreur inattendue');
+      toast.error(err instanceof Error ? err.message : 'Erreur inattendue');
     }
   }
 

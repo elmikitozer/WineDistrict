@@ -5,6 +5,7 @@ import './globals.css';
 import NavbarServer from '../components/NavbarServer';
 import { CartProvider } from '../contexts/CartContext';
 import ScrollRestoration from '../components/ScrollRestoration';
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-white text-gray-900 font-sans">
         <CartProvider>
           <ScrollRestoration />
+          <Toaster position="bottom-right" />
           {/* Navbar renders session-aware via server wrapper */}
           <NavbarServer />
           <main className="min-h-screen">{children}</main>

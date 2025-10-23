@@ -258,7 +258,7 @@ export default function Navbar({ isAuthenticated, isCaviste }: NavbarProps) {
           <Brand />
           <SearchCenter />
           <DesktopLinks isAuthenticated={isAuthenticated} isCaviste={isCaviste} />
-          
+
           {/* Mobile: Panier + Burger */}
           <div className="md:hidden flex items-center gap-4">
             {isAuthenticated && <CartIcon />}

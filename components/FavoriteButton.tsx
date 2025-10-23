@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 interface FavoriteButtonProps {
   cavisteId: number;
@@ -10,7 +11,11 @@ interface FavoriteButtonProps {
   variant?: 'default' | 'compact';
 }
 
-export default function FavoriteButton({ cavisteId, initialIsFavorite, variant = 'default' }: FavoriteButtonProps) {
+export default function FavoriteButton({
+  cavisteId,
+  initialIsFavorite,
+  variant = 'default',
+}: FavoriteButtonProps) {
   const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -29,6 +34,7 @@ export default function FavoriteButton({ cavisteId, initialIsFavorite, variant =
 
         if (!res.ok) throw new Error('Erreur lors de la suppression');
         setIsFavorite(false);
+        toast.error('Retiré des favoris');
       } else {
         // Ajouter aux favoris
         const res = await fetch('/api/favoris', {
@@ -39,13 +45,14 @@ export default function FavoriteButton({ cavisteId, initialIsFavorite, variant =
 
         if (!res.ok) throw new Error("Erreur lors de l'ajout");
         setIsFavorite(true);
+        toast.success('Ajouté aux favoris !');
       }
 
       // Rafraîchir la page pour mettre à jour les données
       router.refresh();
     } catch (error) {
       console.error('Erreur:', error);
-      alert(error instanceof Error ? error.message : 'Une erreur est survenue');
+      toast.error(error instanceof Error ? error.message : 'Une erreur est survenue');
     } finally {
       setLoading(false);
     }
