@@ -32,6 +32,11 @@ export async function GET(req: Request) {
   const status = (searchParams.get('status') || '').trim();
   const q = (searchParams.get('q') || '').trim();
   const sortOrder = (searchParams.get('sortOrder') || 'desc').trim() as 'asc' | 'desc';
+  
+  // 📊 PAGINATION : 20 réservations par page
+  const PER_PAGE = 20;
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const skip = (page - 1) * PER_PAGE;
 
   const andFilters: Array<Record<string, unknown>> = [{ userId: user.id }];
 
@@ -50,23 +55,39 @@ export async function GET(req: Request) {
 
   const where = andFilters.length > 1 ? { AND: andFilters } : andFilters[0];
 
-  const reservations = await prisma.reservation.findMany({
-    where,
-    orderBy: { date: ['asc', 'desc'].includes(sortOrder) ? sortOrder : 'desc' },
-    include: {
-      vin: true,
-      caviste: {
-        select: {
-          id: true,
-          slug: true,
-          nom: true,
-          adresse: true,
-          telephone: true,
-          email: true,
+  // 🔍 CHARGER les réservations avec pagination + compter le total
+  const [reservations, totalReservations] = await Promise.all([
+    prisma.reservation.findMany({
+      where,
+      orderBy: { date: ['asc', 'desc'].includes(sortOrder) ? sortOrder : 'desc' },
+      skip,
+      take: PER_PAGE,
+      include: {
+        vin: true,
+        caviste: {
+          select: {
+            id: true,
+            slug: true,
+            nom: true,
+            adresse: true,
+            telephone: true,
+            email: true,
+          },
         },
       },
+    }),
+    prisma.reservation.count({ where }),
+  ]);
+
+  const totalPages = Math.ceil(totalReservations / PER_PAGE);
+
+  return NextResponse.json({ 
+    items: reservations,
+    pagination: {
+      currentPage: page,
+      totalPages,
+      totalReservations,
+      perPage: PER_PAGE,
     },
   });
-
-  return NextResponse.json({ items: reservations });
 }
