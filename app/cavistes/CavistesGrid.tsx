@@ -14,6 +14,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import CavisteSkeleton from '@/components/skeletons/CavisteSkeleton';
 
 type Vin = {
   id: number;
@@ -153,29 +154,28 @@ export default function CavistesGrid({
       {/* 📊 INDICATEUR */}
       <div className="mt-8 text-center text-sm text-gray-600">
         <p>
-          <span className="font-semibold text-rose-700">{cavistes.length}</span> / {totalCavistes} caviste{totalCavistes > 1 ? 's' : ''}
+          <span className="font-semibold text-rose-700">{cavistes.length}</span> / {totalCavistes}{' '}
+          caviste{totalCavistes > 1 ? 's' : ''}
         </p>
       </div>
 
+      {/* 🔽 SKELETONS PENDANT CHARGEMENT "AFFICHER PLUS" */}
+      {loading && (
+        <div className="space-y-10 mt-10">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <CavisteSkeleton key={`skeleton-${i}`} />
+          ))}
+        </div>
+      )}
+
       {/* 🔽 BOUTON "AFFICHER PLUS" */}
-      {hasMore && (
+      {hasMore && !loading && (
         <div className="mt-8 flex justify-center">
           <button
             onClick={loadMore}
-            disabled={loading}
-            className="bg-rose-600 text-white px-8 py-3 rounded-lg hover:bg-rose-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="bg-rose-600 text-white px-8 py-3 rounded-lg hover:bg-rose-700 transition font-medium flex items-center gap-2"
           >
-            {loading ? (
-              <>
-                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                <span>Chargement...</span>
-              </>
-            ) : (
-              <span>Afficher plus de cavistes</span>
-            )}
+            <span>Afficher plus de cavistes</span>
           </button>
         </div>
       )}
@@ -189,4 +189,3 @@ export default function CavistesGrid({
     </>
   );
 }
-

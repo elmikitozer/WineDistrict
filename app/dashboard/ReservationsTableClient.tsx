@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import ReservationStatusControl from './ReservationStatusControl';
+import TableSkeleton from '@/components/skeletons/TableSkeleton';
 
 type ReservationItem = {
   id: string;
@@ -116,7 +117,7 @@ export default function ReservationsTableClient() {
   }, [fetchData]);
 
   if (loading && !items) {
-    return <p className="p-4 text-sm text-gray-600">Chargement…</p>;
+    return <TableSkeleton rows={10} cols={9} />;
   }
   if (error) {
     return <p className="p-4 text-sm text-red-600">{error}</p>;
@@ -141,117 +142,121 @@ export default function ReservationsTableClient() {
             <th className="text-left px-4 py-3">Actions</th>
           </tr>
         </thead>
-      <tbody>
-        {items.map((r) => {
-          return (
-            <tr key={r.id} className="border-t">
-              <td className="px-4 py-3 font-medium">{r.vin.nom}</td>
-              <td className="px-4 py-3">{r.vin.domaine}</td>
-              <td className="px-4 py-3">{r.vin.année}</td>
-              <td className="px-4 py-3">
-                {r.user?.nom || <span className="text-gray-400 italic">-</span>}
-              </td>
-              <td className="px-4 py-3">
-                {r.user?.prenom || <span className="text-gray-400 italic">-</span>}
-              </td>
-              <td className="px-4 py-3">
-                {r.user?.telephone ? (
-                  <a href={`tel:${r.user.telephone}`} className="text-rose-600 hover:text-rose-800">
-                    {r.user.telephone}
-                  </a>
-                ) : (
-                  <span className="text-gray-400 italic">-</span>
-                )}
-              </td>
-              <td className="px-4 py-3">{new Date(r.date).toLocaleString()}</td>
-              <td className="px-4 py-3">
-                <span className={`px-2 py-1 rounded text-xs ${statusBadgeClass(r.status)}`}>
-                  {r.status}
-                </span>
-              </td>
-              <td className="px-4 py-3">
-                <ReservationStatusControl id={r.id} initialStatus={r.status} />
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
+        <tbody>
+          {items.map((r) => {
+            return (
+              <tr key={r.id} className="border-t">
+                <td className="px-4 py-3 font-medium">{r.vin.nom}</td>
+                <td className="px-4 py-3">{r.vin.domaine}</td>
+                <td className="px-4 py-3">{r.vin.année}</td>
+                <td className="px-4 py-3">
+                  {r.user?.nom || <span className="text-gray-400 italic">-</span>}
+                </td>
+                <td className="px-4 py-3">
+                  {r.user?.prenom || <span className="text-gray-400 italic">-</span>}
+                </td>
+                <td className="px-4 py-3">
+                  {r.user?.telephone ? (
+                    <a
+                      href={`tel:${r.user.telephone}`}
+                      className="text-rose-600 hover:text-rose-800"
+                    >
+                      {r.user.telephone}
+                    </a>
+                  ) : (
+                    <span className="text-gray-400 italic">-</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">{new Date(r.date).toLocaleString()}</td>
+                <td className="px-4 py-3">
+                  <span className={`px-2 py-1 rounded text-xs ${statusBadgeClass(r.status)}`}>
+                    {r.status}
+                  </span>
+                </td>
+                <td className="px-4 py-3">
+                  <ReservationStatusControl id={r.id} initialStatus={r.status} />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
 
       {/* 📍 CONTRÔLES DE PAGINATION */}
-    {pagination && pagination.totalPages > 1 && (
-      <div className="mt-6 flex items-center justify-between border-t pt-4">
-        {/* Info */}
-        <div className="text-sm text-gray-600">
-          Page <span className="font-semibold">{pagination.currentPage}</span> sur{' '}
-          <span className="font-semibold">{pagination.totalPages}</span> •{' '}
-          <span className="font-semibold">{pagination.totalReservations}</span> réservation
-          {pagination.totalReservations > 1 ? 's' : ''} au total
-        </div>
-
-        {/* Boutons */}
-        <div className="flex items-center gap-2">
-          {/* Précédent */}
-          <button
-            onClick={() => goToPage(pagination.currentPage - 1)}
-            disabled={pagination.currentPage === 1}
-            className="px-4 py-2 border rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
-          >
-            ← Précédent
-          </button>
-
-          {/* Numéros de pages */}
-          <div className="flex gap-1">
-            {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((pageNum) => {
-              // Afficher toutes les pages si < 7, sinon afficher intelligemment
-              const showPage =
-                pagination.totalPages <= 7 ||
-                pageNum === 1 ||
-                pageNum === pagination.totalPages ||
-                Math.abs(pageNum - pagination.currentPage) <= 1;
-
-              if (!showPage) {
-                // Afficher "..." une seule fois
-                if (
-                  pageNum === 2 && pagination.currentPage > 3 ||
-                  pageNum === pagination.totalPages - 1 && pagination.currentPage < pagination.totalPages - 2
-                ) {
-                  return (
-                    <span key={pageNum} className="px-3 py-2 text-gray-400">
-                      ...
-                    </span>
-                  );
-                }
-                return null;
-              }
-
-              return (
-                <button
-                  key={pageNum}
-                  onClick={() => goToPage(pageNum)}
-                  className={`px-3 py-2 rounded text-sm font-medium transition ${
-                    pageNum === pagination.currentPage
-                      ? 'bg-rose-600 text-white'
-                      : 'hover:bg-gray-100'
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              );
-            })}
+      {pagination && pagination.totalPages > 1 && (
+        <div className="mt-6 flex items-center justify-between border-t pt-4">
+          {/* Info */}
+          <div className="text-sm text-gray-600">
+            Page <span className="font-semibold">{pagination.currentPage}</span> sur{' '}
+            <span className="font-semibold">{pagination.totalPages}</span> •{' '}
+            <span className="font-semibold">{pagination.totalReservations}</span> réservation
+            {pagination.totalReservations > 1 ? 's' : ''} au total
           </div>
 
-          {/* Suivant */}
-          <button
-            onClick={() => goToPage(pagination.currentPage + 1)}
-            disabled={pagination.currentPage === pagination.totalPages}
-            className="px-4 py-2 border rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
-          >
-            Suivant →
-          </button>
+          {/* Boutons */}
+          <div className="flex items-center gap-2">
+            {/* Précédent */}
+            <button
+              onClick={() => goToPage(pagination.currentPage - 1)}
+              disabled={pagination.currentPage === 1}
+              className="px-4 py-2 border rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+            >
+              ← Précédent
+            </button>
+
+            {/* Numéros de pages */}
+            <div className="flex gap-1">
+              {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((pageNum) => {
+                // Afficher toutes les pages si < 7, sinon afficher intelligemment
+                const showPage =
+                  pagination.totalPages <= 7 ||
+                  pageNum === 1 ||
+                  pageNum === pagination.totalPages ||
+                  Math.abs(pageNum - pagination.currentPage) <= 1;
+
+                if (!showPage) {
+                  // Afficher "..." une seule fois
+                  if (
+                    (pageNum === 2 && pagination.currentPage > 3) ||
+                    (pageNum === pagination.totalPages - 1 &&
+                      pagination.currentPage < pagination.totalPages - 2)
+                  ) {
+                    return (
+                      <span key={pageNum} className="px-3 py-2 text-gray-400">
+                        ...
+                      </span>
+                    );
+                  }
+                  return null;
+                }
+
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => goToPage(pageNum)}
+                    className={`px-3 py-2 rounded text-sm font-medium transition ${
+                      pageNum === pagination.currentPage
+                        ? 'bg-rose-600 text-white'
+                        : 'hover:bg-gray-100'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Suivant */}
+            <button
+              onClick={() => goToPage(pagination.currentPage + 1)}
+              disabled={pagination.currentPage === pagination.totalPages}
+              className="px-4 py-2 border rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+            >
+              Suivant →
+            </button>
+          </div>
         </div>
-      </div>
-    )}
-  </div>
+      )}
+    </div>
   );
 }

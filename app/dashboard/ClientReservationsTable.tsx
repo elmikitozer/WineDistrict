@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import TableSkeleton from '@/components/skeletons/TableSkeleton';
 
 type ReservationItem = {
   id: string;
@@ -131,7 +132,7 @@ export default function ClientReservationsTable() {
   };
 
   if (loading && !items) {
-    return <p className="p-4 text-sm text-gray-600">Chargement…</p>;
+    return <TableSkeleton rows={10} cols={6} />;
   }
   if (error) {
     return <p className="p-4 text-sm text-red-600">{error}</p>;
@@ -160,52 +161,52 @@ export default function ClientReservationsTable() {
             <th className="text-left px-4 py-3">Statut</th>
           </tr>
         </thead>
-      <tbody>
-        {items.map((r) => (
-          <tr key={r.id} className="border-t hover:bg-gray-50">
-            <td className="px-4 py-3 font-medium">{r.vin.nom}</td>
-            <td className="px-4 py-3">{r.vin.domaine}</td>
-            <td className="px-4 py-3">{r.vin.année}</td>
-            <td className="px-4 py-3">
-              <div>
-                <Link
-                  href={
-                    r.caviste.slug ? `/cavistes/${r.caviste.slug}` : `/cavistes/${r.caviste.id}`
-                  }
-                  className="font-medium text-rose-600 hover:text-rose-800 hover:underline"
+        <tbody>
+          {items.map((r) => (
+            <tr key={r.id} className="border-t hover:bg-gray-50">
+              <td className="px-4 py-3 font-medium">{r.vin.nom}</td>
+              <td className="px-4 py-3">{r.vin.domaine}</td>
+              <td className="px-4 py-3">{r.vin.année}</td>
+              <td className="px-4 py-3">
+                <div>
+                  <Link
+                    href={
+                      r.caviste.slug ? `/cavistes/${r.caviste.slug}` : `/cavistes/${r.caviste.id}`
+                    }
+                    className="font-medium text-rose-600 hover:text-rose-800 hover:underline"
+                  >
+                    {r.caviste.nom}
+                  </Link>
+                  <div className="text-xs text-gray-500 mt-1">{r.caviste.adresse}</div>
+                  {r.caviste.telephone && (
+                    <div className="text-xs text-gray-600 mt-0.5">
+                      📞{' '}
+                      <a href={`tel:${r.caviste.telephone}`} className="hover:underline">
+                        {r.caviste.telephone}
+                      </a>
+                    </div>
+                  )}
+                  {r.caviste.email && (
+                    <div className="text-xs text-gray-600">
+                      ✉️{' '}
+                      <a href={`mailto:${r.caviste.email}`} className="hover:underline">
+                        {r.caviste.email}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </td>
+              <td className="px-4 py-3">{new Date(r.date).toLocaleString('fr-FR')}</td>
+              <td className="px-4 py-3">
+                <span
+                  className={`px-2 py-1 rounded text-xs font-medium ${statusBadgeClass(r.status)}`}
                 >
-                  {r.caviste.nom}
-                </Link>
-                <div className="text-xs text-gray-500 mt-1">{r.caviste.adresse}</div>
-                {r.caviste.telephone && (
-                  <div className="text-xs text-gray-600 mt-0.5">
-                    📞{' '}
-                    <a href={`tel:${r.caviste.telephone}`} className="hover:underline">
-                      {r.caviste.telephone}
-                    </a>
-                  </div>
-                )}
-                {r.caviste.email && (
-                  <div className="text-xs text-gray-600">
-                    ✉️{' '}
-                    <a href={`mailto:${r.caviste.email}`} className="hover:underline">
-                      {r.caviste.email}
-                    </a>
-                  </div>
-                )}
-              </div>
-            </td>
-            <td className="px-4 py-3">{new Date(r.date).toLocaleString('fr-FR')}</td>
-            <td className="px-4 py-3">
-              <span
-                className={`px-2 py-1 rounded text-xs font-medium ${statusBadgeClass(r.status)}`}
-              >
-                {statusLabel(r.status)}
-              </span>
-            </td>
-          </tr>
-        ))}
-      </tbody>
+                  {statusLabel(r.status)}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
 
       {/* 📍 CONTRÔLES DE PAGINATION */}
@@ -241,8 +242,9 @@ export default function ClientReservationsTable() {
 
                 if (!showPage) {
                   if (
-                    pageNum === 2 && pagination.currentPage > 3 ||
-                    pageNum === pagination.totalPages - 1 && pagination.currentPage < pagination.totalPages - 2
+                    (pageNum === 2 && pagination.currentPage > 3) ||
+                    (pageNum === pagination.totalPages - 1 &&
+                      pagination.currentPage < pagination.totalPages - 2)
                   ) {
                     return (
                       <span key={pageNum} className="px-3 py-2 text-gray-400">

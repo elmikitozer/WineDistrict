@@ -17,6 +17,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getVinImageUrl } from '@/lib/vinImage';
+import VinCardSkeleton from '@/components/skeletons/VinCardSkeleton';
 
 interface Vin {
   id: number;
@@ -153,29 +154,30 @@ export default function VinsGrid({
       {/* 📊 INDICATEUR : "24 / 200 bouteilles affichées" */}
       <div className="mt-6 text-center text-sm text-gray-600">
         <p>
-          <span className="font-semibold text-rose-700">{vins.length}</span> / {totalVins} bouteille{totalVins > 1 ? 's' : ''} affichée{vins.length > 1 ? 's' : ''}
+          <span className="font-semibold text-rose-700">{vins.length}</span> / {totalVins} bouteille
+          {totalVins > 1 ? 's' : ''} affichée{vins.length > 1 ? 's' : ''}
         </p>
       </div>
 
+      {/* 🔽 SKELETONS PENDANT CHARGEMENT "AFFICHER PLUS" */}
+      {loading && (
+        <ul className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <li key={`skeleton-${i}`}>
+              <VinCardSkeleton />
+            </li>
+          ))}
+        </ul>
+      )}
+
       {/* 🔽 BOUTON "AFFICHER PLUS" (seulement s'il reste des vins) */}
-      {hasMore && (
+      {hasMore && !loading && (
         <div className="mt-8 flex justify-center">
           <button
             onClick={loadMore}
-            disabled={loading}
-            className="bg-rose-600 text-white px-8 py-3 rounded-lg hover:bg-rose-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="bg-rose-600 text-white px-8 py-3 rounded-lg hover:bg-rose-700 transition font-medium flex items-center gap-2"
           >
-            {loading ? (
-              <>
-                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                <span>Chargement...</span>
-              </>
-            ) : (
-              <span>Afficher plus de bouteilles</span>
-            )}
+            <span>Afficher plus de bouteilles</span>
           </button>
         </div>
       )}
@@ -189,4 +191,3 @@ export default function VinsGrid({
     </>
   );
 }
-
