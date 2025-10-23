@@ -1,8 +1,8 @@
 /**
  * API Export CSV - Réservations Dashboard Caviste
- * 
+ *
  * GET /api/dashboard/reservations/export?format=csv&status=...&q=...&sortOrder=...
- * 
+ *
  * Exporte les réservations au format CSV avec les mêmes filtres que le dashboard
  */
 
@@ -113,8 +113,9 @@ export async function GET(req: Request) {
     status: 200,
     headers: {
       'Content-Type': 'text/csv; charset=utf-8',
-      'Content-Disposition': `attachment; filename="reservations-${new Date().toISOString().split('T')[0]}.csv"`,
+      'Content-Disposition': `attachment; filename="reservations-${
+        new Date().toISOString().split('T')[0]
+      }.csv"`,
     },
   });
 }
-

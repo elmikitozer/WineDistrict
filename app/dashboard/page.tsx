@@ -74,6 +74,18 @@ export default async function DashboardPage({
       ) : (
         // Interface pour les cavistes
         <section className="space-y-4">
+          {/* Liens rapides */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold">Réservations</h2>
+            <a
+              href="/dashboard/caviste/integrations"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm"
+            >
+              <span>🔌</span>
+              <span>Intégrations</span>
+            </a>
+          </div>
+
           <StatsCards cavisteId={cavisteId} activeStatus={activeStatus} q={qParam} />
           <Toolbar />
           <div className="border rounded-xl overflow-hidden">

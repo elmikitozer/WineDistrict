@@ -20,11 +20,13 @@
 ### Problème résolu
 
 **Avant** :
+
 - Le caviste doit **manuellement** entrer le stock de chaque vin dans Wine District
 - Quand il vend un vin via SumUp/POS Pro, il doit **manuellement** mettre à jour le stock sur Wine District
 - **Risque** : stock affiché incorrectement → clients réservent des vins qui ne sont plus disponibles
 
 **Après** :
+
 - Le stock se **synchronise automatiquement** de SumUp/POS Pro → Wine District
 - Quand le caviste vend un vin, le stock se **met à jour tout seul** sur Wine District
 - **Résultat** : stock toujours à jour, pas de double saisie
@@ -54,6 +56,7 @@ Wine District récupère un ACCESS_TOKEN
 ```
 
 **Code concerné** :
+
 - `/api/integrations/sumup/connect` : Démarre OAuth
 - `/api/integrations/sumup/callback` : Reçoit le token
 - Table `IntegrationConnection` : Stocke le token
@@ -63,6 +66,7 @@ Wine District récupère un ACCESS_TOKEN
 ### Étape 2 : Mapping des produits
 
 **Pourquoi ?**
+
 - Dans SumUp/POS Pro, un vin s'appelle peut-être "Margaux 2018" avec l'ID `sumup_abc123`
 - Dans Wine District, le même vin a l'ID `42`
 - Il faut **associer** `sumup_abc123` ↔️ `vin_42`
@@ -95,6 +99,7 @@ Le caviste voit :
    ```
 
 **Code concerné** :
+
 - `lib/integrations/sumup-sync.ts` : Fonction `mapSumUpProductToVin()`
 - Table `ExternalProductMapping` : Stocke les associations
 
@@ -136,6 +141,7 @@ Si mappé :
 ```
 
 **Code concerné** :
+
 - `/api/integrations/sync` : Route pour déclencher la sync
 - `lib/integrations/sumup-sync.ts` : Fonction `syncSumUpStock()`
 
@@ -148,37 +154,38 @@ Si mappé :
 Un webhook, c'est comme une notification que SumUp envoie à Wine District quand quelque chose change.
 
 ```
-                                        
-Vente dans SumUp                        
-    |                                   
-    | 1. Client achète Margaux 2018    
-    |    Stock: 10 → 9                 
-    |                                   
-    ↓                                   
-SumUp envoie un webhook                 
-    |                                   
+
+Vente dans SumUp
+    |
+    | 1. Client achète Margaux 2018
+    |    Stock: 10 → 9
+    |
+    ↓
+SumUp envoie un webhook
+    |
     | 2. POST https://wine-district.vercel.app/api/webhooks/sumup
-    |    Body: {                        
+    |    Body: {
     |      event: "transaction.created",
-    |      product_id: "sumup_abc123"  
-    |    }                              
-    |                                   
-    ↓                                   
-Wine District reçoit le webhook         
-    |                                   
+    |      product_id: "sumup_abc123"
+    |    }
+    |
+    ↓
+Wine District reçoit le webhook
+    |
     | 3. Trouve mapping: sumup_abc123 → vin_42
-    |                                   
-    ↓                                   
-Wine District met à jour le stock       
-    |                                   
-    | 4. UPDATE Stock                  
-    |    SET quantité = 9              
-    |    WHERE vinId = 42              
-    |                                   
-    ✅ Stock mis à jour en temps réel  
+    |
+    ↓
+Wine District met à jour le stock
+    |
+    | 4. UPDATE Stock
+    |    SET quantité = 9
+    |    WHERE vinId = 42
+    |
+    ✅ Stock mis à jour en temps réel
 ```
 
 **Code concerné** :
+
 - `/api/webhooks/sumup` : Reçoit les notifications SumUp
 - `/api/webhooks/pospro` : Reçoit les notifications POS Pro
 
@@ -205,6 +212,7 @@ updatedAt       TIMESTAMP
 ```
 
 **Exemple** :
+
 ```sql
 INSERT INTO "IntegrationConnection" VALUES (
   'uuid-123',
@@ -238,6 +246,7 @@ updatedAt         TIMESTAMP
 ```
 
 **Exemple** :
+
 ```sql
 INSERT INTO "ExternalProductMapping" VALUES (
   'uuid-456',
@@ -266,14 +275,10 @@ async function syncSumUpStock(
   cavisteId: number,
   accessToken: string,
   merchantId: string
-): Promise<SumUpSyncResult>
+): Promise<SumUpSyncResult>;
 
 // 2. Créer un mapping manuel
-async function mapSumUpProductToVin(
-  cavisteId: number,
-  vinId: number,
-  externalProductId: string
-)
+async function mapSumUpProductToVin(cavisteId: number, vinId: number, externalProductId: string);
 ```
 
 **Algorithme de synchronisation** :
@@ -305,6 +310,7 @@ Même logique que SumUp, mais pour POS Pro.
 Déclenche une synchronisation manuelle.
 
 **Requête** :
+
 ```json
 {
   "cavisteId": 1,
@@ -313,6 +319,7 @@ Déclenche une synchronisation manuelle.
 ```
 
 **Réponse** :
+
 ```json
 {
   "success": true,
@@ -329,6 +336,7 @@ Déclenche une synchronisation manuelle.
 Reçoit les webhooks SumUp en temps réel.
 
 **Événements gérés** :
+
 - `transaction.created` : Une vente → Re-synchroniser le stock
 - `product.updated` : Un produit modifié → Re-synchroniser
 
@@ -343,6 +351,7 @@ Reçoit les webhooks SumUp en temps réel.
 Page pour gérer les intégrations.
 
 **Fonctionnalités** :
+
 - ✅ Voir le statut de connexion (connecté ou non)
 - ✅ Bouton "Connecter SumUp" (démarre OAuth)
 - ✅ Bouton "Synchroniser maintenant" (sync manuelle)
@@ -397,7 +406,7 @@ Page pour gérer les intégrations.
    SELECT * FROM IntegrationConnection
    WHERE provider = 'sumup'
      AND merchantId = 'FR123'
-   
+
    Résultat:
      cavisteId: 1
      accessToken: sumup_access_token_abc123xyz
@@ -421,7 +430,7 @@ Page pour gérer les intégrations.
    GET https://api.sumup.com/v1/me/products
    Headers:
      Authorization: Bearer sumup_access_token_abc123xyz
-   
+
    Réponse:
      [
        {
@@ -441,7 +450,7 @@ Page pour gérer les intégrations.
    SELECT * FROM ExternalProductMapping
    WHERE provider = 'sumup'
      AND externalProductId = 'sumup_abc123'
-   
+
    Résultat:
      vinId: 42   ← Château Margaux 2018 dans Wine District
 
@@ -453,7 +462,7 @@ Page pour gérer les intégrations.
    UPDATE Stock
    SET quantite = 9
    WHERE cavisteId = 1 AND vinId = 42
-   
+
    ✅ Stock synchronisé : 10 → 9
 
                 ↓
@@ -462,7 +471,7 @@ Page pour gérer les intégrations.
 │  9. CLIENT SUR WINE DISTRICT VOIT LE BON STOCK       │
 └──────────────────────────────────────────────────────┘
    Page /vins/chateau-margaux-2018
-   
+
    Affiche:
      "9 bouteilles disponibles chez Caviste #1"
 ```
@@ -485,6 +494,7 @@ Page pour gérer les intégrations.
 #### Étape 2 : Configurer les variables d'environnement
 
 `.env.local` (local) :
+
 ```bash
 SUMUP_CLIENT_ID=your_client_id_here
 SUMUP_CLIENT_SECRET=your_client_secret_here
@@ -493,6 +503,7 @@ SUMUP_WEBHOOK_SECRET=your_webhook_secret_here
 ```
 
 Vercel (production) :
+
 ```
 SUMUP_CLIENT_ID=your_client_id_here
 SUMUP_CLIENT_SECRET=your_client_secret_here
@@ -537,6 +548,7 @@ SUMUP_WEBHOOK_SECRET=your_webhook_secret_here
 ### Pour POS Pro
 
 Même process, mais avec :
+
 - URLs différentes
 - Possiblement une clé API au lieu d'OAuth (selon leur système)
 
@@ -569,6 +581,7 @@ Vous devez **manuellement mapper** tous vos produits pour que le stock se synchr
 Wine District est un système de **réservation**, pas de vente. Les ventes se font via SumUp/POS Pro.
 
 Le flux est :
+
 - Vente SumUp → Stock diminue dans SumUp
 - Webhook → Stock diminue dans Wine District
 - Client réserve sur Wine District → Stock **réservé temporairement**
@@ -587,6 +600,7 @@ Si ça échoue, le caviste devra **se reconnecter** via le dashboard.
 ### Q5 : C'est sécurisé ?
 
 **Oui** :
+
 - Tokens stockés chiffrés dans la DB
 - Webhooks vérifiés par signature HMAC
 - HTTPS uniquement
@@ -610,4 +624,3 @@ Chaque connexion est indépendante (table `IntegrationConnection` a un `cavisteI
 ---
 
 **Dernière mise à jour :** 23 Octobre 2025
-

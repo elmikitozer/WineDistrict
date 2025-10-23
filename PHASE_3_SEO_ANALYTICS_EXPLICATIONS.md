@@ -19,6 +19,7 @@ Cette phase permet à Wine District d'être **bien référencé sur Google** et 
 **SEO = Search Engine Optimization** (Optimisation pour les moteurs de recherche)
 
 **Objectif** : Faire apparaître Wine District dans les résultats Google quand quelqu'un cherche :
+
 - "caviste Paris"
 - "acheter Château Margaux 2018"
 - "vin rouge Bordeaux"
@@ -35,6 +36,7 @@ Cette phase permet à Wine District d'être **bien référencé sur Google** et 
 **Qu'est-ce que c'est ?**
 
 Un fichier que Google lit AVANT de crawler votre site. Il dit :
+
 - ✅ "Tu peux indexer ces pages"
 - ❌ "Ne touche pas à ces pages"
 
@@ -70,6 +72,7 @@ Sitemap: ...            → Pointe vers le sitemap
 ```
 
 **Résultat** :
+
 - ✅ Google indexe `/vins/chateau-margaux-2018`
 - ✅ Google indexe `/cavistes/vinotheque-de-la-vigne`
 - ❌ Google n'indexe PAS `/dashboard`
@@ -97,7 +100,7 @@ Une liste de TOUTES les pages de votre site que Google doit indexer.
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  
+
   <!-- Page catalogue vins -->
   <url>
     <loc>https://wine-district.vercel.app/vins</loc>
@@ -105,7 +108,7 @@ Une liste de TOUTES les pages de votre site que Google doit indexer.
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
   <!-- Chaque vin -->
   <url>
     <loc>https://wine-district.vercel.app/vins/chateau-margaux-2018</loc>
@@ -113,7 +116,7 @@ Une liste de TOUTES les pages de votre site que Google doit indexer.
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+
   <!-- ... 100+ vins -->
   <!-- ... 20+ cavistes -->
 </urlset>
@@ -133,18 +136,18 @@ export default async function sitemap() {
 
   // 2. Pages vins dynamiques (depuis la DB)
   const vins = await prisma.vin.findMany({ select: { slug: true } });
-  const vinPages = vins.map(vin => ({
+  const vinPages = vins.map((vin) => ({
     url: `/vins/${vin.slug}`,
     priority: 0.7,
-    changefreq: 'weekly'
+    changefreq: 'weekly',
   }));
 
   // 3. Pages cavistes dynamiques
   const cavistes = await prisma.caviste.findMany({ select: { slug: true } });
-  const cavistePages = cavistes.map(caviste => ({
+  const cavistePages = cavistes.map((caviste) => ({
     url: `/cavistes/${caviste.slug}`,
     priority: 0.7,
-    changefreq: 'weekly'
+    changefreq: 'weekly',
   }));
 
   // 4. Combiner tout
@@ -153,6 +156,7 @@ export default async function sitemap() {
 ```
 
 **Résultat** :
+
 - Accessible sur `https://wine-district.vercel.app/sitemap.xml`
 - Google crawl automatiquement toutes les pages
 - Si vous ajoutez un nouveau vin → automatiquement dans le sitemap
@@ -187,7 +191,8 @@ Le texte qui apparaît sous le titre dans les résultats Google.
 // app/vins/page.tsx
 export const metadata = {
   title: 'Nos Vins | Wine District',
-  description: 'Découvrez notre sélection de vins rouges, blancs et rosés disponibles chez nos cavistes partenaires à Paris.',
+  description:
+    'Découvrez notre sélection de vins rouges, blancs et rosés disponibles chez nos cavistes partenaires à Paris.',
   openGraph: {
     title: 'Nos Vins | Wine District',
     description: 'Découvrez notre sélection de vins disponibles...',
@@ -196,12 +201,14 @@ export const metadata = {
 ```
 
 **Pages concernées** :
+
 - ✅ `/vins` : "Découvrez notre sélection de vins..."
 - ✅ `/cavistes` : "Trouvez un caviste partenaire..."
 - ✅ `/vins/[id]` : "Découvrez Château Margaux (rouge) du domaine..." (dynamique)
 - ✅ `/cavistes/[slug]` : Idem pour chaque caviste
 
 **Résultat** :
+
 - Meilleur **taux de clic** dans Google (les gens voient ce qu'ils vont trouver)
 - Meilleur **référencement** (Google comprend de quoi parle la page)
 
@@ -241,7 +248,7 @@ Sur Facebook, ça affiche :
 // app/vins/[id]/page.tsx
 export async function generateMetadata({ params }) {
   const vin = await getVin(params.id);
-  
+
   return {
     title: `${vin.nom} - ${vin.domaine} (${vin.année})`,
     description: `Découvrez ${vin.nom} (${vin.couleur}) du domaine ${vin.domaine}...`,
@@ -250,7 +257,7 @@ export async function generateMetadata({ params }) {
       description: `Découvrez ${vin.nom}...`,
       type: 'article',
       url: `/vins/${vin.slug}`,
-      images: [{ url: vin.imageUrl }],  // Photo du vin
+      images: [{ url: vin.imageUrl }], // Photo du vin
     },
     twitter: {
       card: 'summary_large_image',
@@ -262,6 +269,7 @@ export async function generateMetadata({ params }) {
 ```
 
 **Résultat** :
+
 - Partages sur réseaux sociaux plus **engageants**
 - Meilleure **viralité** du site
 
@@ -276,6 +284,7 @@ export async function generateMetadata({ params }) {
 - Partages réseaux sociaux → lien basique sans image
 
 **Résultat** :
+
 - Peu de visites organiques depuis Google
 - Faible taux de clic (CTR) dans les résultats
 - Partages peu engageants
@@ -288,6 +297,7 @@ export async function generateMetadata({ params }) {
 - Partages réseaux sociaux **riches** (images + descriptions)
 
 **Résultat** :
+
 - **+300%** de pages indexées
 - **+50%** de taux de clic dans Google
 - **+200%** d'engagement sur partages sociaux
@@ -299,6 +309,7 @@ export async function generateMetadata({ params }) {
 ### Qu'est-ce que Google Analytics ?
 
 Un outil **gratuit** de Google qui vous dit :
+
 - Combien de visiteurs sur votre site
 - D'où ils viennent (Google, Facebook, direct)
 - Quelles pages ils visitent
@@ -326,7 +337,7 @@ export default function GoogleAnalytics({ GA_MEASUREMENT_ID }) {
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
         strategy="afterInteractive"
       />
-      
+
       {/* 2. Initialiser GA */}
       <Script
         id="google-analytics"
@@ -345,6 +356,7 @@ export default function GoogleAnalytics({ GA_MEASUREMENT_ID }) {
 ```
 
 **Résultat** :
+
 - GA chargé sur **toutes les pages**
 - Track automatiquement :
   - Page views (vues de pages)
@@ -374,6 +386,7 @@ export default function RootLayout({ children }) {
 ```
 
 **Résultat** :
+
 - Si `NEXT_PUBLIC_GA_MEASUREMENT_ID` est défini → GA actif
 - Sinon → GA désactivé (pour éviter de polluer les stats en dev)
 
@@ -444,6 +457,7 @@ onClick={() => {
 ```
 
 **Résultat dans GA** :
+
 ```
 Event: add_to_cart
   item_name: "Château Margaux 2018"
@@ -461,7 +475,7 @@ function trackPurchase(orderId: string, total: number, items: any[]) {
       transaction_id: orderId,
       value: total,
       currency: 'EUR',
-      items: items.map(item => ({
+      items: items.map((item) => ({
         item_name: item.vinNom,
         price: item.prix,
         quantity: item.quantity,
@@ -471,10 +485,11 @@ function trackPurchase(orderId: string, total: number, items: any[]) {
 }
 
 // Utiliser après validation commande :
-trackPurchase('order_123', 150.00, cartItems);
+trackPurchase('order_123', 150.0, cartItems);
 ```
 
 **Résultat dans GA** :
+
 ```
 Event: purchase
   transaction_id: "order_123"
@@ -579,11 +594,13 @@ Revenu généré : 3,350 €
 #### Étape 2 : Configurer les variables d'environnement
 
 **.env.local** (local) :
+
 ```bash
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
 **Vercel** (production) :
+
 ```
 Settings → Environment Variables
   Name: NEXT_PUBLIC_GA_MEASUREMENT_ID
@@ -607,6 +624,7 @@ Settings → Environment Variables
 **2-6 mois** pour un bon référencement.
 
 Google doit :
+
 1. Découvrir votre site (via sitemap)
 2. Crawler toutes les pages
 3. Les indexer
@@ -653,19 +671,20 @@ Impact : < 50ms (imperceptible).
 ### Q6 : RGPD et Google Analytics ?
 
 **Important** : En Europe, vous devez :
+
 - Informer les visiteurs (bannière cookies)
 - Demander le consentement
 - Anonymiser les IPs
 
 Pour anonymiser :
+
 ```typescript
 gtag('config', GA_ID, {
   anonymize_ip: true,
-  cookie_flags: 'SameSite=None;Secure'
+  cookie_flags: 'SameSite=None;Secure',
 });
 ```
 
 ---
 
 **Dernière mise à jour :** 23 Octobre 2025
-

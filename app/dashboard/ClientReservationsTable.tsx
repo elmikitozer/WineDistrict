@@ -146,7 +146,9 @@ export default function ClientReservationsTable() {
             <td className="px-4 py-3">
               <div>
                 <Link
-                  href={r.caviste.slug ? `/cavistes/${r.caviste.slug}` : `/cavistes/${r.caviste.id}`}
+                  href={
+                    r.caviste.slug ? `/cavistes/${r.caviste.slug}` : `/cavistes/${r.caviste.id}`
+                  }
                   className="font-medium text-rose-600 hover:text-rose-800 hover:underline"
                 >
                   {r.caviste.nom}
@@ -154,12 +156,18 @@ export default function ClientReservationsTable() {
                 <div className="text-xs text-gray-500 mt-1">{r.caviste.adresse}</div>
                 {r.caviste.telephone && (
                   <div className="text-xs text-gray-600 mt-0.5">
-                    📞 <a href={`tel:${r.caviste.telephone}`} className="hover:underline">{r.caviste.telephone}</a>
+                    📞{' '}
+                    <a href={`tel:${r.caviste.telephone}`} className="hover:underline">
+                      {r.caviste.telephone}
+                    </a>
                   </div>
                 )}
                 {r.caviste.email && (
                   <div className="text-xs text-gray-600">
-                    ✉️ <a href={`mailto:${r.caviste.email}`} className="hover:underline">{r.caviste.email}</a>
+                    ✉️{' '}
+                    <a href={`mailto:${r.caviste.email}`} className="hover:underline">
+                      {r.caviste.email}
+                    </a>
                   </div>
                 )}
               </div>
