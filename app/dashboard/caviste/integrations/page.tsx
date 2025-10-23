@@ -1,6 +1,6 @@
 /**
  * Page Intégrations - Dashboard Caviste
- *
+ * 
  * Permet au caviste de :
  * - Connecter SumUp ou POS Pro
  * - Voir le statut de la connexion
@@ -85,15 +85,6 @@ export default async function IntegrationsPage() {
               {new Date(sumupIntegration.updatedAt).toLocaleString('fr-FR')}
             </div>
             <div className="flex gap-2 mt-4">
-              <button
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm font-medium"
-                onClick={async () => {
-                  // TODO: Implémenter la synchro côté client avec fetch
-                  alert('Synchronisation manuelle à implémenter (voir INTEGRATION_GUIDE.md)');
-                }}
-              >
-                🔄 Synchroniser maintenant
-              </button>
               <Link
                 href="/dashboard/caviste/integrations/sumup/mapping"
                 className="bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200 text-sm font-medium"
@@ -125,15 +116,9 @@ export default async function IntegrationsPage() {
               </span>
             </div>
           ) : (
-            <button
-              className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 font-medium text-sm"
-              onClick={() => {
-                // TODO: Ouvrir une modal pour saisir API Key + Store ID
-                alert('Configuration POS Pro à implémenter (voir INTEGRATION_GUIDE.md)');
-              }}
-            >
-              Connecter POS Pro
-            </button>
+            <div className="text-sm text-gray-600">
+              Configuration POS Pro à implémenter
+            </div>
           )}
         </div>
 
@@ -148,14 +133,6 @@ export default async function IntegrationsPage() {
               {new Date(posproIntegration.updatedAt).toLocaleString('fr-FR')}
             </div>
             <div className="flex gap-2 mt-4">
-              <button
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm font-medium"
-                onClick={() => {
-                  alert('Synchronisation manuelle à implémenter (voir INTEGRATION_GUIDE.md)');
-                }}
-              >
-                🔄 Synchroniser maintenant
-              </button>
               <Link
                 href="/dashboard/caviste/integrations/pospro/mapping"
                 className="bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200 text-sm font-medium"
@@ -178,12 +155,9 @@ export default async function IntegrationsPage() {
           produits.
         </p>
         <div className="mt-3">
-          <Link
-            href="/docs/integration-guide"
-            className="text-sm text-blue-600 hover:text-blue-800 font-medium underline"
-          >
-            Voir le guide complet →
-          </Link>
+          <p className="text-sm text-blue-600 font-medium">
+            → Voir PHASE_2_INTEGRATIONS_EXPLICATIONS.md dans le projet
+          </p>
         </div>
       </section>
     </div>
