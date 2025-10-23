@@ -1,8 +1,8 @@
 /**
  * Webhook POS Pro pour recevoir les updates en temps réel
- * 
+ *
  * POST /api/webhooks/pospro
- * 
+ *
  * POS Pro envoie des webhooks lors de changements (ventes, ajustements stock, etc.)
  */
 
@@ -32,7 +32,7 @@ function verifyWebhookSignature(
   secret: string
 ): boolean {
   if (!signature) return false;
-  
+
   // TODO: Implémenter la vérification selon la doc POS Pro
   console.warn('Webhook signature verification not implemented yet');
   return true; // En dev, accepter tous les webhooks
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
 
     // 2. Lire le payload
     const rawPayload = await req.text();
-    
+
     // 3. Vérifier la signature
     if (!verifyWebhookSignature(rawPayload, signature, webhookSecret)) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
  */
 async function handleSaleCompleted(event: POSProWebhookEvent) {
   const storeId = event.store_id;
-  
+
   // Trouver le caviste associé à ce magasin
   const integration = await prisma.integrationConnection.findFirst({
     where: {

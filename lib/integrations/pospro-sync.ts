@@ -1,6 +1,6 @@
 /**
  * Service de synchronisation POS Pro → Base de données
- * 
+ *
  * Ce service récupère les produits et le stock depuis POS Pro
  * et les synchronise avec notre base de données.
  */
@@ -27,7 +27,7 @@ interface POSProSyncResult {
 
 /**
  * Récupère les produits depuis POS Pro API
- * 
+ *
  * @param apiKey - Clé API POS Pro
  * @param storeId - ID du magasin dans POS Pro
  */
@@ -58,7 +58,7 @@ async function fetchPOSProProducts(
 
 /**
  * Synchronise les produits POS Pro avec notre base de données
- * 
+ *
  * @param cavisteId - ID du caviste dans notre DB
  * @param apiKey - Clé API POS Pro
  * @param storeId - ID du magasin POS Pro
@@ -144,7 +144,7 @@ export async function syncPOSProStock(
 
 /**
  * Créer un mapping manuel entre un produit POS Pro et un vin de notre DB
- * 
+ *
  * À utiliser dans le dashboard caviste pour associer les produits
  */
 export async function mapPOSProProductToVin(
@@ -180,7 +180,7 @@ export async function mapPOSProProductToVin(
 
 /**
  * Vérifier la connexion POS Pro API
- * 
+ *
  * @param apiKey - Clé API POS Pro
  * @param storeId - ID du magasin POS Pro
  */

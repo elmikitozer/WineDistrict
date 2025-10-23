@@ -1,6 +1,6 @@
 /**
  * Page Intégrations - Dashboard Caviste
- * 
+ *
  * Permet au caviste de :
  * - Connecter SumUp ou POS Pro
  * - Voir le statut de la connexion
@@ -174,7 +174,8 @@ export default async function IntegrationsPage() {
           Documentation
         </h3>
         <p className="text-sm text-blue-800 mt-2">
-          Consultez le guide d&apos;intégration complet pour configurer les webhooks et mapper vos produits.
+          Consultez le guide d&apos;intégration complet pour configurer les webhooks et mapper vos
+          produits.
         </p>
         <div className="mt-3">
           <Link
@@ -188,4 +189,3 @@ export default async function IntegrationsPage() {
     </div>
   );
 }
-

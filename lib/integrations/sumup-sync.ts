@@ -1,6 +1,6 @@
 /**
  * Service de synchronisation SumUp → Base de données
- * 
+ *
  * Ce service récupère les produits et le stock depuis SumUp
  * et les synchronise avec notre base de données.
  */
@@ -26,7 +26,7 @@ interface SumUpSyncResult {
 
 /**
  * Récupère les produits depuis SumUp API
- * 
+ *
  * Note: SumUp n'a pas d'API publique pour le catalogue produit.
  * Cette fonction est un squelette à adapter selon votre accès API.
  */
@@ -36,18 +36,18 @@ async function fetchSumUpProducts(
 ): Promise<SumUpProduct[]> {
   // TODO: Adapter selon l'API SumUp disponible
   // Pour l'instant, retourne un tableau vide
-  
+
   // Exemple d'appel si l'API existe :
   // const response = await fetch(`https://api.sumup.com/v1/me/products`, {
   //   headers: {
   //     'Authorization': `Bearer ${accessToken}`,
   //   },
   // });
-  // 
+  //
   // if (!response.ok) {
   //   throw new Error(`SumUp API error: ${response.status}`);
   // }
-  // 
+  //
   // const data = await response.json();
   // return data.products || [];
 
@@ -57,7 +57,7 @@ async function fetchSumUpProducts(
 
 /**
  * Synchronise les produits SumUp avec notre base de données
- * 
+ *
  * @param cavisteId - ID du caviste dans notre DB
  * @param accessToken - Token d'accès SumUp
  * @param merchantId - ID marchand SumUp
@@ -143,7 +143,7 @@ export async function syncSumUpStock(
 
 /**
  * Créer un mapping manuel entre un produit SumUp et un vin de notre DB
- * 
+ *
  * À utiliser dans le dashboard caviste pour associer les produits
  */
 export async function mapSumUpProductToVin(

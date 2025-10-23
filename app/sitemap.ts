@@ -1,10 +1,10 @@
 /**
  * Sitemap dynamique pour Wine District
- * 
+ *
  * Génère automatiquement le sitemap.xml avec :
  * - Pages statiques (accueil, vins, cavistes)
  * - Pages dynamiques (vins/[slug], cavistes/[slug])
- * 
+ *
  * Next.js génère automatiquement le sitemap à /sitemap.xml
  */
 

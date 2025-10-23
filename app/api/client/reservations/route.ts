@@ -31,6 +31,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const status = (searchParams.get('status') || '').trim();
   const q = (searchParams.get('q') || '').trim();
+  const sortOrder = (searchParams.get('sortOrder') || 'desc').trim() as 'asc' | 'desc';
 
   const andFilters: Array<Record<string, unknown>> = [{ userId: user.id }];
 
@@ -51,7 +52,7 @@ export async function GET(req: Request) {
 
   const reservations = await prisma.reservation.findMany({
     where,
-    orderBy: { date: 'desc' },
+    orderBy: { date: ['asc', 'desc'].includes(sortOrder) ? sortOrder : 'desc' },
     include: {
       vin: true,
       caviste: {

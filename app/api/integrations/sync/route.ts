@@ -1,6 +1,6 @@
 /**
  * API Route pour synchroniser le stock depuis les intégrations externes
- * 
+ *
  * POST /api/integrations/sync
  * Body: { cavisteId: number, provider: 'sumup' | 'pospro' }
  */

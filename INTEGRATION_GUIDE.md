@@ -47,7 +47,7 @@ CREATE TABLE "ExternalProductMapping" (
   lastSeenAt        TIMESTAMP,
   createdAt         TIMESTAMP DEFAULT NOW(),
   updatedAt         TIMESTAMP DEFAULT NOW(),
-  
+
   UNIQUE(provider, cavisteId, externalProductId)
 );
 ```

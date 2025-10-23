@@ -38,13 +38,15 @@ export default function ReservationsTableClient() {
   const params = useSearchParams();
   const q = params.get('q') ?? '';
   const status = params.get('status') ?? '';
+  const sortOrder = params.get('sortOrder') ?? 'desc';
 
   const query = useMemo(() => {
     const sp = new URLSearchParams();
     if (status && ['en_attente', 'confirmee', 'annulee'].includes(status)) sp.set('status', status);
     if (q && q.trim()) sp.set('q', q.trim());
+    if (sortOrder) sp.set('sortOrder', sortOrder);
     return sp.toString();
-  }, [q, status]);
+  }, [q, status, sortOrder]);
 
   const fetchData = useCallback(
     async (signal?: AbortSignal) => {

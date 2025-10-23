@@ -1,8 +1,8 @@
 /**
  * Webhook SumUp pour recevoir les updates en temps réel
- * 
+ *
  * POST /api/webhooks/sumup
- * 
+ *
  * SumUp envoie des webhooks lors de changements (ventes, ajustements stock, etc.)
  */
 
@@ -25,7 +25,7 @@ interface SumUpWebhookEvent {
 
 /**
  * Vérifier la signature du webhook (sécurité)
- * 
+ *
  * SumUp signe ses webhooks pour garantir leur authenticité
  */
 function verifyWebhookSignature(
@@ -34,7 +34,7 @@ function verifyWebhookSignature(
   secret: string
 ): boolean {
   if (!signature) return false;
-  
+
   // TODO: Implémenter la vérification selon la doc SumUp
   // Exemple: HMAC-SHA256
   // const crypto = require('crypto');
@@ -43,7 +43,7 @@ function verifyWebhookSignature(
   //   .update(payload)
   //   .digest('hex');
   // return computedSignature === signature;
-  
+
   console.warn('Webhook signature verification not implemented yet');
   return true; // En dev, accepter tous les webhooks
 }
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
 
     // 2. Lire le payload
     const rawPayload = await req.text();
-    
+
     // 3. Vérifier la signature
     if (!verifyWebhookSignature(rawPayload, signature, webhookSecret)) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
  */
 async function handleTransactionCreated(event: SumUpWebhookEvent) {
   const merchantCode = event.merchant_code;
-  
+
   // Trouver le caviste associé à ce merchant
   const integration = await prisma.integrationConnection.findFirst({
     where: {

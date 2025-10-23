@@ -1,6 +1,6 @@
 /**
  * Composant Google Analytics 4 (GA4)
- * 
+ *
  * À ajouter dans app/layout.tsx
  */
 
