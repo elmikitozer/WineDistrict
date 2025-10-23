@@ -57,8 +57,11 @@ export async function GET(req: Request) {
       caviste: {
         select: {
           id: true,
+          slug: true,
           nom: true,
           adresse: true,
+          telephone: true,
+          email: true,
         },
       },
     },

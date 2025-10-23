@@ -6,6 +6,19 @@ import { Prisma } from '@prisma/client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getVinImageUrl } from '@/lib/vinImage';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Nos Vins | Wine District',
+  description:
+    'Découvrez notre sélection de vins rouges, blancs et rosés disponibles chez nos cavistes partenaires à Paris. Trouvez votre vin préféré près de chez vous.',
+  openGraph: {
+    title: 'Nos Vins | Wine District',
+    description:
+      'Découvrez notre sélection de vins disponibles chez nos cavistes partenaires à Paris.',
+    type: 'website',
+  },
+};
 
 interface Vin {
   id: number;

@@ -18,10 +18,15 @@ interface Caviste {
   imageUrl: string | null;
   stocks: Array<{
     vin: {
+      id: number;
+      slug: string | null;
       nom: string;
       domaine: string;
       couleur: string;
+      année: number;
+      prix: number;
     };
+    quantite: number;
   }>;
 }
 
@@ -202,21 +207,41 @@ export default function FavorisPage() {
                 {caviste.stocks.length > 0 && (
                   <div className="mb-4">
                     <p className="text-xs font-semibold text-gray-500 uppercase mb-2">
-                      Vins disponibles
+                      {caviste.stocks.length} vin{caviste.stocks.length > 1 ? 's' : ''} disponible{caviste.stocks.length > 1 ? 's' : ''}
                     </p>
-                    <div className="flex flex-wrap gap-2">
-                      {caviste.stocks.slice(0, 3).map((stock, idx) => (
-                        <span
-                          key={idx}
-                          className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded"
-                        >
-                          {stock.vin.nom}
-                        </span>
-                      ))}
+                    <div className="space-y-2">
+                      {caviste.stocks.slice(0, 3).map((stock, idx) => {
+                        const vinUrl = stock.vin.slug ? `/vins/${stock.vin.slug}` : `/vins/${stock.vin.id}`;
+                        return (
+                          <Link
+                            key={idx}
+                            href={vinUrl}
+                            className="block p-2 bg-gray-50 hover:bg-gray-100 rounded transition group"
+                          >
+                            <div className="flex justify-between items-start">
+                              <div className="flex-1">
+                                <p className="text-sm font-medium text-gray-900 group-hover:text-rose-600">
+                                  {stock.vin.nom}
+                                </p>
+                                <p className="text-xs text-gray-600">
+                                  {stock.vin.domaine} • {stock.vin.année} • {stock.vin.couleur}
+                                </p>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-sm font-semibold text-rose-600">{stock.vin.prix}€</p>
+                                <p className="text-xs text-gray-500">{stock.quantite} en stock</p>
+                              </div>
+                            </div>
+                          </Link>
+                        );
+                      })}
                       {caviste.stocks.length > 3 && (
-                        <span className="text-xs text-gray-500">
-                          +{caviste.stocks.length - 3} autres
-                        </span>
+                        <Link
+                          href={cavisteUrl}
+                          className="block text-center text-xs text-rose-600 hover:text-rose-800 py-2"
+                        >
+                          Voir tous les {caviste.stocks.length} vins →
+                        </Link>
                       )}
                     </div>
                   </div>

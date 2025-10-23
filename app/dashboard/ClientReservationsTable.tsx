@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 type ReservationItem = {
   id: string;
@@ -13,8 +14,11 @@ type ReservationItem = {
   };
   caviste: {
     id: number;
+    slug: string | null;
     nom: string;
     adresse: string;
+    telephone: string | null;
+    email: string | null;
   };
 };
 
@@ -139,8 +143,23 @@ export default function ClientReservationsTable() {
             <td className="px-4 py-3">{r.vin.année}</td>
             <td className="px-4 py-3">
               <div>
-                <div className="font-medium">{r.caviste.nom}</div>
-                <div className="text-xs text-gray-500">{r.caviste.adresse}</div>
+                <Link
+                  href={r.caviste.slug ? `/cavistes/${r.caviste.slug}` : `/cavistes/${r.caviste.id}`}
+                  className="font-medium text-rose-600 hover:text-rose-800 hover:underline"
+                >
+                  {r.caviste.nom}
+                </Link>
+                <div className="text-xs text-gray-500 mt-1">{r.caviste.adresse}</div>
+                {r.caviste.telephone && (
+                  <div className="text-xs text-gray-600 mt-0.5">
+                    📞 <a href={`tel:${r.caviste.telephone}`} className="hover:underline">{r.caviste.telephone}</a>
+                  </div>
+                )}
+                {r.caviste.email && (
+                  <div className="text-xs text-gray-600">
+                    ✉️ <a href={`mailto:${r.caviste.email}`} className="hover:underline">{r.caviste.email}</a>
+                  </div>
+                )}
               </div>
             </td>
             <td className="px-4 py-3">{new Date(r.date).toLocaleString('fr-FR')}</td>

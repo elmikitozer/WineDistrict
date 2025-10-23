@@ -1,0 +1,32 @@
+# robots.txt - Wine District
+# https://www.robotstxt.org/
+
+# Autoriser tous les robots sur les pages publiques
+User-agent: *
+Allow: /
+Allow: /vins
+Allow: /vins/*
+Allow: /cavistes
+Allow: /cavistes/*
+
+# Bloquer les pages privées et admin
+Disallow: /dashboard
+Disallow: /dashboard/*
+Disallow: /api/
+Disallow: /login
+Disallow: /signup
+Disallow: /register
+Disallow: /cart
+Disallow: /favoris
+
+# Bloquer les fichiers techniques
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*?*  # URLs avec paramètres de requête
+
+# Sitemap
+Sitemap: https://wine-district.vercel.app/sitemap.xml
+
+# Crawl delay (optionnel, pour éviter de surcharger le serveur)
+# Crawl-delay: 10
+

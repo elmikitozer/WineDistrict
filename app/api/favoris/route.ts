@@ -19,7 +19,6 @@ export async function GET() {
               include: {
                 vin: true,
               },
-              take: 5, // Limiter à 5 vins pour l'aperçu
             },
           },
         },
