@@ -66,6 +66,8 @@ model Stock {
   caviste   Caviste @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
 
   @@unique([cavisteId, vinId], name: "stock_unique_caviste_vin")
+  @@index([vinId])
+  @@index([cavisteId])
 }
 
 model Reservation {
@@ -79,6 +81,11 @@ model Reservation {
   vin       Vin     @relation(fields: [vinId], references: [id], onDelete: Cascade)
   caviste   Caviste @relation(fields: [cavisteId], references: [id], onDelete: Cascade)
   user      User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([cavisteId])
+  @@index([userId])
+  @@index([status])
+  @@index([date])
 }
 
 // Authentication user for dashboard access
