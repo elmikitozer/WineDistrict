@@ -1,11 +1,11 @@
 /**
  * API Route : /api/vins/load-more
- * 
+ *
  * 🎯 OBJECTIF : Charger plus de vins pour la pagination hybrid
- * 
+ *
  * 📡 REQUÊTE :
  * GET /api/vins/load-more?page=2&q=margaux&couleur=rouge
- * 
+ *
  * 📦 RÉPONSE :
  * {
  *   vins: [...],        // Liste des vins de la page demandée
@@ -13,7 +13,7 @@
  *   totalVins: 200,     // Nombre total de vins (avec filtres)
  *   currentPage: 2      // Page actuelle
  * }
- * 
+ *
  * 🔧 LOGIQUE :
  * 1. Récupère les paramètres (page, q, couleur)
  * 2. Construit la requête SQL avec LIMIT/OFFSET
@@ -98,7 +98,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     const totalVins = countResult[0]?.count ?? 0;
-    
+
     // 📊 CALCUL : Y a-t-il d'autres pages après celle-ci ?
     // Exemple : page 2 (24 vins chargés), total 200 vins
     // 2 * 24 = 48 < 200 → hasMore = true

@@ -38,7 +38,7 @@ export default async function PageVins({
   const sp = (await searchParams) ?? {};
   const q = (sp.q ?? '').trim();
   const couleur = (sp.couleur ?? 'tous').toLowerCase(); // "rouge" | "blanc" | "rose" | "tous"
-  
+
   // 📊 PAGINATION : Nombre de vins par page
   const PER_PAGE = 24; // Grille 4x6 sur desktop, 2x12 sur mobile
   const page = parseInt(sp.page ?? '1', 10);

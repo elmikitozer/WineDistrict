@@ -1,8 +1,8 @@
 /**
  * VinsGrid - Composant CLIENT pour afficher les vins avec pagination hybrid
- * 
+ *
  * 🎯 OBJECTIF : Combiner SEO (URLs paginées) + UX moderne (Load More AJAX)
- * 
+ *
  * 📊 FONCTIONNEMENT :
  * 1. Reçoit les vins initiaux du Server Component
  * 2. Affiche un bouton "Afficher plus" si hasMore = true
@@ -49,19 +49,19 @@ export default function VinsGrid({
 }: VinsGridProps) {
   // 🔄 STATE : Liste des vins (commence avec initialVins)
   const [vins, setVins] = useState<Vin[]>(initialVins);
-  
+
   // 🔄 STATE : Page actuelle (pour savoir quelle page charger ensuite)
   const [page, setPage] = useState(currentPage);
-  
+
   // 🔄 STATE : Y a-t-il encore des vins à charger ?
   const [hasMore, setHasMore] = useState(initialHasMore);
-  
+
   // 🔄 STATE : Chargement en cours
   const [loading, setLoading] = useState(false);
 
   /**
    * 🚀 FONCTION : Charger plus de vins (AJAX)
-   * 
+   *
    * 1. Appelle l'API /api/vins/load-more?page=2&q=...&couleur=...
    * 2. Récupère les vins de la page suivante
    * 3. Les ajoute à la liste existante
@@ -72,7 +72,7 @@ export default function VinsGrid({
 
     try {
       const nextPage = page + 1;
-      
+
       // 📡 APPEL API : Charger les vins de la page suivante
       const params = new URLSearchParams({
         page: String(nextPage),
@@ -81,7 +81,7 @@ export default function VinsGrid({
       });
 
       const res = await fetch(`/api/vins/load-more?${params.toString()}`);
-      
+
       if (!res.ok) {
         throw new Error('Erreur lors du chargement');
       }
@@ -99,7 +99,7 @@ export default function VinsGrid({
       if (filters.q) url.set('q', filters.q);
       if (filters.couleur !== 'tous') url.set('couleur', filters.couleur);
       url.set('page', String(nextPage));
-      
+
       window.history.pushState({}, '', `/vins?${url.toString()}`);
     } catch (error) {
       console.error('Erreur chargement vins:', error);
