@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import SearchBar from './SearchBar';
 import CartIcon from './CartIcon';
+import NotificationBadge from './NotificationBadge';
 
 function Brand() {
   return (
@@ -18,9 +19,11 @@ function Brand() {
 function DesktopLinks({
   isAuthenticated,
   isCaviste,
+  cavisteId,
 }: {
   isAuthenticated?: boolean;
   isCaviste?: boolean;
+  cavisteId?: number | null;
 }) {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
@@ -72,10 +75,11 @@ function DesktopLinks({
                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-20">
                   <Link
                     href="/dashboard"
-                    className="block px-4 py-2 hover:bg-rose-50 transition"
+                    className="block px-4 py-2 hover:bg-rose-50 transition relative"
                     onClick={() => setShowUserMenu(false)}
                   >
                     📊 Dashboard
+                    {isCaviste && <NotificationBadge cavisteId={cavisteId} />}
                   </Link>
                   {!isCaviste && (
                     <Link
@@ -239,9 +243,13 @@ function MobileMenu({
   );
 }
 
-type NavbarProps = { isAuthenticated?: boolean; isCaviste?: boolean };
+type NavbarProps = {
+  isAuthenticated?: boolean;
+  isCaviste?: boolean;
+  cavisteId?: number | null;
+};
 
-export default function Navbar({ isAuthenticated, isCaviste }: NavbarProps) {
+export default function Navbar({ isAuthenticated, isCaviste, cavisteId }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -257,7 +265,11 @@ export default function Navbar({ isAuthenticated, isCaviste }: NavbarProps) {
         <div className="flex justify-between h-16 items-center">
           <Brand />
           <SearchCenter />
-          <DesktopLinks isAuthenticated={isAuthenticated} isCaviste={isCaviste} />
+          <DesktopLinks
+            isAuthenticated={isAuthenticated}
+            isCaviste={isCaviste}
+            cavisteId={cavisteId}
+          />
 
           {/* Mobile: Panier + Burger */}
           <div className="md:hidden flex items-center gap-4">

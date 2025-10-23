@@ -39,7 +39,15 @@ function statusBadgeClass(s: string) {
   }
 }
 
-export default function ReservationsTableClient() {
+interface ReservationsTableClientProps {
+  selectedIds?: string[];
+  onSelectionChange?: (ids: string[]) => void;
+}
+
+export default function ReservationsTableClient({
+  selectedIds = [],
+  onSelectionChange,
+}: ReservationsTableClientProps = {}) {
   const [items, setItems] = useState<ReservationItem[] | null>(null);
   const [pagination, setPagination] = useState<PaginationInfo | null>(null);
   const [loading, setLoading] = useState(true);
@@ -78,13 +86,16 @@ export default function ReservationsTableClient() {
         setItems(data.items);
         setPagination(data.pagination);
       } catch (e: unknown) {
+        // Ignorer AbortError (causé par le cleanup du useEffect)
+        // C'est normal en mode dev avec React Strict Mode qui monte/démonte 2x les composants
         if (
           e &&
           typeof e === 'object' &&
           'name' in e &&
           (e as { name?: string }).name === 'AbortError'
-        )
-          return;
+        ) {
+          return; // Silencieux - pas d'erreur réelle
+        }
         const msg = e instanceof Error ? e.message : 'Erreur inattendue';
         setError(msg);
       } finally {
@@ -116,8 +127,34 @@ export default function ReservationsTableClient() {
     return () => window.removeEventListener('dashboard:refresh', handler);
   }, [fetchData]);
 
+  // 🔲 GESTION SÉLECTION
+  const allItemIds = items?.map((r) => r.id) || [];
+  const isAllSelected = allItemIds.length > 0 && allItemIds.every((id) => selectedIds.includes(id));
+  const isSomeSelected = selectedIds.length > 0 && !isAllSelected;
+
+  function toggleSelectAll() {
+    if (!onSelectionChange || !items) return;
+    if (isAllSelected) {
+      // Désélectionner tous les items de la page
+      onSelectionChange(selectedIds.filter((id) => !allItemIds.includes(id)));
+    } else {
+      // Sélectionner tous les items de la page
+      const newSelection = [...new Set([...selectedIds, ...allItemIds])];
+      onSelectionChange(newSelection);
+    }
+  }
+
+  function toggleSelectItem(id: string) {
+    if (!onSelectionChange) return;
+    if (selectedIds.includes(id)) {
+      onSelectionChange(selectedIds.filter((selectedId) => selectedId !== id));
+    } else {
+      onSelectionChange([...selectedIds, id]);
+    }
+  }
+
   if (loading && !items) {
-    return <TableSkeleton rows={10} cols={9} />;
+    return <TableSkeleton rows={10} cols={onSelectionChange ? 10 : 9} />;
   }
   if (error) {
     return <p className="p-4 text-sm text-red-600">{error}</p>;
@@ -131,6 +168,21 @@ export default function ReservationsTableClient() {
       <table className="w-full text-sm">
         <thead className="bg-rose-50 text-rose-800">
           <tr>
+            {/* 🔲 CHECKBOX SELECT ALL */}
+            {onSelectionChange && (
+              <th className="px-4 py-3 w-12">
+                <input
+                  type="checkbox"
+                  checked={isAllSelected}
+                  ref={(el) => {
+                    if (el) el.indeterminate = isSomeSelected;
+                  }}
+                  onChange={toggleSelectAll}
+                  className="w-4 h-4 rounded border-rose-300 text-rose-600 focus:ring-rose-500 cursor-pointer"
+                  title={isAllSelected ? 'Tout désélectionner' : 'Tout sélectionner'}
+                />
+              </th>
+            )}
             <th className="text-left px-4 py-3">Vin</th>
             <th className="text-left px-4 py-3">Domaine</th>
             <th className="text-left px-4 py-3">Année</th>
@@ -144,8 +196,23 @@ export default function ReservationsTableClient() {
         </thead>
         <tbody>
           {items.map((r) => {
+            const isSelected = selectedIds.includes(r.id);
             return (
-              <tr key={r.id} className="border-t">
+              <tr
+                key={r.id}
+                className={`border-t transition ${isSelected ? 'bg-rose-50' : 'hover:bg-gray-50'}`}
+              >
+                {/* 🔲 CHECKBOX PAR LIGNE */}
+                {onSelectionChange && (
+                  <td className="px-4 py-3">
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => toggleSelectItem(r.id)}
+                      className="w-4 h-4 rounded border-gray-300 text-rose-600 focus:ring-rose-500 cursor-pointer"
+                    />
+                  </td>
+                )}
                 <td className="px-4 py-3 font-medium">{r.vin.nom}</td>
                 <td className="px-4 py-3">{r.vin.domaine}</td>
                 <td className="px-4 py-3">{r.vin.année}</td>

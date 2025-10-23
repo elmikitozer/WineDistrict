@@ -7,6 +7,8 @@
  * @param cols - Nombre de colonnes à afficher (défaut: 6)
  */
 
+'use client';
+
 interface TableSkeletonProps {
   rows?: number;
   cols?: number;
@@ -36,6 +38,7 @@ export default function TableSkeleton({ rows = 5, cols = 6 }: TableSkeletonProps
                       width: `${Math.random() * 40 + 40}%`, // Largeur aléatoire 40-80%
                       animationDelay: `${rowIdx * 0.1}s`, // Décalage pour effet cascade
                     }}
+                    suppressHydrationWarning
                   />
                 </td>
               ))}

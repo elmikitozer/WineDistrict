@@ -1,11 +1,10 @@
 import { redirect } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { getCurrentUser } from '@/lib/auth';
-import ReservationsTableClient from './ReservationsTableClient';
 import ClientReservationsTable from './ClientReservationsTable';
-import StatsCards from './StatsCards';
 import ClientStatsCards from './ClientStatsCards';
 import Toolbar from './Toolbar';
+import DashboardTabs from './DashboardTabs';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -73,10 +72,10 @@ export default async function DashboardPage({
         <p>Votre compte n&apos;est pas lié à un caviste. Contactez un administrateur.</p>
       ) : (
         // Interface pour les cavistes
-        <section className="space-y-4">
-          {/* Liens rapides */}
+        <section className="space-y-6">
+          {/* En-tête avec lien intégrations */}
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Réservations</h2>
+            <h2 className="text-2xl font-bold">Tableau de bord caviste</h2>
             <a
               href="/dashboard/caviste/integrations"
               className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm"
@@ -86,12 +85,8 @@ export default async function DashboardPage({
             </a>
           </div>
 
-          <StatsCards cavisteId={cavisteId} activeStatus={activeStatus} q={qParam} />
-          <Toolbar />
-          <div className="border rounded-xl overflow-hidden">
-            {/* Key on search params so it remounts when filters change */}
-            <ReservationsTableClient key={`${activeStatus}|${qParam}`} />
-          </div>
+          {/* ONGLETS : Réservations | Statistiques */}
+          <DashboardTabs cavisteId={cavisteId} activeStatus={activeStatus} qParam={qParam} />
         </section>
       )}
     </div>

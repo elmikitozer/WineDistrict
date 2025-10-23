@@ -31,15 +31,25 @@ export async function GET(req: Request) {
   const q = (searchParams.get('q') || '').trim();
   const sortOrder = (searchParams.get('sortOrder') || 'desc').trim() as 'asc' | 'desc';
 
+  // 🆕 FILTRES AVANCÉS
+  const dateFrom = searchParams.get('dateFrom');
+  const dateTo = searchParams.get('dateTo');
+  const vinId = searchParams.get('vinId');
+  const clientSearch = (searchParams.get('clientSearch') || '').trim();
+
   // 📊 PAGINATION : 20 réservations par page
   const PER_PAGE = 20;
   const page = parseInt(searchParams.get('page') || '1', 10);
   const skip = (page - 1) * PER_PAGE;
 
   const andFilters: Array<Record<string, unknown>> = [{ cavisteId: user.cavisteId }];
+
+  // Filtre statut
   if (['en_attente', 'confirmee', 'annulee'].includes(status)) {
     andFilters.push({ status });
   }
+
+  // Filtre recherche (vin)
   if (q) {
     andFilters.push({
       OR: [
@@ -48,6 +58,35 @@ export async function GET(req: Request) {
       ],
     });
   }
+
+  // 🆕 Filtre plage de dates
+  if (dateFrom || dateTo) {
+    const dateFilter: Record<string, unknown> = {};
+    if (dateFrom) dateFilter.gte = new Date(dateFrom);
+    if (dateTo) {
+      const endDate = new Date(dateTo);
+      endDate.setHours(23, 59, 59, 999); // Fin de journée
+      dateFilter.lte = endDate;
+    }
+    andFilters.push({ date: dateFilter });
+  }
+
+  // 🆕 Filtre par vin spécifique
+  if (vinId) {
+    andFilters.push({ vinId: parseInt(vinId, 10) });
+  }
+
+  // 🆕 Filtre par client
+  if (clientSearch) {
+    andFilters.push({
+      OR: [
+        { user: { is: { nom: { contains: clientSearch, mode: 'insensitive' } } } },
+        { user: { is: { prenom: { contains: clientSearch, mode: 'insensitive' } } } },
+        { user: { is: { email: { contains: clientSearch, mode: 'insensitive' } } } },
+      ],
+    });
+  }
+
   const where = andFilters.length > 1 ? { AND: andFilters } : andFilters[0];
 
   // 🔍 CHARGER les réservations avec pagination + compter le total
