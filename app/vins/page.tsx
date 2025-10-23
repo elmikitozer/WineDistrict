@@ -4,9 +4,8 @@ export const dynamic = 'force-dynamic';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import Link from 'next/link';
-import Image from 'next/image';
-import { getVinImageUrl } from '@/lib/vinImage';
 import type { Metadata } from 'next';
+import VinsGrid from './VinsGrid';
 
 export const metadata: Metadata = {
   title: 'Nos Vins | Wine District',
@@ -34,11 +33,16 @@ interface Vin {
 export default async function PageVins({
   searchParams,
 }: {
-  searchParams?: Promise<{ q?: string; couleur?: string }>;
+  searchParams?: Promise<{ q?: string; couleur?: string; page?: string }>;
 }) {
   const sp = (await searchParams) ?? {};
   const q = (sp.q ?? '').trim();
   const couleur = (sp.couleur ?? 'tous').toLowerCase(); // "rouge" | "blanc" | "rose" | "tous"
+  
+  // 📊 PAGINATION : Nombre de vins par page
+  const PER_PAGE = 24; // Grille 4x6 sur desktop, 2x12 sur mobile
+  const page = parseInt(sp.page ?? '1', 10);
+  const offset = (page - 1) * PER_PAGE;
 
   // WHERE parts (accent-insensitive + tiret/space normalization)
   const whereParts = [
@@ -63,14 +67,29 @@ export default async function PageVins({
   const whereClause =
     whereParts.length > 0 ? Prisma.sql`WHERE ${Prisma.join(whereParts, ' AND ')}` : Prisma.empty;
 
+  // 📊 QUERY AVEC LIMIT/OFFSET pour la pagination
   const query = Prisma.sql`
     SELECT id, slug, nom, domaine, année, prix, couleur, "imageFile"
     FROM "Vin"
     ${whereClause}
     ORDER BY nom ASC
+    LIMIT ${PER_PAGE} OFFSET ${offset}
   `;
 
-  const vins = await prisma.$queryRaw<Vin[]>(query);
+  // 📊 COMPTER le nombre total de vins (pour savoir s'il y a d'autres pages)
+  const countQuery = Prisma.sql`
+    SELECT COUNT(*)::int as count
+    FROM "Vin"
+    ${whereClause}
+  `;
+
+  const [vins, countResult] = await Promise.all([
+    prisma.$queryRaw<Vin[]>(query),
+    prisma.$queryRaw<{ count: number }[]>(countQuery),
+  ]);
+
+  const totalVins = countResult[0]?.count ?? 0;
+  const hasMore = page * PER_PAGE < totalVins; // Y a-t-il d'autres pages ?
 
   return (
     <>
@@ -126,43 +145,16 @@ export default async function PageVins({
             </div>
           </div>
         ) : (
-          <ul className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-            {vins.map((vin) => {
-              const img = getVinImageUrl(vin);
-              return (
-                <li key={vin.id}>
-                  <Link
-                    href={`/vins/${vin.slug}`}
-                    className="block rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition bg-white group focus:outline-none focus:ring-2 focus:ring-rose-500"
-                  >
-                    {/* Image en tête */}
-                    <div className="relative w-full aspect-square overflow-hidden rounded-t-2xl ">
-                      <Image
-                        src={img}
-                        alt={`BIB de ${vin.nom}`}
-                        fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        className="object-contain p-3"
-                        priority={false}
-                        unoptimized
-                      />
-                    </div>
-
-                    {/* Infos */}
-                    <div className="p-4">
-                      <h2 className="text-sm font-semibold text-gray-900 mb-0.5 group-hover:text-rose-700 transition">
-                        {vin.nom}
-                      </h2>
-                      <p className="text-xs text-gray-500 mb-2 italic">
-                        {vin.domaine} • {vin.année}
-                      </p>
-                      <p className="text-rose-700 font-semibold text-sm">{vin.prix.toFixed(2)} €</p>
-                    </div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          <>
+            {/* 🎨 VinsGrid : Composant client qui gère l'affichage et le "Load More" */}
+            <VinsGrid
+              initialVins={vins}
+              currentPage={page}
+              hasMore={hasMore}
+              totalVins={totalVins}
+              filters={{ q, couleur }}
+            />
+          </>
         )}
       </main>
     </>

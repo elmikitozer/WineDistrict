@@ -1,6 +1,6 @@
 /**
  * Page Intégrations - Dashboard Caviste
- * 
+ *
  * Permet au caviste de :
  * - Connecter SumUp ou POS Pro
  * - Voir le statut de la connexion
@@ -116,9 +116,7 @@ export default async function IntegrationsPage() {
               </span>
             </div>
           ) : (
-            <div className="text-sm text-gray-600">
-              Configuration POS Pro à implémenter
-            </div>
+            <div className="text-sm text-gray-600">Configuration POS Pro à implémenter</div>
           )}
         </div>
 
