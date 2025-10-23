@@ -75,7 +75,7 @@ function DesktopLinks({
                     className="block px-4 py-2 hover:bg-rose-50 transition"
                     onClick={() => setShowUserMenu(false)}
                   >
-                    📦 Mes commandes
+                    📊 Dashboard
                   </Link>
                   {!isCaviste && (
                     <Link
