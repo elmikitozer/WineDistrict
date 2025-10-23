@@ -1,11 +1,11 @@
 /**
  * API Route : /api/cavistes/load-more
- * 
+ *
  * 🎯 OBJECTIF : Charger plus de cavistes pour la pagination hybrid
- * 
+ *
  * 📡 REQUÊTE :
  * GET /api/cavistes/load-more?page=2
- * 
+ *
  * 📦 RÉPONSE :
  * {
  *   cavistes: [...],
@@ -58,10 +58,6 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error('Erreur API load-more cavistes:', error);
-    return NextResponse.json(
-      { error: 'Erreur lors du chargement des cavistes' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erreur lors du chargement des cavistes' }, { status: 500 });
   }
 }
-

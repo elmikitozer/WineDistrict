@@ -1,8 +1,8 @@
 /**
  * Page Cavistes - Server Component avec pagination hybrid
- * 
+ *
  * 🎯 OBJECTIF : Afficher les cavistes avec pagination SEO-friendly + UX moderne
- * 
+ *
  * 📊 FONCTIONNEMENT :
  * 1. Charge les 12 premiers cavistes (Server Component)
  * 2. Passe au composant client CavistesGrid
@@ -43,7 +43,7 @@ export default async function CavistesPage({
   searchParams?: Promise<{ page?: string }>;
 }) {
   const sp = (await searchParams) ?? {};
-  
+
   // 📊 PAGINATION : 12 cavistes par page (taille idéale pour cavistes)
   const PER_PAGE = 12;
   const page = parseInt(sp.page ?? '1', 10);

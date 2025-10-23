@@ -32,7 +32,7 @@ export async function GET(req: Request) {
   const status = (searchParams.get('status') || '').trim();
   const q = (searchParams.get('q') || '').trim();
   const sortOrder = (searchParams.get('sortOrder') || 'desc').trim() as 'asc' | 'desc';
-  
+
   // 📊 PAGINATION : 20 réservations par page
   const PER_PAGE = 20;
   const page = parseInt(searchParams.get('page') || '1', 10);
@@ -81,7 +81,7 @@ export async function GET(req: Request) {
 
   const totalPages = Math.ceil(totalReservations / PER_PAGE);
 
-  return NextResponse.json({ 
+  return NextResponse.json({
     items: reservations,
     pagination: {
       currentPage: page,

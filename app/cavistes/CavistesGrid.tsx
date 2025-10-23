@@ -1,8 +1,8 @@
 /**
  * CavistesGrid - Composant CLIENT pour afficher les cavistes avec Load More
- * 
+ *
  * 🎯 OBJECTIF : Même logique que VinsGrid mais pour les cavistes
- * 
+ *
  * 📊 FONCTIONNEMENT :
  * 1. Affiche les cavistes initiaux
  * 2. Bouton "Afficher plus" charge les cavistes suivants en AJAX
