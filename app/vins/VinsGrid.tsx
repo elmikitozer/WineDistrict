@@ -150,10 +150,10 @@ export default function VinsGrid({
         })}
       </ul>
 
-      {/* 📊 INDICATEUR : "24 / 200 vins affichés" */}
+      {/* 📊 INDICATEUR : "24 / 200 bouteilles affichées" */}
       <div className="mt-6 text-center text-sm text-gray-600">
         <p>
-          <span className="font-semibold text-rose-700">{vins.length}</span> / {totalVins} vins affichés
+          <span className="font-semibold text-rose-700">{vins.length}</span> / {totalVins} bouteille{totalVins > 1 ? 's' : ''} affichée{vins.length > 1 ? 's' : ''}
         </p>
       </div>
 
@@ -174,10 +174,7 @@ export default function VinsGrid({
                 <span>Chargement...</span>
               </>
             ) : (
-              <>
-                <span>📦</span>
-                <span>Afficher plus de vins</span>
-              </>
+              <span>Afficher plus de bouteilles</span>
             )}
           </button>
         </div>
@@ -186,7 +183,7 @@ export default function VinsGrid({
       {/* ✅ MESSAGE de fin (quand tous les vins sont affichés) */}
       {!hasMore && vins.length > 0 && vins.length === totalVins && (
         <div className="mt-8 text-center text-gray-500 text-sm">
-          <p>🍷 Vous avez vu tous nos vins !</p>
+          <p>🍷 Vous avez vu toutes nos bouteilles !</p>
         </div>
       )}
     </>
